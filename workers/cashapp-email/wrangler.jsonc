@@ -1,0 +1,62 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "cashapp-email",
+	"main": "src/index.ts",
+	"compatibility_date": "2025-05-03",
+	"observability": {
+		"enabled": true
+	}
+	/**
+	 * Smart Placement
+	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
+	 */
+	// "placement": { "mode": "smart" },
+	/**
+	 * Bindings
+	 * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
+	 * databases, object storage, AI inference, real-time communication and more.
+	 * https://developers.cloudflare.com/workers/runtime-apis/bindings/
+	 */
+	/**
+	 * Environment Variables
+	 * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
+	 */
+	// "vars": { "MY_VARIABLE": "production_value" },
+	/**
+	 * Note: Use secrets to store sensitive data.
+	 * https://developers.cloudflare.com/workers/configuration/secrets/
+	 */
+	/**
+	 * Static Assets
+	 * https://developers.cloudflare.com/workers/static-assets/binding/
+	 */
+	// "assets": { "directory": "./public/", "binding": "ASSETS" },
+	/**
+	 * Service Bindings (communicate between multiple Workers)
+	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
+	 */
+	// "services": [{ "binding": "MY_SERVICE", "service": "my-service" }]
+}
+/*
+curl --request POST 'http://localhost:8787/cdn-cgi/handler/email' \
+  --url-query 'from=sender@example.com' \
+  --url-query 'to=recipient@example.com' \
+  --header 'Content-Type: application/json' \
+  --data-raw 'Received: from smtp.example.com (127.0.0.1)
+        by cloudflare-email.com (unknown) id 4fwwffRXOpyR
+        for <recipient@example.com>; Tue, 27 Aug 2024 15:50:20 +0000
+From: "John" <sender@example.com>
+Reply-To: sender@example.com
+To: recipient@example.com
+Subject: Testing Email Workers Local Dev
+Content-Type: text/html; charset="windows-1252"
+X-Mailer: Curl
+Date: Tue, 27 Aug 2024 08:49:44 -0700
+Message-ID: <6114391943504294873000@ZSH-GHOSTTY>
+
+Hi there'
+*/

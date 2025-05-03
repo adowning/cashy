@@ -1,0 +1,6 @@
+[run]
+# equivalent to `bun --bun` for all `bun run` commands
+bun = true
+optional = true
+dev = true
+peer = true

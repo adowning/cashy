@@ -1,0 +1,75 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    // "target": "esnext",
+    // "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "jsx": "preserve",
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ],
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    // "module": "esnext",
+    // "moduleResolution": "Bundler",
+    "types": [
+      "vite-plugin-app-loading/client"
+    ],
+    //   "node",
+    //   "bun",
+    //   "./src/types/auto/components.d.ts",
+    //   "./src/types/auto/auto-imports.d.ts",
+    //   "./src/types/shim-pinia.d.ts",
+    //   // "unplugin-vue-router/client",
+    //   // "vite-plugin-pwa/client",
+    //   // "@intlify/unplugin-vue-i18n/messages"
+    // ],
+    "allowJs": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "importHelpers": true,
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    // "verbatimModuleSyntax": true,
+    // "skipLibCheck": true
+  },
+  // 需要被编译的文件列表  "include": ["src", "shim-pinia.d.ts"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.vue",
+    "./src/types/shim-pinia.d.ts",
+    "**/*.d.ts",
+    "./eslint.config.mjs",
+    "./src/types/**/*",
+    "./src/App.vue",
+    "./src/**/*.ts",
+    "./src/**/*.tsx",
+    "./src/**/*.vue",
+    "./tests/**/*.ts",
+    "./tests/**/*.tsx",
+    "./src/types/auto/components.d.ts",
+    "./src/types/auto/auto-imports.d.ts",
+    // "src/types/typed-router.d.ts",
+    // "tests/*.ts"
+  ],
+  // 从编译中排除的文件列表
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

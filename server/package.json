@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json.schemastore.org/package",
+  "name": "server",
+  "version": "0.2.1",
+  "engines": {
+    "bun": ">1.1.1"
+  },
+  "scripts": {
+    "build": "npm run test:cov-build && npm run format:fix && npm run build:cjs && npm run build:esm && npm run build:types",
+    "forcebuild": "npm run build:cjs && npm run build:esm && npm run build:types",
+    "build:cjs": "rimraf ./dist/cjs && tsc -p config/tsconfig.cjs.json",
+    "build:esm": "rimraf ./dist/esm && tsc -p config/tsconfig.esm.json",
+    "build:types": "rimraf ./dist/types && tsc -p config/tsconfig.types.json",
+    "clean": "rimraf ./dist/cjs ./dist/esm ./dist/umd ./dist/types",
+    "test": "jest --no-cache --runInBand",
+    "test:cov": "jest --coverage --no-cache --runInBand",
+    "test:cov-browser": "jest --coverage --no-cache --runInBand && start ./coverage/lcov-report/index.html",
+    "test:cov-build": "jest --coverage --no-cache --runInBand && jest-coverage-badges-ts --output \"./.coverage-badges\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format:fix": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "release": "rimraf ./*.tgz -g && npm run build && node tools/versionManager.js",
+    "dev": "bun run --watch ./src/server --elide 1000 "
+  },
+  "keywords": [
+    "websocket",
+    "server",
+    "connection",
+    "library",
+    "eventhandler",
+    "waiter",
+    "async",
+    "tcp",
+    "realtime",
+    "node",
+    "typescript",
+    "events"
+  ],
+  "author": "warstekhun",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/cookie": "^0.6.0",
+    "@types/jsonwebtoken": "^9.0.9"
+  },
+  "dependencies": {
+    "cookie": "^1.0.2",
+    "jsonwebtoken": "^9.0.2",
+    "shared": "workspace:^"
+  }
+}

@@ -1,0 +1,209 @@
+<!-- filepath: /tmp/server/public/index.html -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZilaWS Test Page</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+      #app {
+        font-family: Avenir, Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-align: center;
+        color: #2c3e50;
+        margin-top: 60px;
+      }
+
+      .log {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 20px;
+        text-align: left;
+        height: 200px;
+        overflow-y: scroll;
+      }
+
+      .log p {
+        margin: 5px 0;
+        padding: 5px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .log p:last-child {
+        border-bottom: none;
+      }
+
+      .connection {
+        margin-bottom: 20px;
+      }
+
+      .log-message {
+        background-color: #f9f9f9;
+      }
+
+      .log-error {
+        color: red;
+        background-color: #ffe6e6;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <h1>ZilaWS Test Page</h1>
+
+      <div v-for="(connection, index) in connections" :key="index" class="connection">
+        <h2>Connection #{{ index + 1 }}</h2>
+        <button @click="connect(index)" :disabled="connection.isConnected">
+          {{ connection.isConnected ? 'Connected' : 'Connect' }}
+        </button>
+        <button @click="sendTestMessage(index)" :disabled="!connection.isConnected">Send Test Message</button>
+        <button @click="getPiValue(index)" :disabled="!connection.isConnected">Get PI Value</button>
+      </div>
+
+      <button @click="addConnection">Add Connection</button>
+
+      <div class="log" ref="logContainer">
+        <h3>Log:</h3>
+        <p
+          v-for="(log, index) in logs"
+          :key="index"
+          :class="{'log-message': !log.isError, 'log-error': log.isError}"
+        >
+          {{ log.message }}
+        </p>
+      </div>
+    </div>
+
+    <script src="./index.js"></script>
+    <script>
+      const { createApp, ref, onMounted, nextTick } = Vue;
+
+      createApp({
+        setup() {
+          const connections = ref([]);
+          const logs = ref([]);
+          const logContainer = ref(null);
+
+          const addConnection = () => {
+            connections.value.push({
+              client: null,
+              isConnected: false,
+            });
+          };
+
+          const connect = async (index) => {
+            var myHeaders = new Headers();
+            // myHeaders.append(
+            //   "Authorization",
+            //   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZjZGVlNTc4LWUxZmMtNDQ4MS1iMTEwLWVkOWNjMjVjNjc4MCIsImlhdCI6MTc0NTg3OTI4OSwiZXhwIjoxNzc3NDM2ODg5fQ.xLqwPldvIcRe9tXv64kbp1zps70DxrjLEOL8aRLh5YA"
+            // );
+            // myHeaders.append(
+            //   "Cookie",
+            //   "cookie=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtYTF1MzBrbDAwMDBtZGVjMmQ2MjFqYXYiLCJpYXQiOjE3NDU4OTA0MjgsImV4cCI6MTc3NzQ0ODAyOH0.SnNYMYX6m7GdymTQe0_1u4bAG26nf6B6dej9M9MI3os"
+            // );
+            myHeaders.append("Content-Type", "application/json");
+
+            var raw = JSON.stringify({
+              username: "ash",
+              password: "asdfasdf",
+            });
+
+            var requestOptions = {
+              method: "POST",
+              headers: myHeaders,
+              body: raw,
+              redirect: "follow",
+            };
+
+            const result = await fetch("http://localhost:6589/auth/login", requestOptions);
+            // const client = window.zilawsclient;
+            // await client.connectTo("ws://localhost:6589");
+            const { createApp, ref, onMounted, nextTick } = Vue;
+            // client = await connectTo("ws://127.0.0.1:6589", (reason) => {
+            //   console.log("Error " + reason);
+            // });
+            const connection = connections.value[index];
+            try {
+              // connection.client.syncCookies();
+              connection.client = await window.zilawsclient.connectTo("ws://localhost:6589");
+              connection.isConnected = true;
+              connection.client.syncCookies();
+              logMessage(`Connection #${index + 1}: Connected`);
+
+              connection.client.setMessageHandler("test", (data) => {
+                console.log(data);
+                logMessage(`Connection #${index + 1}: Received: ${data}`);
+              });
+            } catch (error) {
+              console.error(`Connection #${index + 1} error:`, error);
+              logMessage(`Connection #${index + 1} error: ${error}`, true);
+            }
+          };
+          // {"type":"request","id":"nkpvu5s28fa","name":"GetValueOfPI","payload":"Client asks for PI"}
+          // {"type":"message","name":"test","payload":"Hello from the client!"}
+          const sendTestMessage = (index) => {
+            const connection = connections.value[index];
+            if (connection.client) {
+              connection.client.send("test", "Hello from the client!");
+              logMessage(`Connection #${index + 1}: Sent test message`);
+            }
+          };
+
+          const getPiValue = async (index) => {
+            const connection = connections.value[index];
+            if (connection.client) {
+              try {
+                console.log("sending pi");
+                const post = await connection.client.waiter(
+                  "GetPostById",
+                  "25dfg568-m745h-45743gerz-erh3456",
+                  true
+                );
+                console.log(post);
+                logMessage(`Connection #${index + 1}: post from server: ${post}`);
+
+                const piValue = await connection.client.waiter("GetValueOfPI", "Client asks for PI", true);
+                // const response: string | undefined = await client.waiter("GetValueOfPI", "myData", true);
+
+                console.log(piValue);
+                logMessage(`Connection #${index + 1}: PI from server: ${piValue}`);
+              } catch (error) {
+                logMessage(`Connection #${index + 1}: Error getting PI: ${error}`, true);
+              }
+            }
+          };
+
+          const logMessage = (message, isError = false) => {
+            logs.value.push({
+              message: message,
+              isError: isError,
+            });
+            scrollToBottom();
+          };
+
+          const scrollToBottom = async () => {
+            await nextTick(); // Wait for the DOM to update with the new message
+            logContainer.value.scrollTop = logContainer.value.scrollHeight;
+          };
+
+          onMounted(() => {
+            addConnection(); // Add one connection on page load
+          });
+
+          return {
+            connections,
+            logs,
+            addConnection,
+            connect,
+            sendTestMessage,
+            getPiValue,
+            logContainer,
+          };
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>

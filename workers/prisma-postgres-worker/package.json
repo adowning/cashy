@@ -1,0 +1,27 @@
+{
+	"name": "prisma-postgres-worker",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"deploy": "wrangler deploy",
+		"dev": "wrangler dev",
+		"start": "wrangler dev",
+		"test": "vitest",
+		"migrate": "dotenv -e .dev.vars -- npx prisma migrate dev",
+		"generate": "dotenv -e .dev.vars -- npx prisma generate --no-engine",
+		"studio": "dotenv -e .dev.vars -- npx prisma studio",
+		"cf-typegen": "wrangler types"
+	},
+	"devDependencies": {
+		"@cloudflare/vitest-pool-workers": "^0.6.4",
+		"@cloudflare/workers-types": "^4.20250303.0",
+		"dotenv-cli": "^8.0.0",
+		"prisma": "^6.4.1",
+		"typescript": "^5.5.2",
+		"vitest": "~2.1.9",
+		"wrangler": "^3.113.0"
+	},
+	"dependencies": {
+		"@prisma/extension-accelerate": "^1.2.2"
+	}
+}

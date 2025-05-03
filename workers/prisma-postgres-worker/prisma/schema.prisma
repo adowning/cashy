@@ -1,0 +1,497 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String        @id @default(cuid())
+  username         String        @unique
+  email            String?       @unique
+  vipRank          Json
+  age              Int?
+  gender           Gender        @default(BOY)
+  location         String?
+  access_token     String?
+  password         String
+  avatar           String?
+  isAnonymous      Boolean?      @default(false)
+  dateOfBirth      DateTime?
+  phone            String?
+  status           UserStatus    @default(INACTIVE)
+  twoFactorEnabled Boolean?      @default(false)
+  emailVerified    Boolean?      @default(false)
+  lastLogin        DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  deletedAt        DateTime?
+  socketId         String?
+  isOnline         Boolean?      @default(false)
+  cashtag          String?       @unique
+  isStaff          Boolean?      @default(false)
+  currentSessionId String?
+  activeProfileId  String?       @unique
+  stats            Json?
+  lastDailySpin    DateTime?
+  profiles         Profile[]
+  activeProfile    Profile?      @relation("moved_to_profile", fields: [activeProfileId], references: [id])
+  User_A           User[]        @relation("friends")
+  User_B           User[]        @relation("friends")
+  leaderboards     Leaderboard[]
+
+  @@unique([email, username])
+}
+
+model Profile {
+  id                   String         @id @default(cuid())
+  balance              Int            @default(0)
+  vipPoints            Int            @default(0)
+  countBalance         Int            @default(0)
+  currency             String?        @default("USD")
+  isExcluded           Boolean?       @default(false)
+  isActive             Boolean        @default(true)
+  faceVerificationTime String?        @default("")
+  address              Float?         @default(0)
+  totalCashOut         Int?           @default(0)
+  totalSpins           Int            @default(0)
+  totalCashIn          Int?           @default(0)
+  totalWon             Int?           @default(0)
+  totalBet             Int?           @default(0)
+  totalBonusWon        Int?           @default(0)
+  rtp                  Float?         @default(0)
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+  profileType          ProfileType    @default(PLAYER)
+  limits               Json?
+  xp                   Int?
+  stats                Json?
+  rakeback             Json?
+  mute                 Boolean        @default(false)
+  ban                  Boolean        @default(false)
+  verifiedAt           DateTime?
+  userId               String
+  cashtag              String?
+  email                String?
+  shopId               String
+  ownerId              String
+  activeUserId         String
+  blackjackBets        BlackjackBet[]
+  shop                 Shop           @relation(fields: [shopId], references: [id])
+  user                 User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  purchases            Transaction[]
+  owner                User?          @relation("moved_to_profile")
+}
+
+model Session {
+  id            String   @id
+  sid           String   @unique
+  data          String
+  expiresAt     DateTime
+  authenticated Boolean  @default(false)
+  userId        String?
+  profileId     String?
+  shopId        String?
+}
+
+model Shop {
+  id                     String        @id @default(cuid())
+  name                   String?       @unique
+  description            String?
+  balance                Int           @default(0)
+  url                    String?       @unique
+  code                   String?       @unique
+  isActive               Boolean?      @default(true)
+  acceptedPaymentMethods String[]      @default([])
+  ownerId                String?       @unique
+  createdAt              DateTime      @default(now())
+  updatedAt              DateTime      @updatedAt
+  games                  Game[]
+  // leaderBoards           Leaderboard[]
+  products               Product[]
+  profiles               Profile[]
+  transactions           Transaction[]
+
+  @@index([name])
+}
+
+model SpinData {
+  id                      String   @id @default(uuid())
+  remainingFreeSpins      Int?
+  gameId                  String?
+  extPlayerKey            String?
+  betAmount               Int?
+  winAmount               Int?
+  // sessionId               String
+  thisSpinWinning         Int?
+  freespinsLeft           Int?
+  // gameSessionId           String
+  numberOfFreespinsPlayed Int?
+  spinNumber              Int
+  gameSessionRTP          Int?
+  playerBalanceAtStart    Int?
+  timestamp               DateTime @default(now())
+  gameBalance             Int?
+  isPreSpinData           Boolean? @default(false)
+  playerBalance           Int?
+  profileId               String?
+  playerRTPToday          String?
+  sessionTotalBetAmount   Int?
+  sessionTotalWinAmount   Int?
+  playerWinTotalToday     Int?
+  playerBetTotalToday     Int?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+}
+
+model Game {
+  id                           String        @id @default(cuid())
+  name                         String
+  title                        String
+  developer                    String?
+  vipLevel                     Int?          @default(0)
+  isActive                     Boolean?      @default(false)
+  device                       Int?          @default(0)
+  featured                     Boolean?      @default(false)
+  gamebank                     String?       @default("slots")
+  bet                          Float?        @default(0)
+  denomination                 Float?        @default(0)
+  categoryTemp                 Float?        @default(0)
+  originalId                   Int?          @default(0)
+  bids                         Int?          @default(0)
+  statIn                       Float?        @default(0)
+  statOut                      Float?        @default(0)
+  currentRtp                   Float?        @default(0)
+  rtpStatIn                    Float?        @default(0)
+  rtpStatOut                   Float?        @default(0)
+  standardRtp                  Float?        @default(0)
+  popularity                   Float?        @default(0)
+  chanceFirepot1               Float?
+  chanceFirepot2               Float?
+  chanceFirepot3               Float?
+  fireCount1                   Float?
+  fireCount2                   Float?
+  fireCount3                   Float?
+  linesPercentConfigSpin       String?
+  linesPercentConfigSpinBonus  String?
+  linesPercentConfigBonus      String?
+  linesPercentConfigBonusBonus String?
+  rezerv                       Float?        @default(0)
+  cask                         Float?        @default(0)
+  advanced                     String?       @default("")
+  scaleMode                    String        @default("")
+  slotViewState                String        @default("")
+  view                         Int?          @default(0)
+  categoryId                   String?
+  shopId                       String?
+  providerId                   String?
+  createdAt                    DateTime      @default(now())
+  updatedAt                    DateTime      @updatedAt
+  jackpotGroupId               String?
+  active                       Boolean       @default(true)
+  password                     String?
+  jackpotGroup                 JackpotGroup? @relation(fields: [jackpotGroupId], references: [id])
+  shop                         Shop?         @relation(fields: [shopId], references: [id])
+
+  leaderboards Leaderboard[]
+}
+
+model JackpotGroup {
+  id           String           @id @default(cuid())
+  createdAt    DateTime         @default(now()) @map("created_at")
+  updatedAt    DateTime?        @updatedAt @map("updated_at")
+  name         String
+  balance      Int?             @default(0)
+  type         JackpotGroupType @default(MEGA)
+  startBalance Int?             @default(0)
+  paySum       Int?
+  percent      Float?
+  Game         Game[]
+}
+
+model Product {
+  id                       String        @id @default(cuid())
+  title                    String
+  description              String
+  url                      String
+  type                     String
+  bonusCode                String?       @default("")
+  bonusTotalInCredits      Int?          @default(0)
+  priceInCents             Int           @default(0)
+  amountToReceiveInCredits Int           @default(0)
+  discountInCents          Int           @default(0)
+  bonusSpins               Int?
+  isPromo                  Boolean?      @default(false)
+  totalDiscountInCents     Int
+  shopId                   String?
+  createdAt                DateTime      @default(now())
+  updatedAt                DateTime      @updatedAt
+  Shop                     Shop?         @relation(fields: [shopId], references: [id])
+  Transaction              Transaction[]
+}
+
+model Transaction {
+  id                             String                @id @default(cuid())
+  direction                      TransactionDirection
+  channel                        TransactionChannel
+  bonusType                      TransactionBonusType?
+  status                         TransactionStatus     @default(PENDING_PAYMENT)
+  totalSpentInCents              Int
+  amountCredits                  Int
+  currency                       String                @default("USD")
+  bonusIdUsed                    String                @default("none")
+  updateLevel                    Boolean               @default(false)
+  userAvatar                     String
+  username                       String?
+  buyerUserId                    String?
+  buyerCashtag                   String?
+  cashierAvatar                  String?
+  cashiername                    String?
+  cashierId                      String?
+  shopId                         String
+  cashierprofileId               String?
+  productId                      String?
+  buyerBalanceAfterTransaction   Int?
+  sellerBalanceAfterTransaction  Int?
+  buyerBalanceBeforeTransaction  Int?
+  sellerBalanceBeforeTransaction Int?
+  salesCommission                Int?                  @default(0)
+  purchaserId                    String
+  createdAt                      DateTime              @default(now())
+  updatedAt                      DateTime              @updatedAt
+  product                        Product?              @relation(fields: [productId], references: [id])
+  purchaser                      Profile               @relation(fields: [purchaserId], references: [id])
+  shop                           Shop                  @relation(fields: [shopId], references: [id])
+}
+
+model Leaderboard {
+  id                String   @id @default(cuid())
+  rankings          Json
+  durationInSeconds Int      @default(-1)
+  // isSystem          Boolean  @default(true)
+  lowestVipLevel    Int      @default(0)
+  highestVipLevel   Int      @default(100)
+  currentPrize      Int      @default(0)
+  maxPrize          Int      @default(0)
+  prizeDistribution Int[]    @default([])
+  allUsers          Boolean  @default(false)
+  title             String
+  shopId            String?
+  isRunning         Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  users             User[]
+  games             Game[]
+  // shop              Shop?    @relation(fields: [shopId], references: [id])
+}
+
+model RTGSpinResult {
+  id      String  @id @default(cuid())
+  success Boolean
+  result  Json
+  user    Json
+  game    Json
+}
+
+model BlackjackGame {
+  id          String         @id @default(cuid())
+  deck        Json[]
+  dealerCards Json[]
+  fair        Json
+  table       Int?
+  type        String?
+  state       String?
+  isRunning   Boolean        @default(false)
+  updatedAt   DateTime       @default(now())
+  createdAt   DateTime       @default(now())
+  bets        BlackjackBet[]
+}
+
+model BlackjackBet {
+  id              String         @id @default(cuid())
+  amountMain      Float?
+  amountSideLeft  Float?
+  amountSideRight Float?
+  method          String?
+  payout          Float?
+  multiplier      Float?
+  cards           Json[]
+  cardsLeft       Json[]
+  cardsRight      Json[]
+  actions         String[]
+  seat            Int?
+  gameId          String?
+  profileId       String?
+  updatedAt       DateTime?      @default(now())
+  createdAt       DateTime       @default(now())
+  game            BlackjackGame? @relation(fields: [gameId], references: [id])
+  profile         Profile?       @relation(fields: [profileId], references: [id])
+}
+
+model Setting {
+  id                     Int      @id @default(autoincrement())
+  maintenanceEnabled     Boolean  @default(false)
+  rainEnabled            Boolean  @default(false)
+  leaderboardEnabled     Boolean  @default(false)
+  tipEnabled             Boolean  @default(false)
+  affiliateEnabled       Boolean  @default(false)
+  rewardMultiplier       Float    @default(1.00)
+  mode                   String   @default("normal")
+  enabled                Boolean  @default(false)
+  enEnabled              Boolean  @default(true)
+  trEnabled              Boolean  @default(true)
+  deEnabled              Boolean  @default(true)
+  esEnabled              Boolean  @default(true)
+  begEnabled             Boolean  @default(true)
+  whaleEnabled           Boolean  @default(true)
+  crashEnabled           Boolean  @default(true)
+  rollEnabled            Boolean  @default(true)
+  blackjackEnabled       Boolean  @default(true)
+  duelsEnabled           Boolean  @default(true)
+  minesEnabled           Boolean  @default(true)
+  towersEnabled          Boolean  @default(true)
+  unboxEnabled           Boolean  @default(true)
+  battlesEnabled         Boolean  @default(true)
+  upgraderEnabled        Boolean  @default(true)
+  inStoreDepositEnabled  Boolean  @default(false)
+  inStoreWithdrawEnabled Boolean  @default(false)
+  giftDepositEnabled     Boolean  @default(false)
+  giftWithdrawEnabled    Boolean  @default(false)
+  cashappDepositEnabled  Boolean  @default(false)
+  cashappWithdrawEnabled Boolean  @default(false)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
+
+model PragmaticPlayer {
+  id                  Int     @id @default(autoincrement())
+  token               String?
+  agentCode           String  @default("")
+  userCode            String?
+  gameCode            String  @default("")
+  txnID               String  @default("")
+  connected           Int     @default(0)
+  gameMode            Int     @default(0)
+  patRequested        Int     @default(0)
+  curIndex            Int     @default(1)
+  lastJackpotIndex    Int     @default(0)
+  nextJackpot         Int     @default(100)
+  totalDebit          Float   @default(0)
+  totalCredit         Float   @default(0)
+  realRtp             Float   @default(0)
+  callHistId          Int     @default(-1)
+  settings            String?
+  totalBet            Float   @default(0)
+  virtualBet          Float   @default(0)
+  callStatus          String?
+  jackpotCome         Int     @default(90)
+  baseWinCome         Int     @default(5)
+  highBaseCome        Int     @default(5)
+  jackpotLimit        Int     @default(90)
+  highBaseLimit       Int     @default(50)
+  machine             String?
+  lastPattern         String?
+  betPerLine          Float   @default(0)
+  viewStack           String?
+  fsStack             String?
+  viewHistory         String?
+  replayLogList       String?
+  callPattern         String?
+  purchaseCallPattern String?
+}
+
+enum Color {
+  RED
+  BLACK
+  GREEN
+}
+
+enum ProfileType {
+  ADMIN
+  TMGR
+  OPERATOR
+  AFFILIATE
+  CASHIER
+  PLAYER
+  GUEST
+  SHOP
+  BANNED
+}
+
+enum Gender {
+  BOY
+  GIRL
+  ALIEN
+  UNSURE
+  ROBOT
+  COMPLICATED
+}
+
+enum JackpotGroupType {
+  MEGA
+  MINOR
+  MAJOR
+  FRIENDS
+  CLUB
+}
+
+enum TransactionBonusType {
+  WELCOME
+  SMS
+  INVITE
+  WHEEL
+  DAILY
+  TOURNAMENT
+  PROGRESS
+}
+
+enum TransactionDirection {
+  ADD
+  OUT
+}
+
+enum TransactionStatus {
+  PENDING_PAYMENT
+  PAYMENT_FAILED
+  EXPIRED
+  CANCELLED_BY_PLAYER
+  CANCELLED_BY_SHOP
+  CANCELLED_BY_SYSTEM
+  SUCCEEDED
+  FAKE_EMAIL_SENT
+}
+
+enum TransactionType {
+  RETAIL
+  DEPOSIT
+  REDEEM
+}
+
+enum UpdateStatus {
+  success
+  failure
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  ONLINE
+  OFFLINE
+}
+
+enum TransactionChannel {
+  WALLET
+  COINBASE
+  BTCPAYSERVER
+  CASHAPP
+  INSTORE
+  PINCODE
+}

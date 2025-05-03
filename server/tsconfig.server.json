@@ -1,0 +1,19 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "module": "ESNext",
+    "target": "ESNext"
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "paths": {
+    "@/*": [
+      "src/*"
+    ],
+    "@shared/*": [
+      "shared/*"
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json.schemastore.org/package",
+  "name": "cashflow",
+  "version": "0.2.1",
+  "engines": {
+    "bun": ">1.1.1"
+  },
+  "scripts": {
+    "build": "npm run test:cov-build && npm run format:fix && npm run build:cjs && npm run build:esm && npm run build:types",
+    "forcebuild": "npm run build:cjs && npm run build:esm && npm run build:types",
+    "build:cjs": "rimraf ./dist/cjs && tsc -p config/tsconfig.cjs.json",
+    "build:esm": "rimraf ./dist/esm && tsc -p config/tsconfig.esm.json",
+    "build:types": "rimraf ./dist/types && tsc -p config/tsconfig.types.json",
+    "clean": "rimraf ./dist/cjs ./dist/esm ./dist/umd ./dist/types",
+    "test": "jest --no-cache --runInBand",
+    "test:cov": "jest --coverage --no-cache --runInBand",
+    "test:cov-browser": "jest --coverage --no-cache --runInBand && start ./coverage/lcov-report/index.html",
+    "test:cov-build": "jest --coverage --no-cache --runInBand && jest-coverage-badges-ts --output \"./.coverage-badges\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format:fix": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "release": "rimraf ./*.tgz -g && npm run build && node tools/versionManager.js",
+    "dev": "concurrently --color -n \"SERVER,CLIENT\" -c \"green,magenta\" \"bun run --watch --filter server --elide-lines=1000 dev \" \"bun run --watch --filter client --elide-lines=1000  dev \""
+  },
+  "keywords": [
+    "websocket",
+    "server",
+    "connection",
+    "library",
+    "eventhandler",
+    "waiter",
+    "async",
+    "tcp",
+    "realtime",
+    "node",
+    "typescript",
+    "events"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bun": "^1.2.11",
+    "@types/cookie": "^0.6.0",
+    "@types/jest": "^29.5.12",
+    "@types/jsonwebtoken": "^9.0.9",
+    "prisma": "^6.7.0",
+    "prisma-class-generator": "^0.2.11",
+    "prisma-generator-typescript-interfaces": "^2.1.0"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^9.7.0",
+    "@prisma/client": "^6.7.0",
+    "bcryptjs": "^3.0.2",
+    "cookie": "^1.0.2"
+  },
+  "workspaces": [
+    "client",
+    "server",
+    "shared"
+  ]
+}
