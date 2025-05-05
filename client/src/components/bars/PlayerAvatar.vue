@@ -4,6 +4,7 @@ import { eventBus } from '@/composables/eventBus'
 import { useUserStore } from '@/stores/user'
 import { useAuthStore } from '@/stores/auth'
 import { useVipStore } from '@/stores/vip'
+import AvatarXPJson from '@/assets/anim/avatar_xp.json'
 // import { CircleProgressBar } from 'circle-progress.vue'
 const expScale = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000]
 
@@ -40,8 +41,8 @@ const vipInfo = computed(() => {
   const { getVipInfo } = storeToRefs(vipStore)
   return getVipInfo.value
 })
-console.log(vipInfo.value.deposit_exp)
-console.log(vipInfo.value.rank_deposit_exp)
+// console.log(vipInfo.value.deposit_exp)
+// console.log(vipInfo.value.rank_deposit_exp)
 // const depositRate = computed(() => {
 //   if ((vipInfo.value.deposit_exp / vipInfo.value.rank_deposit_exp) * 100 >= 100) {
 //     return 100
@@ -49,7 +50,7 @@ console.log(vipInfo.value.rank_deposit_exp)
 //     return (vipInfo.value.deposit_exp / vipInfo.value.rank_deposit_exp) * 100
 //   }
 // })
-console.log((2 / 100) * 100)
+// console.log((2 / 100) * 100)
 const betRate = computed(() => {
   if ((vipInfo.value.bet_exp / vipInfo.value.rank_bet_exp) * 100 >= 100) {
     return 100
@@ -168,7 +169,7 @@ watch(props, (newValue) => {
             :style="` background-image: url('/images/avatars/${currentUser.avatar}');`"
           >  <CircleProgressBar
           strokeWidth="10"
-          :value="50"
+          :value="currentUser.totalXp"
           colorUnfilled="yellow"
           animationDuration="1s"
           colorFilled="green"
@@ -177,6 +178,17 @@ watch(props, (newValue) => {
           :max="185"
           style="z-index: 999; padding: 0; margin-top: -2px; margin-right: 0px; margin-left: -2px; width: 110%; height: 100%"
         </CircleProgressBar>
+         <!-- <VGSprite
+            id="coinFrames"
+            class="flex"
+            image-src="/images/avatar_xp.png"
+            :sprite-sheet-data="AvatarXPJson"
+            style="background-repeat: no-repeat; z-index: 10; margin-top: -70px; margin-right: 20px; transform: scale(.7)"
+            :speed="60"
+            :delay="0"
+            :offset="0"
+            :autoplay="true"
+          /> -->
         </div>
         <!-- <svg
           ref="circle"

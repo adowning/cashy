@@ -167,21 +167,6 @@ body {
     0 0 3px #c74dff,
     0 0 5px #720fc4; */
 }
-.glow-light {
-  font-size: 16px;
-  color: #fff;
-  line-height: 1;
-  text-align: center;
-  font-family: 'Hind Guntur', sans-serif;
-  font-weight: 600;
-  font-style: normal;
-  animation: 'glow';
-  /* text-shadow:  #FC0 1px 0 10px; */
-  text-shadow:
-    1px 1px 2px #de9ffc,
-    0 0 1px #d382f8,
-    0 0 2px #853cc0;
-}
 
 .hind-guntur-light {
   font-family: 'Hind Guntur', sans-serif;
@@ -225,17 +210,31 @@ body {
   font-size: 22px;
   color: #fff;
   text-align: center;
+  letter-spacing: 1.5px;
   /* font-family: 'Hind Guntur', sans-serif; */
-  font-weight: 800;
+  /* font-weight: 800;
+  font-style: normal; */
+  /* animation: 'glow'; */
+  text-shadow:
+    1px 1px 3px #c74dff,
+    0 0 2px #c74dff,
+    0 0 4px #720fc4;
+}
+.glow-light {
+  font-size: 16px;
+  color: #fff;
+  line-height: 1;
+  text-align: center;
+  font-family: 'Hind Guntur', sans-serif;
+  font-weight: 600;
   font-style: normal;
   animation: 'glow';
   /* text-shadow:  #FC0 1px 0 10px; */
   text-shadow:
-    1px 1px 3px #c74dff,
-    0 0 3px #c74dff,
-    0 0 5px #720fc4;
+    1px 1px 2px #de9ffc,
+    0 0 1px #d382f8,
+    0 0 2px #853cc0;
 }
-
 .futex-cell {
   background: rgb(105, 33, 146);
   background: radial-gradient(circle, rgba(105, 33, 146, 1) 24%, rgba(28, 0, 46, 1) 100%);

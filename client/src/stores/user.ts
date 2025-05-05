@@ -19,8 +19,13 @@ import { handleException } from './exception'
 // import { SENDTYPE } from '@/libs/cashflowClient/NetCfg'
 import { NETWORK_CONFIG } from 'shared/types/NetworkCfg'
 import { Network } from '@/net/Network'
-import { User } from 'shared/'
-import { GetUserBalance, GetUserBalanceResponseData } from 'shared/interface/user'
+import type { User } from 'shared/'
+import type {
+  GetUserBalance,
+  GetUserBalanceResponseData,
+  ProfileStatsUpdateData,
+  UserStatsUpdateData,
+} from 'shared/interface/user'
 const expScale = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000]
 export const useUserStore = defineStore(
   'user',
@@ -41,9 +46,22 @@ export const useUserStore = defineStore(
       return (15 / nextXpLevel) * 100
     })
     const setUserBalance = (_userBalance: GetUserBalance) => {
-      console.log('金额', userBalance)
+      console.log('setUserBalance', _userBalance)
       userBalance.value = _userBalance
     }
+    const updateCurrentUserProfile = (_profileUpdate: ProfileStatsUpdateData) => {
+      console.log('updateCurrentUserProfile', _profileUpdate)
+      currentUser.value.activeProfile.balance = _profileUpdate.balance
+      currentUser.value.activeProfile.xpEarned = _profileUpdate.xpEarned
+    }
+    const updateCurrentUser = (_userUpdate: UserStatsUpdateData) => {
+      console.log('updateCurrentUser', _userUpdate)
+      currentUser.value.balance = _userUpdate.balance
+      currentUser.value.totalXp = _userUpdate.totalXp
+    }
+    const getCurrentUser = computed(() => {
+      return currentUser.value
+    })
     const getUserBalance = () => {
       return userBalance
     }
@@ -191,6 +209,21 @@ export const useUserStore = defineStore(
       }
       await network.sendMsg(route, {}, next, 1, 4)
     }
+    const dispatchUserCashtag = async (cashtag: string) => {
+      setSuccess(false)
+      const route: string = NETWORK_CONFIG.PERSONAL_INFO_PAGE.USER_CASHTAG
+      const network: Network = Network.getInstance()
+      // response call back function
+      const next = (response: GetUserBalanceResponseData) => {
+        if (response.code == 200) {
+          setSuccess(true)
+          setUserBalance(response.data)
+        } else {
+          setErrorMessage(handleException(response.code))
+        }
+      }
+      await network.sendMsg(route, cashtag, next, 1, 4)
+    }
     // const login2 = async (msg: SignIn.SigninRequestData) => {
     //   const notificationStore = useNotificationStore()
     //   setSuccess(false)
@@ -222,6 +255,7 @@ export const useUserStore = defineStore(
 
     return {
       dispatchSignout,
+      getCurrentUser,
       currentUser,
       setUserGameStat,
       dispatchUserBalance,
@@ -231,9 +265,11 @@ export const useUserStore = defineStore(
       setUserInfo,
       register,
       getUserBalance,
+      updateCurrentUserProfile,
       dispatchSetUserCurrency,
+      updateCurrentUser,
       setCurrentUser,
-      // login,
+      dispatchUserCashtag,
       // username,
       // login2,
       setToken,

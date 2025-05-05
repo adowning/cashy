@@ -35,7 +35,9 @@ eventBus.on('shopOpen', (val) => {
 //   },
 //   { deep: true }
 // )
-onMounted(() => {})
+onMounted(() => {
+  // console.log(orientation.value)
+})
 </script>
 
 <template>
@@ -47,9 +49,10 @@ onMounted(() => {})
     style="max-height: 100vh; pointer-events: none"
   >
     <LobbyBackground />
-    <div style="position: fixed" v-if="orientation === 'portrait-primary'">
+    <!-- <div style="position: fixed" v-if="orientation === 'portrait-primary'">
       <TopBar class="animate__animated animate__slideInDown animate__delay-1s" />
-    </div>
+    </div> -->
+    <!-- {{ orientation }} -->
     <div
       :class="[
         layoutAsidePadding,

@@ -28,7 +28,7 @@ const proxy: Record<string, string | any> = {
   //   // rewrite: (path) => path.replace(/^\/auth/, 'auth'),
   //   headers: { Connection: 'keep-alive' },
   // },
-  '/user/connect/ws': { target: 'http://localhost:3001/user/connect/ws', ws: true },
+  // '/user/connect/ws': { target: 'http://localhost:3001/user/connect/ws', ws: true },
 }
 export default defineConfig({
   plugins: [

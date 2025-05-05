@@ -151,16 +151,16 @@ exports.Prisma.UserScalarFieldEnum = {
   isVerified: 'isVerified',
   active: 'active',
   lastLogin: 'lastLogin',
-  lastDailySpin: 'lastDailySpin',
   verificationToken: 'verificationToken',
   avatar: 'avatar',
   activeProfileId: 'activeProfileId',
-  vipInfoId: 'vipInfoId',
   gender: 'gender',
   status: 'status',
   cashtag: 'cashtag',
   phpId: 'phpId',
-  accessToken: 'accessToken'
+  accessToken: 'accessToken',
+  vipInfoId: 'vipInfoId',
+  lastDailySpin: 'lastDailySpin'
 };
 
 exports.Prisma.SessionScalarFieldEnum = {
@@ -186,6 +186,7 @@ exports.Prisma.OperatorScalarFieldEnum = {
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  acceptedPayments: 'acceptedPayments',
   ownerId: 'ownerId',
   balance: 'balance'
 };
@@ -256,10 +257,10 @@ exports.Prisma.GameScalarFieldEnum = {
   providerId: 'providerId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  category: 'category',
   jackpotGroupId: 'jackpotGroupId',
   active: 'active',
-  password: 'password'
+  password: 'password',
+  category: 'category'
 };
 
 exports.Prisma.AccountScalarFieldEnum = {
@@ -447,6 +448,13 @@ exports.Prisma.TransactionScalarFieldEnum = {
   id: 'id',
   type: 'type',
   amount: 'amount',
+  amountCredits: 'amountCredits',
+  buyerCashtag: 'buyerCashtag',
+  buyerUserId: 'buyerUserId',
+  username: 'username',
+  cashiername: 'cashiername',
+  cashierAvatar: 'cashierAvatar',
+  cashierId: 'cashierId',
   reference: 'reference',
   status: 'status',
   metadata: 'metadata',
@@ -456,7 +464,9 @@ exports.Prisma.TransactionScalarFieldEnum = {
   createdAt: 'createdAt',
   processedAt: 'processedAt',
   gameSessionId: 'gameSessionId',
-  profileId: 'profileId'
+  profileId: 'profileId',
+  cashtag: 'cashtag',
+  productid: 'productid'
 };
 
 exports.Prisma.UserachievementScalarFieldEnum = {
@@ -549,6 +559,15 @@ exports.Prisma.VipInfoScalarFieldEnum = {
   userid: 'userid'
 };
 
+exports.Prisma.Event_logScalarFieldEnum = {
+  id: 'id',
+  table_name: 'table_name',
+  row_id: 'row_id',
+  operation: 'operation',
+  payload: 'payload',
+  created_at: 'created_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -637,7 +656,9 @@ exports.TransactionStatus = exports.$Enums.TransactionStatus = {
   COMPLETED: 'COMPLETED',
   FAILED: 'FAILED',
   CANCELLED: 'CANCELLED',
-  REFUNDED: 'REFUNDED'
+  REFUNDED: 'REFUNDED',
+  EXPIRED: 'EXPIRED',
+  REJECTED: 'REJECTED'
 };
 
 exports.Prisma.ModelName = {
@@ -670,7 +691,8 @@ exports.Prisma.ModelName = {
   RainHistory: 'RainHistory',
   RainTip: 'RainTip',
   RainWinner: 'RainWinner',
-  VipInfo: 'VipInfo'
+  VipInfo: 'VipInfo',
+  event_log: 'event_log'
 };
 
 /**

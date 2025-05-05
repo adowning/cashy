@@ -1,10 +1,12 @@
 import { BunRequest } from "bun";
 import { TransactionStatus, TransactionType } from "../../prisma/client";
 import db from "../../db/prisma";
+import { calculateXpBonus, updateUserXp } from "./deposit-xp";
+import { User, VipInfo } from "shared";
 // Instantiate PrismaClient
 
 // Configure the same shared secret used in the Cloudflare Worker
-const WEBHOOK_SECRET = "YOUR_SECURE_SHARED_SECRET"; // Use the exact same secret as in the Worker
+const WEBHOOK_SECRET = "asdfasdfasdfasdf1234xxx"; // Use the exact same secret as in the Worker
 
 // Interface for the expected payload from the Cloudflare Worker
 interface CashAppWebhookPayload {
@@ -13,6 +15,7 @@ interface CashAppWebhookPayload {
   senderName: string; // The sender's name
   timestamp: string; // ISO string timestamp from the email date
   rawEmailSubject: string; // Original email subject for logging
+  cashtag: string;
 }
 
 /**
@@ -27,7 +30,10 @@ export async function handleCashAppWebhook(req: BunRequest) {
   }
 
   // 2. Validate the shared secret for basic security
-  const sharedSecret = req.headers.get("X-Webhook-Secret");
+  console.log(req.headers);
+  const sharedSecret = req.headers.get("x-webhook-secret");
+  console.log(WEBHOOK_SECRET);
+  console.log(sharedSecret);
   if (!sharedSecret || sharedSecret !== WEBHOOK_SECRET) {
     console.warn("Webhook received with invalid or missing secret.");
     return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
@@ -68,7 +74,7 @@ export async function handleCashAppWebhook(req: BunRequest) {
     const pendingTransaction = await db.transaction.findFirst({
       where: {
         // Match by transaction ID from the webhook
-        reference: payload.transactionId,
+        cashtag: payload.cashtag,
         type: TransactionType.DEPOSIT,
         status: TransactionStatus.PENDING,
       },
@@ -107,13 +113,82 @@ export async function handleCashAppWebhook(req: BunRequest) {
         },
       });
 
-      // Credit the user's balance
-      // Find the user associated with the profile
-      const user = await db.user.findUnique({
+      // Credit the user's balance and calculate XP bonus
+      // Find the user and their VIP info
+      const user = (await db.user.findUnique({
         where: { id: pendingTransaction.profile.userId },
-      });
+        include: {
+          vipInfo: true,
+          // vipInfo: {
+          //   select: {
+          //     id: true,
+          //     level: true,
+          //     deposit_exp: true,
+          //     bet_exp: true,
+          //     rank_bet_exp: true,
+          //     rank_deposit_exp: true,
+          //     rank_name: true,
+          //     icon: true,
+          //     exp_switch_type: true,
+          //     now_deposit_exp: true,
+          //     level_deposit_exp: true,
+          //     now_bet_exp: true,
+          //     level_bet_exp: true,
+          //     telegram: true,
+          //     is_protection: true,
+          //     protection_deposit_exp: true,
+          //     protection_deposit_amount: true,
+          //     protection_bet_exp: true,
+          //     protection_bet_amount: true,
+          //     protection_days: true,
+          //     protection_switch: true,
+          //     cycle_award_switch: true,
+          //     level_award_switch: true,
+          //     signin_award_switch: true,
+          //     bet_award_switch: true,
+          //     withdrawal_award_switch: true,
+          //     unprotection_deposit_exp: true,
+          //     unprotection_deposit_amount: true,
+          //     unprotection_bet_exp: true,
+          //     unprotection_bet_amount: true,
+          //     unprotection_days: true,
+          //     unprotection_switch: true,
+          //     main_currency: true,
+          //     can_receive_level_award: true,
+          //     can_receive_rank_award: true,
+          //     can_receive_day_award: true,
+          //     can_receive_week_award: true,
+          //     can_receive_month_award: true,
+          //     can_receive_signin_award: true,
+          //     can_receive_bet_award: true,
+          //     can_receive_withdrawal_award: true,
+          //     userid: true,
+          //   },
+          // },
+          activeProfile: {
+            select: {
+              id: true,
+              balance: true,
+              xpEarned: true,
+              isActive: true,
+              lastPlayed: true,
+              createdAt: true,
+              updatedAt: true,
+              phpId: true,
+              userId: true,
+              currency: true,
+              shopId: true,
+              gamesession: true,
+              operator: true,
+              tournamententry: true,
+              transactions: true,
+            },
+          },
+        },
+      })) as unknown as User;
 
       if (user) {
+        // Update balance
         await db.user.update({
           where: { id: user.id },
           data: {
@@ -122,6 +197,27 @@ export async function handleCashAppWebhook(req: BunRequest) {
             },
           },
         });
+
+        // Calculate and update XP if user has VIP info
+        if (user.vipInfo) {
+          const vipInfo = user.vipInfo as VipInfo;
+          const xpBonus = calculateXpBonus(payload.amount, vipInfo);
+          await updateUserXp(user, vipInfo, xpBonus);
+
+          // Save updated XP values
+          await db.user.update({
+            where: { id: user.id },
+            data: {
+              totalXp: user.totalXp,
+            },
+          });
+          await db.vipInfo.update({
+            where: { id: vipInfo.id },
+            data: {
+              deposit_exp: vipInfo.deposit_exp,
+            },
+          });
+        }
         console.log(
           `Successfully credited user ${user.id} with amount ${payload.amount} for transaction ${pendingTransaction.id}`
         );

@@ -41,6 +41,10 @@ export interface UpdateEmail {
   email: string;
   password: string;
 }
+export interface UpdateCashtag {
+  cashtag: string;
+  password: string;
+}
 export interface UpdatePassword {
   now_password: string;
   new_password: string;
@@ -74,4 +78,32 @@ export type GetUserAmountResponseData = {
   code: number;
   data: GetUserAmount;
   message: string;
+};
+
+export type ProfileStatsUpdateData = {
+  balance: number;
+  createdAt: string;
+  currency: "USD";
+  id: string;
+  isActive: boolean;
+  lastPlayed: string;
+  phpId: number;
+  shopId: number;
+  updatedAt: string | null;
+  userId: string;
+  xpEarned: number;
+};
+
+export type UserStatsUpdateData = {
+  balance: number;
+  totalXp: number;
+};
+
+export type StatsUpdate = {
+  table: string;
+  table_name: string;
+  row_id: string;
+  operation: "UPDATE" | "INSERT" | "DELETE";
+  data: UserStatsUpdateData | ProfileStatsUpdateData;
+  event_id: number;
 };

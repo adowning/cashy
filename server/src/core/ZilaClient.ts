@@ -1,20 +1,14 @@
-/**
- * @file ZilaWS
- * @module ZilaWS
- * @license
- * MIT License
- * Copyright (c) 2023 ZilaWS
- */
-
 // Using Bun's built-in WebSocket type
 // import { WebSocket as WebSocketClient } from "ws"; // Removed Node.js ws import
 import { randomInt, randomUUID } from "crypto"; // crypto is available in Bun
-import { WSStatus, ZilaWSCallback } from "."; // Assuming . refers to index.ts
+// import { WSStatus, ZilaWSCallback } from "."; // Assuming . refers to index.ts
 import Cookie from "cookie"; // Using the cookie library for parsing/serializing
 // import { IncomingHttpHeaders } from "http"; // Removed Node.js http import
 import { ICookie } from "./ICookie";
 import type { ServerWebSocket } from "bun"; // Import Bun's WebSocket type
 import { User } from "shared";
+import { ZilaWSCallback } from "./ZilaWSCallback";
+import { WSStatus } from "./enums";
 
 // Forward declaration for ZilaServer to avoid circular dependency issues
 // This allows ZilaClient to reference ZilaServer without ZilaServer needing to be defined first

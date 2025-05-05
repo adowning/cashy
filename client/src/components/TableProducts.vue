@@ -1,13 +1,13 @@
 <script setup>
 import { eventBus } from '@/composables/eventBus'
-import { useShopStore } from '@/stores/shop'
+import { useOperatorStore } from '@/stores/operator'
 import { computed, ref } from 'vue'
 
 defineProps({
-  checkable: Boolean
+  checkable: Boolean,
 })
 
-const shop = useShopStore()
+const shop = useOperatorStore()
 
 const items = computed(() => shop.products)
 
@@ -20,7 +20,7 @@ const perPage = ref(5)
 const currentPage = ref(0)
 
 const itemsPaginated = computed(() =>
-  items.value.slice(perPage.value * currentPage.value, perPage.value * (currentPage.value + 1))
+  items.value.slice(perPage.value * currentPage.value, perPage.value * (currentPage.value + 1)),
 )
 
 function purchase(product) {
@@ -82,10 +82,16 @@ function checked(isChecked, product) {
   <!-- </thead> -->
   <!-- <tbody> -->
   <div class="flex flex-col relative h-[50vh] overflow-y-auto overflow-x-hidden">
-    <div class="knight relative grid grid-cols-5 px-1 pl-2 my-1 pb-2 pt-1 items-center color-white"
-      style="color: white; width: 98%; background-repeat: no-repeat; background-size: 100%" :style="{
+    <div
+      class="knight relative grid grid-cols-5 px-1 pl-2 my-1 pb-2 pt-1 items-center color-white"
+      style="color: white; width: 98%; background-repeat: no-repeat; background-size: 100%"
+      :style="{
         backgroundImage: `url(${product.bestValue === true ? '/images/shop/shopbar-selected.avif' : '/images/shop/shopbar.avif'})`,
-      }" v-for="product in itemsPaginated" :key="product.id" @click="checked(true, product)">
+      }"
+      v-for="product in itemsPaginated"
+      :key="product.id"
+      @click="checked(true, product)"
+    >
       <!-- <td class="border-b-0 lg:w-6 before:hidden"> -->
       <!-- <UserAvatar :username="product.name" class="w-24 h-24 mx-auto lg:w-6 lg:h-6" /> -->
       <!-- </td> -->
@@ -93,7 +99,7 @@ function checked(isChecked, product) {
       <div data-label="amountToReceiveInCredits" class="flex flex-row text-lg gap-2">
         <!-- <span> -->
         <!-- <div> -->
-        <img src="/images/shop/shopcoin.avif" height="30" width="30">
+        <img src="/images/shop/shopcoin.avif" height="30" width="30" />
         <!-- </div> -->
         <!-- <div style="font-size: 30px; font-weight: 700; color: white"> -->
         {{ product.amountToReceiveInCredits }}
@@ -101,7 +107,8 @@ function checked(isChecked, product) {
         <!-- </span> -->
       </div>
       <div />
-      <div style="
+      <div
+        style="
           background-image: url('/images/freespins.png');
           background-size: contain;
           background-repeat: no-repeat;
@@ -110,8 +117,12 @@ function checked(isChecked, product) {
           height: 90%;
           /* margin-left: 14px;
                   margin-right: 14px; */
-        " :style="`filter: ${product.bonusSpins === 0 ? 'grayscale(100%)' : 'grayscale(0%)'}`">
-        <div class="bungee flex flex-grow" style="
+        "
+        :style="`filter: ${product.bonusSpins === 0 ? 'grayscale(100%)' : 'grayscale(0%)'}`"
+      >
+        <div
+          class="bungee flex flex-grow"
+          style="
             -webkit-text-stroke: 0.5px black;
             /* position: absolute; */
             color: white;
@@ -122,7 +133,8 @@ function checked(isChecked, product) {
             left: 20px;
             font-weight: 900;
             font-size: 17px;
-          ">
+          "
+        >
           {{ product.bonusSpins }}
         </div>
       </div>
@@ -142,9 +154,7 @@ function checked(isChecked, product) {
       <div class="">
         <!-- <BaseButtons type="justify-start justify-end" no-wrap> -->
         <!-- <BaseButton color="info" :icon="mdiEye" small @click="isModalActive = true" /> -->
-        <GlassButton @click="purchase(product)">
-          BUY
-        </GlassButton>
+        <GlassButton @click="purchase(product)"> BUY </GlassButton>
 
         <!-- <BaseButton
               color="danger"

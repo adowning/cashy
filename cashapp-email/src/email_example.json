@@ -1,0 +1,106 @@
+{
+    "headers": [
+        {
+            "key": "received",
+            "value": "from mail-io1-xd35.google.com (2607:f8b0:4864:20::d35) by cloudflare-email.net (unknown) id BtcSUy1gAa7Q for <payments@andrewscarpetcleaning.com>; Tue, 03 Sep 2024 13:07:35 +0000"
+        },
+        {
+            "key": "arc-seal",
+            "value": "i=1; a=rsa-sha256; s=2023; d=cloudflare-email.net; cv=none; b=my0GP6zFnEv+oIeMuwILRdRMxv5exwfyO5XoY8xRBj3366vAdv+zMwcy7QfklMsNkPC1ff/nC 4TLdULxN1f6n7PMTJ45Yfh8r4WkUEMQrnNotyT0mMU5wope9OWgzmU6lnnzRnHWlUwwwOG0bjdo 83/fkBCbHCFOTgqfDnqDDfFbk4EXB+Pv9bnaELAEg2hEUn29wIIup33nLhyavSbPTi943Sxnvux IU6t9uYTfEY1KLc3D/0EsFnkyhAc6drbdhGNIuCLkRmqW3cqHyjKsQenkuolzNSF2u1bnsN9E1/ OcJqrAkChKV6kT9HMPtaPNVJOM/HrSQEyR8iBF3TK1sg==;"
+        },
+        {
+            "key": "arc-message-signature",
+            "value": "i=1; a=rsa-sha256; s=2023; d=cloudflare-email.net; c=relaxed/relaxed; h=To:Subject:Date:From:In-Reply-To:References:reply-to:cc:resent-date :resent-from:resent-to:resent-cc:list-id:list-help:list-unsubscribe :list-subscribe:list-post:list-owner:list-archive; t=1725368856; x=1725973656; bh=9X7A54uZJTh+WS9lG58UUklpjZgoxUAD3C2lFmej9T4=; b=P6RciWAvDr u0D3NVouIP4NQKfmw/8KUTKSHYRr6H7bZJe2dhEiHHrvvgVzQGWT6byw+JCTd80nxr55jTcwZLm 9b71lmV/3LX4tMj9Rw1zDws2zjny3yJ+thW/6/aiahk47Ea2vGFRAtOI21HmP6t1rpGPM0Ts5yh 3odw8clyHxu1A7Q0QhG8zXkes6jYmLbLlplB2HoGgTuOtM7JkcxFSwHxOf5SIQ0nDhS4TqYwITK Ngs7o3GV1B6BOQ9kThH3TCzYle9FXFhPBTpbhU/AY9bIFt/GKunL+lgJdoLSrlMjaiu3/qZQwSO bjFZ/4oZbJfdT5OQa6ZnHKTrzi9lpQuw==;"
+        },
+        {
+            "key": "arc-authentication-results",
+            "value": "i=1; mx.cloudflare.net; dkim=pass header.d=gmail.com header.s=20230601 header.b=AZFzekHS; dmarc=pass header.from=gmail.com policy.dmarc=none; spf=none (mx.cloudflare.net: no SPF records found for postmaster@mail-io1-xd35.google.com) smtp.helo=mail-io1-xd35.google.com; spf=pass (mx.cloudflare.net: domain of ashdowning@gmail.com designates 2607:f8b0:4864:20::d35 as permitted sender) smtp.mailfrom=ashdowning@gmail.com; arc=none smtp.remote-ip=2607:f8b0:4864:20::d35"
+        },
+        {
+            "key": "received-spf",
+            "value": "pass (mx.cloudflare.net: domain of ashdowning@gmail.com designates 2607:f8b0:4864:20::d35 as permitted sender) receiver=mx.cloudflare.net; client-ip=2607:f8b0:4864:20::d35; envelope-from=\"ashdowning@gmail.com\"; helo=mail-io1-xd35.google.com;"
+        },
+        {
+            "key": "authentication-results",
+            "value": "mx.cloudflare.net; dkim=pass header.d=gmail.com header.s=20230601 header.b=AZFzekHS; dmarc=pass header.from=gmail.com policy.dmarc=none; spf=none (mx.cloudflare.net: no SPF records found for postmaster@mail-io1-xd35.google.com) smtp.helo=mail-io1-xd35.google.com; spf=pass (mx.cloudflare.net: domain of ashdowning@gmail.com designates 2607:f8b0:4864:20::d35 as permitted sender) smtp.mailfrom=ashdowning@gmail.com; arc=none smtp.remote-ip=2607:f8b0:4864:20::d35"
+        },
+        {
+            "key": "received",
+            "value": "by mail-io1-xd35.google.com with SMTP id ca18e2360f4ac-82a2a035b38so181258239f.0 for <payments@andrewscarpetcleaning.com>; Tue, 03 Sep 2024 06:07:35 -0700 (PDT)"
+        },
+        {
+            "key": "dkim-signature",
+            "value": "v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20230601; t=1725368855; x=1725973655; darn=andrewscarpetcleaning.com; h=to:subject:message-id:date:from:in-reply-to:references:mime-version :from:to:cc:subject:date:message-id:reply-to; bh=9X7A54uZJTh+WS9lG58UUklpjZgoxUAD3C2lFmej9T4=; b=AZFzekHSNdn46U3tD4REP2dalRMAnIOcLlAPTQbJ732IrVg4729vqzzN4UgeM/a4V7 0Ut3e7BAZxAz+aQ8cjlwRV3leynusxKcpXjaKbGQNtW/EJMVYTepmlqZ4JpVvEL7gdrB fmXsrIKJb9EokZ/u37+DNvJkmiNbWOF//tIUQ1cMwoqW/VjSU1wbtV3VSp90lDKkYr6n +n9LI8Szl8L500ongG70IoGibiBC9zYz50n++aNcmTGMG0TW3xDAwb6m8o6RJk3/V3ae mHRiFMeTIl+vNaNM7D5TUNwd66UduaVX/xtm5tKchKLYlb/sep5KO+ziuvVx6d0GbHQS QlOg=="
+        },
+        {
+            "key": "x-google-dkim-signature",
+            "value": "v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net; s=20230601; t=1725368855; x=1725973655; h=to:subject:message-id:date:from:in-reply-to:references:mime-version :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to; bh=9X7A54uZJTh+WS9lG58UUklpjZgoxUAD3C2lFmej9T4=; b=RGL3du0S7DFWtYUCGiHfbR61gO/xhWUVwPYonhCGwxvsFEjGLcJtrW+nsuyoEkWaNT wh/fL1AZ8/IOxS2EJytQGZccee3acBMaYxIKZu052tHyFwJjtBO2QoOKHNi8qwc026Ub 5DkVoXghscdmY4HPTwxNnSw93o+gp/n+IpXDhLnQ9Li7Hi3lrOQRWCnNHxBr9bTQrz9r LEyNX/bUjeu1KcQiz0InX91KvoBYQeTIX95uTJn4Ram1xXvNi0K44pGa6iwT+sLSb5UD JrV1i3hGXViVkj6xk4Twb3KI1HBkP6hSq4MI6+HbuZPwvjxKFdlo0zwI5OGmUsjIcdZE qHcg=="
+        },
+        {
+            "key": "x-gm-message-state",
+            "value": "AOJu0Yyjhsg6om2Nd2jtUlobANMAsornMHN/n2E0BWLiqesRv7tfSAWk 4DAK6u2Bd6jW74B2F/OXrljxLmkh3wO/EtJckMZR3sb9yQ+Iuj4DUR2j/shRTA45ekZzoeM4JwH iyrjU2RnhA0pnercOByGgNlnkp62MLJ6t"
+        },
+        {
+            "key": "x-google-smtp-source",
+            "value": "AGHT+IHgv7T5xWIE0+Ud2CYri/MtneNkLqZI5mYdCze+/UJnCt50IFkAbHDkhNnlvuAOLjpV2A5b+yhhHUBZUL+0l6I="
+        },
+        {
+            "key": "x-received",
+            "value": "by 2002:a05:6870:b314:b0:25e:13b7:e361 with SMTP id 586e51a60fabf-277ccc10842mr12918526fac.25.1725367379153; Tue, 03 Sep 2024 05:42:59 -0700 (PDT)"
+        },
+        {
+            "key": "mime-version",
+            "value": "1.0"
+        },
+        {
+            "key": "references",
+            "value": "<CAM_PfKyh1s9RzUVNpXMPpqJaAA=wz_dv-H57-FaqC0XaD3Krqg@mail.gmail.com>"
+        },
+        {
+            "key": "in-reply-to",
+            "value": "<CAM_PfKyh1s9RzUVNpXMPpqJaAA=wz_dv-H57-FaqC0XaD3Krqg@mail.gmail.com>"
+        },
+        {
+            "key": "from",
+            "value": "Ash Downing <ashdowning@gmail.com>"
+        },
+        {
+            "key": "date",
+            "value": "Tue, 3 Sep 2024 07:42:48 -0500"
+        },
+        {
+            "key": "message-id",
+            "value": "<CAM_PfKyvBfPj+V3nq52u5s3CNH68Wv9v1Gzif8hjSQ09qmoM4A@mail.gmail.com>"
+        },
+        {
+            "key": "subject",
+            "value": "Fwd: asdfxxxxx"
+        },
+        {
+            "key": "to",
+            "value": "payments@andrewscarpetcleaning.com"
+        },
+        {
+            "key": "content-type",
+            "value": "multipart/alternative; boundary=\"000000000000bddce506213665e8\""
+        }
+    ],
+    "from": {
+        "address": "ashdowning@gmail.com",
+        "name": "Ash Downing"
+    },
+    "to": [
+        {
+            "address": "payments@andrewscarpetcleaning.com",
+            "name": ""
+        }
+    ],
+    "subject": "Fwd: asdfxxxxx",
+    "messageId": "<CAM_PfKyvBfPj+V3nq52u5s3CNH68Wv9v1Gzif8hjSQ09qmoM4A@mail.gmail.com>",
+    "inReplyTo": "<CAM_PfKyh1s9RzUVNpXMPpqJaAA=wz_dv-H57-FaqC0XaD3Krqg@mail.gmail.com>",
+    "references": "<CAM_PfKyh1s9RzUVNpXMPpqJaAA=wz_dv-H57-FaqC0XaD3Krqg@mail.gmail.com>",
+    "date": "2024-09-03T12:42:48.000Z",
+    "html": "<div dir=\"ltr\">fdsfdsfdf<br><br><div class=\"gmail_quote\"><div dir=\"ltr\" class=\"gmail_attr\">---------- Forwarded message ---------<br>From: <strong class=\"gmail_sendername\" dir=\"auto\">Ash Downing</strong> <span dir=\"auto\">&lt;<a href=\"mailto:ashdowning@gmail.com\">ashdowning@gmail.com</a>&gt;</span><br>Date: Tue, Sep 3, 2024 at 7:35 AM<br>Subject: asdfxxxxx<br>To:  &lt;<a href=\"mailto:payments@andrewscarpetcleaning.com\">payments@andrewscarpetcleaning.com</a>&gt;<br></div><br><br><div dir=\"ltr\"><br clear=\"all\"><div><table cellpadding=\"0\" style=\"border-spacing:0px;line-height:20px;font-family:&quot;Google Sans&quot;,Roboto,RobotoDraft,Helvetica,Arial,sans-serif;font-size:14px\"><tbody><tr><td colspan=\"2\" style=\"vertical-align:top;width:auto;padding:2px 0px\"><span style=\"vertical-align:top\"><a href=\"mailto:payments@andrewscarpetcleaning.com\" target=\"_blank\">payments@andrewscarpetcleaning.com</a><br></span></td></tr><tr></tr></tbody></table><br></div><span class=\"gmail_signature_prefix\">-- </span><br><div dir=\"ltr\" class=\"gmail_signature\" data-smartmail=\"gmail_signature\"><div dir=\"ltr\"><div><div dir=\"ltr\"><div><div dir=\"ltr\">Ash Downing<table cellpadding=\"0\" style=\"border-spacing:0px;line-height:20px;font-family:&quot;Google Sans&quot;,Roboto,RobotoDraft,Helvetica,Arial,sans-serif;font-size:14px\"><tbody><tr><td colspan=\"2\" style=\"vertical-align:top;width:auto;padding:2px 0px\"><span style=\"vertical-align:top\"><a href=\"mailto:payments@andrewscarpetcleaning.com\" target=\"_blank\">payments@andrewscarpetcleaning.com</a><br></span></td></tr><tr></tr></tbody></table><br><div>Andrews Luxury Carpets, Inc</div><div><br></div></div></div></div></div></div></div></div>\n</div><br clear=\"all\"><div><br></div><span class=\"gmail_signature_prefix\">-- </span><br><div dir=\"ltr\" class=\"gmail_signature\" data-smartmail=\"gmail_signature\"><div dir=\"ltr\"><div><div dir=\"ltr\"><div><div dir=\"ltr\">Ash Downing<div>Andrews Luxury Carpets, Inc</div><div><br></div></div></div></div></div></div></div></div>\n\n",
+    "text": "fdsfdsfdf\n\n---------- Forwarded message ---------\nFrom: Ash Downing <ashdowning@gmail.com>\nDate: Tue, Sep 3, 2024 at 7:35 AM\nSubject: asdfxxxxx\nTo: <payments@andrewscarpetcleaning.com>\n\n\n\npayments@andrewscarpetcleaning.com\n\n-- \nAsh Downing\npayments@andrewscarpetcleaning.com\n\nAndrews Luxury Carpets, Inc\n\n\n\n-- \nAsh Downing\nAndrews Luxury Carpets, Inc\n\n",
+    "attachments": []
+}

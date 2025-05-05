@@ -19,7 +19,7 @@
     "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
     "format:fix": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "release": "rimraf ./*.tgz -g && npm run build && node tools/versionManager.js",
-    "dev": "concurrently --color -n \"SERVER,CLIENT\" -c \"green,magenta\" \"bun run --watch --filter server --elide-lines=1000 dev \" \"bun run --watch --filter client --elide-lines=1000  dev \""
+    "dev": "concurrently --color -n \"SERVER,CLIENT,EMAIL\" -c \"green,magenta,cyan\" \"bun run --watch --filter server --elide-lines=1000 dev \" \"bun run --watch --filter client --elide-lines=1000  dev \" \"bun run --watch --filter cashapp-email --elide-lines=1000  dev \""
   },
   "keywords": [
     "websocket",
@@ -54,6 +54,7 @@
   "workspaces": [
     "client",
     "server",
-    "shared"
+    "shared",
+    "cashapp-email"
   ]
 }

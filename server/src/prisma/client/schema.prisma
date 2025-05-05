@@ -1,4 +1,3 @@
-// schema.txt - Provided by the user
 generator client {
   provider = "prisma-client-js"
   output   = "../server/src/prisma/client"
@@ -8,24 +7,10 @@ generator typescriptInterfaces {
   provider          = "ts-node ./node_modules/.bin/prisma-generator-typescript-interfaces"
   output            = "../shared/prisma/interfaces.ts"
   client            = "../server/src/prisma/client"
-  // modelPrefix = "I"
-  prettier          = false
-  optionalRelations = false
+  optionalRelations = "false"
+  prettier          = "false"
 }
 
-// generator enums {
-//   provider = "ts-node ./prisma/enum-generator"
-//   output   = "../shared/prisma/enums.ts"
-// }
-// generator prismaClassGenerator {
-// provider      = "prisma-class-generator"
-// output        = "../shared/classes"
-// dryRun        = "false"
-// makeIndexFile = "true"
-//   clientImportPath = "../shared/prisma/client"
-
-//   useSwagger    = "false"
-// }
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -44,25 +29,18 @@ model achievement {
 }
 
 model User {
-  // id                                   String            @id(map: "User_pkey")
-  id               String       @id @default(cuid())
-  name             String?
-  email            String
-  emailVerified    Boolean?
-  image            String?
-  createdAt        DateTime     @default(now())
-  updatedAt        DateTime?
-  twoFactorEnabled Boolean?
-  role             String?
-  banned           Boolean?
-  banReason        String?
-  banExpires       DateTime?
-  sessions         Session[]
-  accounts         Account[]
-  members          Member[]
-  invitations      Invitation[]
-  twofactors       TwoFactor[]
-
+  id                                   String            @id @default(cuid())
+  name                                 String?
+  email                                String
+  emailVerified                        Boolean?
+  image                                String?
+  createdAt                            DateTime          @default(now())
+  updatedAt                            DateTime?
+  twoFactorEnabled                     Boolean?
+  role                                 String?
+  banned                               Boolean?
+  banReason                            String?
+  banExpires                           DateTime?
   username                             String            @unique(map: "User_username_key")
   passwordHash                         String?
   totalXp                              Int               @default(0)
@@ -70,31 +48,35 @@ model User {
   isVerified                           Boolean           @default(false)
   active                               Boolean           @default(false)
   lastLogin                            DateTime?
-  lastDailySpin                        DateTime?
   verificationToken                    String?
   avatar                               String?
   activeProfileId                      String?           @unique(map: "User_activeProfileId_key")
-  vipInfoId                            String?           @unique(map: "User_vipInfoId_key")
   gender                               Gender?
   status                               UserStatus?
   cashtag                              String?
   phpId                                Int?
   accessToken                          String?
+  vipInfoId                            String?
+  lastDailySpin                        DateTime?
+  operator                             Operator[]
+  activeProfile                        Profile[]         @relation("profile_userIdTouser")
   RainBet                              RainBet[]
   RainHistory                          RainHistory[]
   RainTip                              RainTip[]
   RainWinner                           RainWinner[]
+  sessions                             Session[]
+  accounts                             Account[]
   chatmessage                          chatmessage[]
   friendship_friendship_friendIdTouser friendship[]      @relation("friendship_friendIdTouser")
   friendship_friendship_userIdTouser   friendship[]      @relation("friendship_userIdTouser")
+  invitations                          Invitation[]
+  members                              Member[]
   notification                         notification[]
-  operator                             Operator[]
-  activeProfile                        Profile[]         @relation("profile_userIdTouser")
   tournamententry                      tournamententry[]
+  twofactors                           TwoFactor[]
   userachievement                      userachievement[]
-  vipInfo                              VipInfo[]
+  vipInfo                              VipInfo?
 
-  @@unique([vipInfoId, id])
   @@index([createdAt], map: "user_created_at_idx")
   @@index([username, email])
   @@map("user")
@@ -110,32 +92,31 @@ model Session {
   createdAt    DateTime  @default(now())
   refreshToken String?
   active       Boolean   @default(false)
-  user         User      @relation(fields: [userId], references: [id], map: "Session_userId_fkey")
-  token        String
+  token        String    @unique
   updatedAt    DateTime?
+  user         User      @relation(fields: [userId], references: [id], map: "Session_userId_fkey")
 
-  @@unique([token])
-  @@index([refreshToken], map: "Session_refreshToken_idx")
-  @@index([userId], map: "Session_userId_idx")
+  @@index([refreshToken])
+  @@index([userId])
 }
 
 model Operator {
-  id          String       @id @default(cuid())
-  name        String
-  slug        String       @unique(map: "Operator_slug_key")
-  logo        String?
-  description String?
-  isActive    Boolean      @default(true)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime?
-  ownerId     String
-  balance     Int          @default(0)
-  // banks         bank[]
-  owner       User         @relation(fields: [ownerId], references: [id], map: "Operator_ownerId_fkey")
-  games       Game[]
-  profiles    Profile[]
-  tournaments tournament[]
-  Product     Product[]
+  id               String       @id @default(cuid())
+  name             String
+  slug             String       @unique
+  logo             String?
+  description      String?
+  isActive         Boolean      @default(true)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime?
+  acceptedPayments String[]     @default(["CASHAPP"])
+  ownerId          String
+  balance          Int          @default(0)
+  owner            User         @relation(fields: [ownerId], references: [id], map: "Operator_ownerId_fkey")
+  profiles         Profile[]
+  games            Game[]
+  products         Product[]
+  tournaments      tournament[]
 
   @@index([slug])
 }
@@ -145,8 +126,7 @@ model Message {
   content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  authorId  String // Assuming a user exists
-  // Add relationships if needed
+  authorId  String
 }
 
 model Profile {
@@ -157,21 +137,18 @@ model Profile {
   lastPlayed                DateTime?
   createdAt                 DateTime          @default(now())
   updatedAt                 DateTime?
-  phpId                     Int?              @unique(map: "Profile_phpId_key")
+  phpId                     Int?              @unique
   userId                    String
-  // bankId                    String
   currency                  String            @default("USD")
   shopId                    String
-  gamesession               gamesession[]
-  // bank                      bank              @relation(fields: [bankId], references: [id], onDelete: Cascade, map: "Profile_bankId_fkey")
   operator                  Operator          @relation(fields: [shopId], references: [id], onDelete: Cascade, map: "Profile_shopId_fkey")
   user_profile_userIdTouser User              @relation("profile_userIdTouser", fields: [userId], references: [id], onDelete: Cascade, map: "Profile_userId_fkey")
+  gamesession               gamesession[]
   tournamententry           tournamententry[]
   transactions              Transaction[]
 
-  @@unique([userId, shopId], map: "Profile_userId_shopId_key")
+  @@unique([userId, shopId])
   @@index([shopId, isActive], map: "operator_active_profile_idx")
-  // @@index([profileNumber], map: "profile_number_idx")
   @@index([userId, isActive], map: "user_active_profile_idx")
 }
 
@@ -219,15 +196,13 @@ model Game {
   providerId                   String?
   createdAt                    DateTime         @default(now())
   updatedAt                    DateTime         @updatedAt
-  category                     GameCategory     @default(SLOTS)
   jackpotGroupId               String?
   active                       Boolean          @default(true)
   password                     String?
-  // jackpotGroup                 JackpotGroup? @relation(fields: [jackpotGroupId], references: [id])
+  category                     GameCategory     @default(SLOTS)
   operator                     Operator?        @relation(fields: [operatorId], references: [id])
-  // leaderboards                 Leaderboard[] @relation("GameToLeaderboard")
-  gamesession                  gamesession[]    @relation(map: "GameSession_gameId_fkey")
-  tournamentgame               tournamentgame[] @relation(map: "TournamentGame_gameId_fkey")
+  gamesession                  gamesession[]
+  tournamentgame               tournamentgame[]
 
   @@map("games")
 }
@@ -237,7 +212,6 @@ model Account {
   accountId             String
   providerId            String
   userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?
   refreshToken          String?
   idToken               String?
@@ -247,6 +221,7 @@ model Account {
   password              String?
   createdAt             DateTime
   updatedAt             DateTime?
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("account")
 }
@@ -265,9 +240,6 @@ model operatorgame {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime?
   operatorId   String
-  // gamesession    gamesession[]
-  // operator       Operator         @relation(fields: [operatorId], references: [id], map: "OperatorGame_operatorId_fkey")
-  // tournamentgame tournamentgame[]
 
   @@index([slug], map: "game_slug_idx")
 }
@@ -286,25 +258,24 @@ model Verification {
 model Organization {
   id          String       @id @default(cuid())
   name        String
-  slug        String?
+  slug        String?      @unique
   logo        String?
   createdAt   DateTime
   metadata    String?
-  members     Member[]
   invitations Invitation[]
+  members     Member[]
 
-  @@unique([slug])
   @@map("organization")
 }
 
 model Member {
   id             String       @id @default(cuid())
   organizationId String
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   userId         String
-  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   role           String
   createdAt      DateTime
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("member")
 }
@@ -312,13 +283,13 @@ model Member {
 model Invitation {
   id             String       @id @default(cuid())
   organizationId String
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   email          String
   role           String?
   status         String
   expiresAt      DateTime
   inviterId      String
   user           User         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   @@map("invitation")
 }
@@ -332,19 +303,6 @@ model TwoFactor {
 
   @@map("twoFactor")
 }
-
-// model bank {
-//   id         String    @id @default(cuid())
-//   name       String
-//   currency   String    @default("USD")
-//   isActive   Boolean   @default(true)
-//   createdAt  DateTime  @default(now())
-//   operatorId String
-//   operator   Operator  @relation(fields: [operatorId], references: [id], map: "Bank_operatorId_fkey")
-//   profile    Profile[]
-
-//   @@unique([operatorId, name], map: "Bank_operatorId_name_key")
-// }
 
 model chatmessage {
   id        String      @id @default(cuid())
@@ -407,26 +365,25 @@ model gamesession {
 }
 
 model Product {
-  id                       String  @id @default(cuid())
+  id                       String        @id @default(cuid())
   title                    String
   description              String
   url                      String
   type                     String
-  bonusCode                String? @default("")
-  bonusTotalInCredits      Int?    @default(0)
-  priceInCents             Int     @default(0)
-  amountToReceiveInCredits Int     @default(0)
-  bestValue                Int     @default(0)
-
-  discountInCents      Int           @default(0)
-  bonusSpins           Int?
-  isPromo              Boolean?      @default(false)
-  totalDiscountInCents Int
-  shopId               String?
-  createdAt            DateTime      @default(now())
-  updatedAt            DateTime      @updatedAt
-  operator             Operator?     @relation(fields: [shopId], references: [id])
-  transactions         Transaction[]
+  bonusCode                String?       @default("")
+  bonusTotalInCredits      Int?          @default(0)
+  priceInCents             Int           @default(0)
+  amountToReceiveInCredits Int           @default(0)
+  bestValue                Int           @default(0)
+  discountInCents          Int           @default(0)
+  bonusSpins               Int?
+  isPromo                  Boolean?      @default(false)
+  totalDiscountInCents     Int
+  shopId                   String?
+  createdAt                DateTime      @default(now())
+  updatedAt                DateTime?     @updatedAt
+  operator                 Operator?     @relation(fields: [shopId], references: [id])
+  transactions             Transaction[] @relation("ProductToTransaction")
 
   @@map("products")
 }
@@ -497,7 +454,14 @@ model tournamentgame {
 model Transaction {
   id             String            @id @default(cuid())
   type           TransactionType
-  amount         Int
+  amount         Int               @default(0)
+  amountCredits  Int               @default(0)
+  buyerCashtag   String?
+  buyerUserId    String?
+  username       String?
+  cashiername    String?
+  cashierAvatar  String?
+  cashierId      String?
   reference      String?
   status         TransactionStatus @default(PENDING)
   metadata       Json?
@@ -508,9 +472,11 @@ model Transaction {
   processedAt    DateTime?
   gameSessionId  String?
   profileId      String
+  cashtag        String?
   gamesession    gamesession?      @relation(fields: [gameSessionId], references: [id], map: "Transaction_gameSessionId_fkey")
   profile        Profile           @relation(fields: [profileId], references: [id], map: "Transaction_profileId_fkey")
-  Product        Product[]
+  product        Product?          @relation("ProductToTransaction", fields: [productid], references: [id])
+  productid      String?
 
   @@index([profileId], map: "transaction_profile_idx")
   @@index([type])
@@ -624,6 +590,15 @@ model VipInfo {
   @@map("vip_infos")
 }
 
+model event_log {
+  id         BigInt    @id @default(autoincrement())
+  table_name String    @db.VarChar(255)
+  row_id     String?   @db.VarChar(255)
+  operation  String    @db.VarChar(10)
+  payload    Json?
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+}
+
 enum ChatChannel {
   LOBBY
   GAME
@@ -661,6 +636,8 @@ enum TransactionStatus {
   FAILED
   CANCELLED
   REFUNDED
+  EXPIRED
+  REJECTED
 }
 
 enum TransactionType {

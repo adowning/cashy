@@ -1,21 +1,34 @@
 <script setup lang="ts">
-// import { useWebSockets } from '@/composables'
+import { useCashflowSocket } from '@/composables/useZilaWebsocket'
 import { eventBus } from '@/composables/eventBus'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAppBarStore } from '@/stores/appBar'
+import { useAuthStore } from '@/stores/auth'
+import { useDepositStore } from '@/stores/deposit'
+// import { useUserStore } from '@/stores/user'
+import { useSocketStore } from '@/stores/socket'
+// import { useCurrencyStore } from '@/stores/currency'
+import { WSStatus } from 'zilaws-client'
 
 // const { api } = useRequest()
 const shopOpen = ref(false)
+// const affiliateOpen = ref(false)
 const appBarStore = useAppBarStore()
-// const { connectionStatus } = useWebSockets()
+const authStore = useAuthStore()
+// const userStore = useUserStore()
+// const currencyStore = useCurrencyStore()
+const depositStore = useDepositStore()
+const socketStore = useSocketStore()
+const { connectionStatus } = useCashflowSocket()
 const router = useRouter()
 const settingsModal = ref(false)
 const isAsideMobileExpanded = ref(false)
 const isAsideLgActive = ref(false)
-// const isConnected = computed(() => connectionStatus.value === 'OPEN')
+const isConnected = computed(() => connectionStatus.value === WSStatus.OPEN)
 const orientation = useScreenOrientation()
 const overlayScrimBackground = ref<string>('rgb(var(--v-theme-on-surface))')
+// const { dispatchSocketConnect } = socketStore
 
 watch(orientation, async (newOrienation) => {
   console.log(newOrienation)
@@ -29,25 +42,24 @@ router.beforeEach(() => {
 eventBus.on('settingsModal', (val) => {
   settingsModal.value = val
 })
-eventBus.on('shopOpen', (val) => {
-  console.log('shopOpen', val)
-})
-// watch(
-//   toRef(socketStore, 'socketData'),
-//   (newValue) => {
-//     // console.log('myItems changed:', newValue, oldValue)
-//     playerBalance.value = newValue.new_balance
 
-//     // Perform actions based on the change
-//   },
-//   { deep: true }
-// )
+watch(
+  connectionStatus,
+  (newValue) => {
+    console.log(newValue)
+    // // console.log('myItems changed:', newValue, oldValue)
+    // playerBalance.value = newValue.new_balance
+
+    // Perform actions based on the change
+  },
+  { deep: true },
+)
 
 // main blur effect
-const mainBlurEffectShow = computed(() => {
-  const { getMainBlurEffectShow } = storeToRefs(appBarStore)
-  return getMainBlurEffectShow.value
-})
+// const mainBlurEffectShow = computed(() => {
+//   const { getMainBlurEffectShow } = storeToRefs(appBarStore)
+//   return getMainBlurEffectShow.value
+// })
 
 // overlay scrim show
 const overlayScrimShow = computed(() => {
@@ -66,7 +78,19 @@ watch(overlayScrimShow, (newValue) => {
 function runTest() {
   // api.appControllerGetHealth.send()
 }
-onMounted(() => {})
+
+const token = computed(() => {
+  const { getToken } = storeToRefs(authStore)
+  return getToken.value
+})
+onMounted(async () => {
+  if (token.value != undefined) {
+    // await authStore.dispatchUserProfile() // Changed: Use authStore instance
+    // await userStore.dispatchUserBalance() // Changed: Use userStore instance
+    // await currencyStore.dispatchCurrencyList() // Changed: Use currencyStore instance
+    await socketStore.dispatchSocketConnect() // Assuming this was a local function call, not a store action
+  }
+})
 </script>
 
 <template>
@@ -107,9 +131,12 @@ onMounted(() => {})
       </div>
       <!-- </div> -->
       <SettingsView :has-cancel="false" :model-value="settingsModal" />
-      <OverlayLayer v-if="shopOpen" :model-value="shopOpen">
-        <ShopView v-if="shopOpen" />
-      </OverlayLayer>
+      <!-- <OverlayLayer v-if="depositStore.shopOpen" :model-value="depositStore.shopOpen"> -->
+      <ShopView v-if="depositStore.shopOpen" />
+      <!-- </OverlayLayer> -->
+      <!-- <OverlayLayer v-if="depositStore.shopOpen" :model-value="depositStore.shopOpen">
+        <AffiliatePage v-if="depositStore.shopOpen" />
+      </OverlayLayer> -->
     </div>
   </div>
   <!-- </div> -->

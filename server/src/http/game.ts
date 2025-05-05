@@ -1,5 +1,5 @@
 import { BunRequest } from "bun";
-import { NETWORK_CONFIG } from "shared"; // Assuming shared is available
+import { NETWORK_CONFIG, User } from "shared"; // Assuming shared is available
 import {
   GetGameCategoriesResponse,
   GetGameSearchResponse,
@@ -33,18 +33,12 @@ interface Search {
   is_demo: boolean;
 }
 // Helper function to get a random element from an array
-const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
+// const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 // Helper function to get a random number within a range
 const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 export async function getGameList(req: BunRequest) {
-  const user: any = await getUserFromHeader(req);
-  if (!user || !user.activeProfile) {
-    return new Response(JSON.stringify({ message: "Unauthorized or no active profile", code: 401 }), {
-      status: 401,
-    });
-  }
   const games = await db.game.findMany({
     where: { isActive: true },
   });
@@ -239,7 +233,6 @@ export async function getGameSearch(req: BunRequest): Promise<Response> {
       data: responseData,
       message: "Game search results retrieved successfully",
     };
-    console.log(games);
     return new Response(JSON.stringify(response));
   } catch (error) {
     console.error("Error searching games:", error);
@@ -254,15 +247,8 @@ export async function getGameSearch(req: BunRequest): Promise<Response> {
  * @param req BunRequest
  * @returns Response
  */
-export async function getGameEnter(req: BunRequest): Promise<Response> {
+export async function getGameEnter(req: BunRequest, user: User): Promise<Response> {
   try {
-    const user: any = await getUserFromHeader(req);
-    if (!user || !user.activeProfile) {
-      return new Response(JSON.stringify({ message: "Unauthorized or no active profile", code: 401 }), {
-        status: 401,
-      });
-    }
-
     const body: GameEnterBody = await req.json();
     const gameId = Array.isArray(body.id) ? body.id[0] : body.id; // Handle single ID or array
     const isDemo = body.demo || false;
@@ -316,13 +302,6 @@ export async function getGameEnter(req: BunRequest): Promise<Response> {
  */
 export async function getGameUserGame(req: BunRequest): Promise<Response> {
   try {
-    const user: any = await getUserFromHeader(req);
-    if (!user || !user.activeProfile) {
-      return new Response(JSON.stringify({ message: "Unauthorized or no active profile", code: 401 }), {
-        status: 401,
-      });
-    }
-
     const body: GameUserBody = await req.json();
     const categorySlug = body.game_categories_slug;
     const page = body.page || 1;
@@ -387,13 +366,8 @@ export async function getGameUserGame(req: BunRequest): Promise<Response> {
  * @param req BunRequest
  * @returns Response
  */
-export async function getGameFavoriteGame(req: BunRequest): Promise<Response> {
+export async function getGameFavoriteGame(req: BunRequest, user: User): Promise<Response> {
   try {
-    const user: any = await getUserFromHeader(req);
-    if (!user) {
-      return new Response(JSON.stringify({ message: "Unauthorized", code: 401 }), { status: 401 });
-    }
-
     const body = await req.json();
     const gameId = body.gameId; // Assuming gameId is provided in the body
     const isFavorite = body.isFavorite; // Assuming isFavorite (boolean) is provided
@@ -428,11 +402,6 @@ export async function getGameFavoriteGame(req: BunRequest): Promise<Response> {
  */
 export async function getGameFavoriteGameList(req: BunRequest): Promise<Response> {
   try {
-    const user: any = await getUserFromHeader(req);
-    if (!user) {
-      return new Response(JSON.stringify({ message: "Unauthorized", code: 401 }), { status: 401 });
-    }
-
     // Fetch the user's favorite games.
     // This requires a mechanism to store user favorites, which is not explicit
     // in the provided schema. Assuming a relationship or a separate model exists.
@@ -468,15 +437,8 @@ export async function getGameFavoriteGameList(req: BunRequest): Promise<Response
  * @param req BunRequest
  * @returns Response
  */
-export async function getGameHistory(req: BunRequest): Promise<Response> {
+export async function getGameHistory(req: BunRequest, user: User): Promise<Response> {
   try {
-    const user: any = await getUserFromHeader(req);
-    if (!user || !user.activeProfile) {
-      return new Response(JSON.stringify({ message: "Unauthorized or no active profile", code: 401 }), {
-        status: 401,
-      });
-    }
-
     const body = await req.json();
     const page = body.page || 1;
     const limit = body.limit || 20;
@@ -486,7 +448,7 @@ export async function getGameHistory(req: BunRequest): Promise<Response> {
     const gameSessions = await db.gamesession.findMany({
       where: { profileId: user.activeProfile.id },
       include: {
-        operatorgame: {
+        game: {
           select: { name: true }, // Include game name from operatorgame
         },
       },
@@ -499,8 +461,8 @@ export async function getGameHistory(req: BunRequest): Promise<Response> {
       where: { profileId: user.activeProfile.id },
     });
 
-    const gameHistoryRecords: GameHistoryItem[] = gameSessions.map((session) => ({
-      name: session.operatorgame?.name || "Unknown Game", // Use game name
+    const gameHistoryRecords: GameHistoryItem[] = gameSessions.map((session: any) => ({
+      name: session.game?.name || "Unknown Game", // Use game name
       created_at: session.startTime.getTime(), // Convert Date to timestamp
       amount: session.betAmount?.toString() || "0", // Bet amount
       multiplier:
@@ -569,7 +531,7 @@ export async function getGameBigWin(req: BunRequest): Promise<Response> {
         session.game.name.toLocaleLowerCase().length,
         session.game.name.toLowerCase().length - 3
       );
-      if (_developer.toLowerCase() !== "rtg") console.log(_developer.toLowerCase());
+      // if (_developer.toLowerCase() !== "rtg") console.log(_developer.toLowerCase());
       let developer;
       // switch (_developer.toLowerCase()) {
       //   case "net":
@@ -584,7 +546,7 @@ export async function getGameBigWin(req: BunRequest): Promise<Response> {
       if (_developer.toLowerCase().includes("rtg")) developer = "redtiger";
       if (_developer.toLowerCase().includes("nlc")) developer = "nolimit";
       if (_developer.toLowerCase().includes("bfg")) developer = "bigfish";
-      if (developer !== "redtiger") console.log(developer);
+      // if (developer !== "redtiger") console.log(developer);
       let username = session.profile?.user_profile_userIdTouser?.username;
       if (username.length > 6) username = username.substring(0, 6) + "..";
 
@@ -631,11 +593,6 @@ export async function getGameBigWin(req: BunRequest): Promise<Response> {
  */
 export async function getGameSpinPage(req: BunRequest): Promise<Response> {
   try {
-    const user: any = await getUserFromHeader(req);
-    if (!user) {
-      return new Response(JSON.stringify({ message: "Unauthorized", code: 401 }), { status: 401 });
-    }
-
     // Placeholder logic for spin page data
     const spinPageData = {
       // Add data relevant to a spin page, e.g., spin count, rewards, etc.
@@ -667,13 +624,6 @@ export async function getGameSpinPage(req: BunRequest): Promise<Response> {
  */
 export async function getGameSpin(req: BunRequest): Promise<Response> {
   try {
-    const user: any = await getUserFromHeader(req);
-    if (!user || !user.activeProfile) {
-      return new Response(JSON.stringify({ message: "Unauthorized or no active profile", code: 401 }), {
-        status: 401,
-      });
-    }
-
     // Placeholder logic for performing a spin
     // Deduct spin cost from user balance/spin count, determine reward, update user record, etc.
 
@@ -701,6 +651,19 @@ export async function getGameSpin(req: BunRequest): Promise<Response> {
 
 export async function gameRoutes(req: BunRequest, route: string, params: string) {
   try {
+    const user = await getUserFromHeader(req);
+    if (route === NETWORK_CONFIG.WEB_SOCKET.SOCKET_CONNECT) return false;
+
+    if (!user || !user.activeProfile) {
+      return new Response(
+        JSON.stringify({
+          code: 401,
+          message: "Unauthorized",
+          data: { total_pages: 0, record: [] },
+        }),
+        { status: 401 }
+      );
+    }
     switch (route) {
       case NETWORK_CONFIG.GAME_INFO.GAME_LIST:
         return await getGameList(req);
@@ -709,15 +672,15 @@ export async function gameRoutes(req: BunRequest, route: string, params: string)
       case NETWORK_CONFIG.GAME_INFO.GAME_SEARCH:
         return await getGameSearch(req);
       case NETWORK_CONFIG.GAME_INFO.GAME_ENTER:
-        return await getGameEnter(req);
+        return await getGameEnter(req, user);
       case NETWORK_CONFIG.GAME_INFO.USER_GAME:
         return await getGameUserGame(req);
       case NETWORK_CONFIG.GAME_INFO.FAVORITE_GAME:
-        return await getGameFavoriteGame(req);
+        return await getGameFavoriteGame(req, user);
       case NETWORK_CONFIG.GAME_INFO.FAVORITE_GAME_LIST:
         return await getGameFavoriteGameList(req);
       case NETWORK_CONFIG.GAME_INFO.GAME_HISTORY:
-        return await getGameHistory(req);
+        return await getGameHistory(req, user);
       case NETWORK_CONFIG.GAME_INFO.GAME_BIGWIN:
         return await getGameBigWin(req);
       case NETWORK_CONFIG.GAME_INFO.SPIN:
@@ -725,8 +688,7 @@ export async function gameRoutes(req: BunRequest, route: string, params: string)
       case NETWORK_CONFIG.GAME_INFO.SPINPAGE:
         return await getGameSpinPage(req);
       default:
-        // Return a 404 response for unknown routes
-        return new Response(JSON.stringify({ message: "Route not found", code: 404 }), { status: 404 });
+        return false;
     }
   } catch (error) {
     console.error("Error in gameRoutes:", error);

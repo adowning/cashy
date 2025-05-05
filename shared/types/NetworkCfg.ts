@@ -22,6 +22,7 @@ export namespace NETWORK_CONFIG {
     static USER_CHECK = "/user/check"; // user check
     static USER_EMAIL_VERIFY = "/user/verifyemail"; // user email verify
     static SET_USER_CURRENCY = "/user/currency";
+    static USER_CASHTAG = "/user/cashtag";
   }
 
   // deposit api
@@ -29,6 +30,8 @@ export namespace NETWORK_CONFIG {
     static DEPOSIT_CONFIG = "/user/depositcfg"; // get user deposit configuration
     static DEPOSIT_SUBMIT = "/user/depositsubmit"; // user deposit submit
     static DEPOSIT_HISTORY = "/user/deposithistory"; // user deposit history
+    static PRODUCTS = "/user/depositproducts"; // user deposit history
+    static OPERATOR_DATA = "/user/depositoperatordata";
   }
 
   // withdraw api
@@ -73,7 +76,7 @@ export namespace NETWORK_CONFIG {
 
   // websocket api
   export class WEB_SOCKET {
-    static SOCKET_CONNECT = "/user/connect/websocket";
+    static SOCKET_CONNECT = "/connect/websocket";
   }
 
   // transaction api

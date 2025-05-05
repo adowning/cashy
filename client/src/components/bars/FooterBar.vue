@@ -1,14 +1,81 @@
-<script setup>
+<script setup lang="ts">
 import LeaderJson from '@/assets/anim/leadernew.json'
 import { useUserStore } from '@/stores/user'
 import { useAppBarStore } from '@/stores/appBar'
+import { useDepositStore } from '@/stores/deposit'
 import { ref } from 'vue'
 import { eventBus } from '@/composables/eventBus'
+import VaultJson from '@/assets/anim/vault.json'
 
 const target = ref()
 
 const userStore = useUserStore
+const depositStore = useDepositStore()
 const appBarStore = useAppBarStore()
+// const coinframes = {
+//   frames: {
+//     'CoinRotation/CoinAnim_0000.png': {
+//       textureRect: '{{1,70},{66,67}}',
+//       textureRotated: false,
+//       spriteSourceSize: '{122,89}',
+//     },
+//     'CoinRotation/CoinAnim_0001.png': {
+//       textureRect: '{{1,1},{68,67}}',
+//       textureRotated: false,
+//       spriteSourceSize: '{122,89}',
+//     },
+//     'CoinRotation/CoinAnim_0002.png': {
+//       textureRect: '{{1,139},{66,67}}',
+//       textureRotated: false,
+//       spriteSourceSize: '{122,89}',
+//     },
+//     'CoinRotation/CoinAnim_0003.png': {
+//       textureRect: '{{1,208},{60,67}}',
+//       textureRotated: false,
+//       spriteSourceSize: '{122,89}',
+//     },
+//     'CoinRotation/CoinAnim_0004.png': {
+//       textureRect: '{{69,70},{50,67}}',
+//       textureRotated: false,
+//       spriteSourceSize: '{122,89}',
+//     },
+//     'CoinRotation/CoinAnim_0005.png': {
+//       textureRect: '{{69,139},{42,67}}',
+//       textureRotated: false,
+//       spriteSourceSize: '{122,89}',
+//     },
+//     'CoinRotation/CoinAnim_0006.png': {
+//       textureRect: '{{63,277},{24,67}}',
+//       textureRotated: false,
+//       spriteSourceSize: '{122,89}',
+//     },
+//     'CoinRotation/CoinAnim_0007.png': {
+//       textureRect: '{{97,208},{20,67}}',
+//       textureRotated: false,
+//       spriteSourceSize: '{122,89}',
+//     },
+//     'CoinRotation/CoinAnim_0008.png': {
+//       textureRect: '{{89,277},{24,67}}',
+//       textureRotated: false,
+//       spriteSourceSize: '{122,89}',
+//     },
+//     'CoinRotation/CoinAnim_0009.png': {
+//       textureRect: '{{63,208},{32,67}}',
+//       textureRotated: false,
+//       spriteSourceSize: '{122,89}',
+//     },
+//     'CoinRotation/CoinAnim_0010.png': {
+//       textureRect: '{{71,1},{44,67}}',
+//       textureRotated: false,
+//       spriteSourceSize: '{122,89}',
+//     },
+//     'CoinRotation/CoinAnim_0011.png': {
+//       textureRect: '{{1,277},{60,67}}',
+//       textureRotated: false,
+//       spriteSourceSize: '{122,89}',
+//     },
+//   },
+// }
 
 const currentUser = userStore.currentUser
 const showFab = ref(true)
@@ -32,10 +99,14 @@ function toggleBonusDrawer() {
   // appBarStore.setRightBarToggle(!appBarStore.getRightBarToggle())
 }
 
-function changeShopOpen() {
-  shopOpen.value = true
-  console.log(shopOpen.value)
-  eventBus.emit('shopOpen', shopOpen.value)
+// function changeShopOpen() {
+//   shopOpen.value = true
+//   console.log(shopOpen.value)
+//   eventBus.emit('shopOpen', shopOpen.value)
+// }
+function _toggleShopOpen() {
+  console.log('asdf')
+  depositStore.toggleShopOpen()
 }
 function changeLeaderBoardOpen() {
   console.log(leaderBoardOpen)
@@ -77,7 +148,7 @@ function changeWheelPageOpen() {
             style="z-index: 999; margin-bottom: 35px; margin-left: -32px"
           />
         </div>
-        <div class="flex" />
+        <div class="flex w-5" />
 
         <div class="wn-btn-item mx-3" @click="changeLeaderBoardOpen()">
           <VGSprite
@@ -95,7 +166,9 @@ function changeWheelPageOpen() {
             >Battles</span
           >
         </div>
-        <div class="wn-btn-item mr-3" @click="changeShopOpen">
+        <div class="flex w-5" />
+
+        <!-- <div class="wn-btn-item mr-3" @click="changeShopOpen">
           <img
             src="/images/deposit.avif"
             style="
@@ -105,6 +178,31 @@ function changeWheelPageOpen() {
               padding-top: 1px;
               margin-bottom: 2px;
             "
+          />
+          <span
+            class="glow align-center justify-center rounded-lg bg-black px-1"
+            style="font-size: 16px; line-height: 1.3"
+            >Deposit</span
+          >
+        </div> -->
+        <div class="wn-btn-item mr-3 pt-22" style="margin-top: 19px" @click="_toggleShopOpen">
+          <VGSprite
+            id="vaultIcon"
+            class="flex"
+            image-src="/images/vault.png"
+            :sprite-sheet-data="VaultJson"
+            style="
+              background-repeat: no-repeat;
+              z-index: 10;
+              margin-top: -160px;
+              padding-top: 30px;
+              margin-right: -30px;
+              transform: scale(0.6) translateY(55px);
+            "
+            :speed="60"
+            :delay="6000"
+            :offset="5000"
+            :autoplay="true"
           />
           <span
             class="glow align-center justify-center rounded-lg bg-black px-1"

@@ -1,8 +1,5 @@
 {
     "recommendations": [
-        "zerefdev.todo-highlighter",
-        "AlexArthurs.todo-pusher",
-        "dbaeumer.vscode-eslint",
-        "mhutchie.git-graph"
+
     ]
 }

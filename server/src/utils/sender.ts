@@ -1,0 +1,34 @@
+import { authOptions, EmailRequest, oauthOptions } from "shared";
+
+const nodemailer = require("nodemailer");
+require("dotenv").config();
+
+export async function Sender(body: EmailRequest) {
+  let options = authOptions;
+
+  if (process.env.OAUTH?.toLowerCase() === "true") {
+    options = oauthOptions;
+  }
+
+  if (body.key !== process.env.API_KEY) {
+    return Response.json({ status: 401, body: "Unauthorized" });
+  }
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: options,
+    });
+
+    const email = await transporter.sendMail({
+      from: `"${body.from}" ${process.env.EMAIL_USER}`,
+      to: body.to,
+      subject: body.subject,
+      html: body.html,
+    });
+    console.log("email sent");
+    return Response.json({ status: 200, body: "Email Sent Successfully" });
+  } catch (error) {
+    console.log(error);
+    return Response.json({ status: 500, body: error });
+  }
+}

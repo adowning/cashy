@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { Game } from '@/hyper-fetch.request'
-import { useShopStore } from '@/stores/shop'
+import { useOperatorStore } from '@/stores/operator'
 import { onMounted } from 'vue'
 
 defineEmits(['loadGame'])
 
-const shopStore = useShopStore()
+const shopStore = useOperatorStore()
 const router = useRouter()
 const loading = ref(false)
 const groups = ref<any>([])
@@ -78,18 +78,18 @@ uniqueGames.forEach((_game: any) => {
     game.temperature = 'none'
   }
   if (game.featured) {
-    if (flist.filter(item => item.id === game.id).length === 0) {
+    if (flist.filter((item) => item.id === game.id).length === 0) {
       flist.push(game)
     }
   } else {
     if (
-      game.developer !== 'BigFishGames'
-      && slist.filter(item => item.id === game.id).length === 0
+      game.developer !== 'BigFishGames' &&
+      slist.filter((item) => item.id === game.id).length === 0
     ) {
       slist.push(game)
     }
   }
-  if (game.gamebank === 'fish' && fish.filter(item => item.id === game.id).length === 0) {
+  if (game.gamebank === 'fish' && fish.filter((item) => item.id === game.id).length === 0) {
     fish.push(game)
   } else {
     if (index % 2 === 0) {
@@ -216,15 +216,15 @@ const usersData = [
     description:
       'The banjo plays, giving you and your party new life. <strong>You are invincible next turn.</strong>',
     shiny: false,
-    link: 'https://twitter.com/chriscoyier'
+    link: 'https://twitter.com/chriscoyier',
   },
   {
     name: 'Gentleman Shaw',
     photo: 'stephen-shaw.jpg',
     description:
-      'You wouldn\'t harm a thing, so instead you charm the enemy. <strong>They join your party.</strong>',
+      "You wouldn't harm a thing, so instead you charm the enemy. <strong>They join your party.</strong>",
     shiny: true,
-    link: 'https://twitter.com/shshaw'
+    link: 'https://twitter.com/shshaw',
   },
   {
     name: 'Keycaps Cassidy',
@@ -232,7 +232,7 @@ const usersData = [
     description:
       'The MX Blue clickity clacks penetrate the enemy eardrums. <strong>Deal 56 damage.</strong>',
     shiny: false,
-    link: 'https://twitter.com/cassidoo'
+    link: 'https://twitter.com/cassidoo',
   },
   {
     name: 'Piano Khourshid',
@@ -240,8 +240,8 @@ const usersData = [
     description:
       'Forgot his piano, resorts to reading sheet music aloud. <strong>Enemy falls asleep.</strong>',
     shiny: false,
-    link: 'https://twitter.com/DavidKPiano'
-  }
+    link: 'https://twitter.com/DavidKPiano',
+  },
 ]
 
 function initMouseEvents() {
@@ -302,7 +302,7 @@ class Card {
     cardColor: string,
     bannerColor: string,
     value: number,
-    twitter: string
+    twitter: string,
   ) {
     this.name = name
     this.photo = photo
@@ -320,28 +320,34 @@ class Card {
     return `
     <a href="${this.link}" target="_blank" class="card card--${this.shape}">
       <div class="card__orb">
-        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-orb-${this.cardColor
-      }.png" alt="" class="card__orb__image">
-        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-${this.value
-      }.png" alt="" class="card__orb__value">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-orb-${
+          this.cardColor
+        }.png" alt="" class="card__orb__image">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-${
+          this.value
+        }.png" alt="" class="card__orb__value">
       </div>
       <div class="card__banner">
-        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-banner-${this.bannerColor
-      }.png" alt="" class="card__banner">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-banner-${
+          this.bannerColor
+        }.png" alt="" class="card__banner">
         <div class="card__banner__text">${this.name}</div>
       </div>
       <div class="card__image">
-        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-frame-${this.shape
-      }-${this.bannerColor}.png" alt="" class="card__image__border">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-frame-${
+          this.shape
+        }-${this.bannerColor}.png" alt="" class="card__image__border">
         <svg class="card__image__svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 260 222.2" style="enable-background:new 0 0 260 222.2;" xml:space="preserve">
           <clipPath id="mask-${this.shape}">
           </clipPath>
-          <image clip-path="url(#mask-${this.shape})" height="100%" width="100%" ${this.shape === 'round' ? 'y="20"' : ''
-      } xlink:href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-${this.photo}" />
-          ${this.shiny
-        ? `<image clip-path="url(#mask-${this.shape})" width="100%" xlink:href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-sparkles.gif" class="card__image__sparkles" />`
-        : ``
-      }
+          <image clip-path="url(#mask-${this.shape})" height="100%" width="100%" ${
+            this.shape === 'round' ? 'y="20"' : ''
+          } xlink:href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-${this.photo}" />
+          ${
+            this.shiny
+              ? `<image clip-path="url(#mask-${this.shape})" width="100%" xlink:href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-sparkles.gif" class="card__image__sparkles" />`
+              : ``
+          }
         </svg>
       </div>
       <div class="card__description">
@@ -349,7 +355,8 @@ class Card {
             ${this.description}
         </div>
       </div>
-      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-card-back-${this.cardColor
+      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-card-back-${
+        this.cardColor
       }__${this.shape}.png" alt="" class="card__background">
     </a>
     `
@@ -394,7 +401,7 @@ onMounted(() => {
       getRandomArrayValue(cardColors),
       getRandomArrayValue(bannerColors),
       Math.floor(Math.random() * 9),
-      user.link
+      user.link,
     )
     if (cardsContainer.value !== null) {
       cardsContainer.value.innerHTML += newCard.getTemplate()
@@ -415,9 +422,12 @@ onMounted(() => {
 <template>
   <div class="flex flex-row animate__animated animate__lightSpeedInRight animate__delay-1s">
     <div v-if="!loading" class="max-h-[50vh] h-[50vh] overflow-x-auto overflow-y-hidden">
-      <div v-for="(group, i) of groups" :key="i"
+      <div
+        v-for="(group, i) of groups"
+        :key="i"
         class="flex h-[50vh] flex-row gap-0 color-white overflow-y-hidden p-1 flex-nowrap"
-        style="width: 100vw; overflow-x: auto">
+        style="width: 100vw; overflow-x: auto"
+      >
         <!-- <GameGalleryPosterDouble
         v-if="i == 1"
         :game1="group[0]"
@@ -429,10 +439,16 @@ onMounted(() => {
         <div v-for="(game, i) of group" :key="i">
           <div v-if="game !== undefined && game != null">
             <div target="_blank" class="card card--square" @click="loadGame(game)">
-              <div v-if="game.temperature !== 'none' && game.temperature !== undefined" class="card__orb"
-                :style="`${i == 0 ? 'top: 28px' : ''}`">
-                <img :src="`/images/games/${game.temperature === 'hot' ? 'hot' : 'cold'}.webp`" alt=""
-                  class="card__orb__image">
+              <div
+                v-if="game.temperature !== 'none' && game.temperature !== undefined"
+                class="card__orb"
+                :style="`${i == 0 ? 'top: 28px' : ''}`"
+              >
+                <img
+                  :src="`/images/games/${game.temperature === 'hot' ? 'hot' : 'cold'}.webp`"
+                  alt=""
+                  class="card__orb__image"
+                />
                 <!-- <img
             src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-5.png"
             alt=""
@@ -440,28 +456,50 @@ onMounted(() => {
           /> -->
               </div>
               <div :class="`${i == 0 ? 'card__banner_feat' : 'card__banner'}`">
-                <img v-if="game.temperature == 'cold'"
-                  src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-banner-blue.png" alt=""
-                  class="card__banner">
-                <img v-if="game.temperature == 'hot'"
-                  src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-banner-gold.png" alt=""
-                  class="card__banner">
-                <img v-if="game.temperature == 'none' || !game.temperature"
-                  src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-banner-black.png" alt=""
-                  class="card__banner">
+                <img
+                  v-if="game.temperature == 'cold'"
+                  src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-banner-blue.png"
+                  alt=""
+                  class="card__banner"
+                />
+                <img
+                  v-if="game.temperature == 'hot'"
+                  src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-banner-gold.png"
+                  alt=""
+                  class="card__banner"
+                />
+                <img
+                  v-if="game.temperature == 'none' || !game.temperature"
+                  src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-banner-black.png"
+                  alt=""
+                  class="card__banner"
+                />
                 <div class="card__banner__text">
                   {{ game.title }}
                 </div>
               </div>
               <div class="card__image">
-                <img :src="`/images/games/${game.developer}/${game.name.toLowerCase()}.avif`" alt=""
-                  class="card__image__border" :style="`${i == 0 ? 'top: 0px' : 'top:-10px'}`">
-                <image clip-path="url(#mask-square)" height="100%" width="100%"
-                  :xlink:href="`/images/games/${game.developer}/${game.name.toLowerCase()}.avif`" />
+                <img
+                  :src="`https://images.cashflowcasino.com/${game.developer}/${game.name.toLowerCase()}.avif`"
+                  alt=""
+                  class="card__image__border"
+                  :style="`${i == 0 ? 'top: 0px' : 'top:-10px'}`"
+                />
+                <image
+                  clip-path="url(#mask-square)"
+                  height="100%"
+                  width="100%"
+                  :xlink:href="`https://images.cashflowcasino.com/${game.developer}/${game.name.toLowerCase()}.avif`"
+                />
                 <!-- </svg> -->
               </div>
-              <img v-if="i === 0" src="/images/games/featured.webp" alt="" class="card__background">
-              <img v-else src="/images/games/tall-field.avif" alt="" class="card__background">
+              <img
+                v-if="i === 0"
+                src="/images/games/featured.webp"
+                alt=""
+                class="card__background"
+              />
+              <img v-else src="/images/games/tall-field.avif" alt="" class="card__background" />
               <!-- <img class="bottom_rocker" src="/images/games/vol-0.webp" alt="" /> -->
               <div class="flex bottom_rocker justify-center items-center">
                 <!-- V
@@ -476,209 +514,202 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <div v-else>
-      loading....
-    </div>
+    <div v-else>loading....</div>
   </div>
-
 </template>
 
 <style scoped>
-  .bottom_rocker {
-    position: absolute;
-    overflow: visible;
-    bottom: 0px;
-    left: 50%;
-    font-size: 42px;
-    font-weight: bold;
-    color: #fff;
-    transform: translate(-50%, -56%) scale(0.5);
-    z-index: 99999;
-  }
+.bottom_rocker {
+  position: absolute;
+  overflow: visible;
+  bottom: 0px;
+  left: 50%;
+  font-size: 42px;
+  font-weight: bold;
+  color: #fff;
+  transform: translate(-50%, -56%) scale(0.5);
+  z-index: 99999;
+}
 
-  .cards {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-  }
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
 
-  .card {
-    width: 50vw;
-    margin-left: 10px;
-    margin-left: 10px;
-    position: relative;
-    transition: transform 0.3s;
+.card {
+  width: 50vw;
+  margin-left: 10px;
+  margin-left: 10px;
+  position: relative;
+  transition: transform 0.3s;
+}
 
-  }
+.card__background {
+  position: relative;
+  width: 100%;
+  width: 100%;
+  max-height: 340px;
+  border-style: solid;
+  max-width: 180px;
+  max-height: 320px;
+  min-height: 150px;
+}
 
-  .card__background {
-    position: relative;
-    width: 100%;
-    width: 100%;
-    max-height: 340px;
-    border-style: solid;
-    max-width: 180px;
-    max-height: 320px;
-    min-height: 150px;
-  }
+.card__image__border {
+  position: absolute;
+  background-size: cover;
+  top: -10px;
+  left: 0;
+  width: 100%;
+  height: 38vh;
+  z-index: 2;
+  border-width: 2px;
+  border-color: #ffffff;
+  border-radius: 10px;
+}
 
-  .card__image__border {
-    position: absolute;
-    background-size: cover;
-    top: -10px;
-    left: 0;
-    width: 100%;
-    height: 38vh;
-    z-index: 2;
-    border-width: 2px;
-    border-color: #ffffff;
-    border-radius: 10px;
-
-  }
-
-
-  /* @media (max-width: 779px) {
+/* @media (max-width: 779px) {
   .card {
     margin: 10px;
   }
 } */
-  /*
+/*
 .card:hover {
   transform: scale(1.2);
   transition: transform 0.15s;
   cursor: pointer;
 } */
 
+.card__banner {
+  width: 100%;
+  position: absolute;
+  top: 5%;
+  left: 51%;
+  transform: translateX(-51.5%) scaleY(1.1);
+  background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-banner-gold.png') 0 0
+    no-repeat;
+  background-size: 100% auto;
+  z-index: 4;
+}
 
-  .card__banner {
-    width: 100%;
-    position: absolute;
-    top: 5%;
-    left: 51%;
-    transform: translateX(-51.5%) scaleY(1.1);
-    background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-banner-gold.png') 0 0 no-repeat;
-    background-size: 100% auto;
-    z-index: 4;
-  }
+.card__banner_feat {
+  width: 100%;
+  position: absolute;
+  top: 10%;
+  left: 51%;
+  transform: translateX(-51.5%);
+  background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-banner-gold.png') 0 0
+    no-repeat;
+  background-size: 100% auto;
+  z-index: 4;
+}
 
-  .card__banner_feat {
-    width: 100%;
-    position: absolute;
-    top: 10%;
-    left: 51%;
-    transform: translateX(-51.5%);
-    background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/49240/hand-banner-gold.png') 0 0 no-repeat;
-    background-size: 100% auto;
-    z-index: 4;
-  }
+.card__banner__text {
+  width: 90%;
+  position: absolute;
+  flex-wrap: nowrap;
+  top: -2px;
+  left: 50%;
+  transform: translate(-51%, 10%);
+  z-index: 5;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
+}
 
-  .card__banner__text {
-    width: 90%;
-    position: absolute;
-    flex-wrap: nowrap;
-    top: -2px;
-    left: 50%;
-    transform: translate(-51%, 10%);
-    z-index: 5;
-    text-align: center;
-    font-size: 16px;
-    font-weight: 600;
-    color: #ffffff;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
-  }
+.card__image {
+  width: 82%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+}
 
-  .card__image {
-    width: 82%;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 3;
-  }
+.card--square .card__image {
+  top: 13%;
+  background-size: cover;
+}
 
-  .card--square .card__image {
-    top: 13%;
-    background-size: cover;
-  }
+.card--round .card__image {
+  top: 2%;
+}
 
-  .card--round .card__image {
-    top: 2%;
-  }
+.card--pointy .card__image {
+  top: 13.5%;
+  width: 79%;
+  left: 46.5%;
+}
 
-  .card--pointy .card__image {
-    top: 13.5%;
-    width: 79%;
-    left: 46.5%;
-  }
+.card__image__svg {
+  width: calc(100% - 2px);
+  position: absolute;
+  top: -10px;
+  left: 2px;
+  z-index: 3;
+}
 
+.card--square .card__image__svg {
+  top: -5px;
+}
 
+.card--round .card__image__svg {
+  top: -0px;
+}
 
-  .card__image__svg {
-    width: calc(100% - 2px);
-    position: absolute;
-    top: -10px;
-    left: 2px;
-    z-index: 3;
-  }
+.card--pointy .card__image__svg {
+  top: -4px;
+}
 
-  .card--square .card__image__svg {
-    top: -5px;
-  }
+.card__image__sparkles {
+  mix-blend-mode: color-dodge;
+}
 
-  .card--round .card__image__svg {
-    top: -0px;
-  }
-
-  .card--pointy .card__image__svg {
-    top: -4px;
-  }
-
-  .card__image__sparkles {
-    mix-blend-mode: color-dodge;
-  }
-
-  .card__description {
-    width: 80%;
-    height: 37%;
-    position: absolute;
-    bottom: 0%;
-    left: 50%;
-    transform: translateX(-53%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 14px;
-    color: #eae3d1;
-    font-size: 14px;
-    /* line-height: 1.2;
+.card__description {
+  width: 80%;
+  height: 37%;
+  position: absolute;
+  bottom: 0%;
+  left: 50%;
+  transform: translateX(-53%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  color: #eae3d1;
+  font-size: 14px;
+  /* line-height: 1.2;
   text-align: center;
   font-weight: 400;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3); */
-  }
+}
 
-  .card__description strong {
-    color: #efc851;
-    font-weight: 400;
-  }
+.card__description strong {
+  color: #efc851;
+  font-weight: 400;
+}
 
-  .card__orb {
-    width: 20%;
-    position: absolute;
-    top: 2%;
-    left: -2%;
-    z-index: 6;
-  }
+.card__orb {
+  width: 20%;
+  position: absolute;
+  top: 2%;
+  left: -2%;
+  z-index: 6;
+}
 
-  .card__orb__image {
-    width: 100%;
-  }
+.card__orb__image {
+  width: 100%;
+}
 
-  .card__orb__value {
-    top: 50%;
-    left: 50%;
-    /* transform: translate(-50%, -50%); */
-    /* margin-top: -3px;
+.card__orb__value {
+  top: 50%;
+  left: 50%;
+  /* transform: translate(-50%, -50%); */
+  /* margin-top: -3px;
   margin-left: -1px; */
-    opacity: 1;
-  }
+  opacity: 1;
+}
 </style>

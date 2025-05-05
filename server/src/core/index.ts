@@ -1,34 +1,21 @@
-/**
- * @file ZilaWS
- * @module ZilaWS
- * @license
- * MIT License
- * Copyright (c) 2023 ZilaWS
- */
-
-// Removed Node.js imports for ws, fs, http, https
-// import { WebSocketServer, type WebSocket as WebSocketClient } from "ws";
-// import { readFileSync } from "fs";
-// import { createServer as createServerHTTP, type Server as ServerHTTP } from "http";
-// import { createServer as createServerHTTPS, type Server as ServerHTTPS } from "https";
-// import { IncomingMessage, IncomingHttpHeaders } from "http"; // Removed Node.js http imports
-
 import { ILogger, VerboseLogger, SimpleLogger } from "./verboseLogger";
 import ZilaClient from "./ZilaClient";
 import { CloseCodes, WSStatus } from "./enums";
 import { IWSMessage } from "./IWSMessage";
 import type { ZilaWSCallback } from "./ZilaWSCallback";
 import { parse as parseCookie } from "cookie"; // Still using the cookie library
-import type { ServerWebSocket, Serve, TLSOptions, Server } from "bun"; // Import Bun types
-import { authRoutes, getUserFromToken, login, me, register } from "../http/auth";
+import type { ServerWebSocket, TLSOptions, Server } from "bun"; // Import Bun types
+import { authRoutes, getUserFromToken } from "../http/auth";
 import { staticServe } from "./static";
-import { User, CORS_HEADERS, NETWORK_CONFIG } from "shared/";
+import { User, CORS_HEADERS } from "shared/";
 import { ICookie } from "./ICookie";
 import { userRoutes } from "../http/user";
 import { currencyRoutes } from "../http/currency";
 import { vipRoutes } from "../http/vip";
 import { gameRoutes } from "../http/game";
-import { withdrawalRoutes } from "../http/withdraw";
+import { withdrawalRoutes } from "../http/transactions/withdraw";
+import { handleCashAppWebhook } from "../http/transactions/cashapp.webhook";
+import { depositRoutes } from "../http/transactions/deposit";
 
 // Update IServerSettings to use Bun's Headers and potentially TLSOptions
 export interface IServerSettings {
@@ -181,8 +168,8 @@ export class ZilaServer<T extends ZilaClient = ZilaClient> {
     server: ZilaServer,
     isBrowser: boolean,
     headers: Headers, // Updated to Bun's Headers
-    cookies?: Map<string, string>,
-    user?: User
+    user: User,
+    cookies?: Map<string, string>
   ) => ZilaClient;
 
   // Bun.serve handles requests directly, no separate baseServer needed
@@ -298,6 +285,7 @@ export class ZilaServer<T extends ZilaClient = ZilaClient> {
           req.headers.get("X-Forwarded-For") ||
           req.headers.get("CF-Connecting-IP") ||
           req.socketAddress?.address;
+
         // Check for banned IPs before processing the request
         const [_, reason] = this.bannedIpsAndReasons.get(clientIp ?? "") ?? [undefined, undefined];
         if (reason) {
@@ -306,6 +294,7 @@ export class ZilaServer<T extends ZilaClient = ZilaClient> {
         }
         // Handle non-browser cookie security threat check
         // Bun's Request headers are a Headers object
+
         const setCookieHeader = req.headers.get("set-cookie");
         const sTypeHeader = req.headers.get("s-type");
 
@@ -335,21 +324,12 @@ export class ZilaServer<T extends ZilaClient = ZilaClient> {
           return res;
         }
 
-        // if (req.method === "POST" && req.url.endsWith(NETWORK_CONFIG.LOGIN.LOGIN)) {
-        //   console.log("here");
-        //   return await login(req);
-        // }
-        // if (req.method === "POST" && req.url.endsWith(NETWORK_CONFIG.LOGIN.REGISTER)) {
-        //   return await register(req);
-        // }
-        // if (req.method === "GET" && req.url.endsWith(NETWORK_CONFIG.LOGIN.ME)) {
-        //   console.log("getting me");
-        //   return await me(req);
-        // }
+        // const path = req.url.pathname;
+        console.log(req.url);
         let routeResult: any = false;
         let url = req.url.split("?")[0];
         let params = req.url.split("?")[1];
-        console.log("params ", params);
+        if (params) console.log("params ", params);
         let route = url.split("/auth")[1];
 
         if (route) routeResult = await authRoutes(req, `/auth${route}`);
@@ -358,30 +338,45 @@ export class ZilaServer<T extends ZilaClient = ZilaClient> {
         route = url.split("/user")[1];
         if (route) routeResult = await userRoutes(req, `/user${route}`);
         if (routeResult !== false) return routeResult;
-
-        route = url.split("/user")[1];
         if (route) routeResult = await vipRoutes(req, `/user${route}`);
+        if (routeResult !== false) return routeResult;
+        if (route) routeResult = await gameRoutes(req, `/user${route}`, params);
+        if (routeResult !== false) return routeResult;
+        if (route) routeResult = await depositRoutes(req, `/user${route}`);
         if (routeResult !== false) return routeResult;
 
         route = url.split("/currency")[1];
         if (route) routeResult = await currencyRoutes(req, `/currency${route}`);
         if (routeResult !== false) return routeResult;
-
-        route = url.split("/user")[1];
-        if (route) routeResult = await gameRoutes(req, `/user${route}`, params);
-        if (routeResult !== false) return routeResult;
-
         route = url.split("/games")[1];
-        console.log("route ", route);
-
         if (route) routeResult = await gameRoutes(req, `/games${route}`, params);
         if (routeResult !== false) return routeResult;
-
         route = url.split("/withdraw")[1];
         if (route) routeResult = await withdrawalRoutes(req, `/withdraw${route}`);
         if (routeResult !== false) return routeResult;
+        console.log(route);
+        if (route === undefined) {
+          route = url.replace("http://localhost:6589", "");
+        }
 
-        this.server.upgrade(req, { data: req });
+        // if (route.startsWith("/api/user")) {
+        //   // Example path prefix
+        //   const route = url.substring("/api/deposit".length); // Extract the specific route part
+        //   const depositResponse = await depositRoutes(req, route);
+        //   if (depositResponse !== false) {
+        //     // depositRoutes returns false if route not handled
+        //     return depositResponse;
+        //   }
+        // }
+
+        // Handle the Cash App webhook route
+        if (route === "/webhooks/cashapp" && req.method === "POST") {
+          return await handleCashAppWebhook(req as any);
+        }
+        // if (route === "/user/connect/websocket") this.server.upgrade(req, { data: req });
+
+        // Handle other routes...
+        // return new Response("Not Found", { status: 404 });
         // if (req.url.pathname !== "/") {
         //   try {
         //     const filePath = `./public${url.pathname}`;
@@ -398,13 +393,17 @@ export class ZilaServer<T extends ZilaClient = ZilaClient> {
         // and the request has the correct headers (Upgrade: websocket, Connection: Upgrade, etc.)
         // If it's a WebSocket request, you can handle it as a regular HTTP request.
         // For this ZilaServer, we'll return a 404 for non-WebSocket requests.
+        // console.log(req);
+        console.log("upgrading websocket");
+        this.server.upgrade(req, { data: req });
         return new Response("Not Found", { status: 404, headers: responseHeaders });
       },
       websocket: {
         // Bun's WebSocket handlers
         open: async (ws: ServerWebSocket<any>) => {
-          // Client connected via WebSocket
           console.log("open");
+          const that = this;
+          // Client connected via WebSocket
           const req = ws.data as Request; // Access the original request from ws.data
           const clientIp = req.headers.get("host")?.split(":") as [string, string];
           // req.headers.get("host")?.split(":") ||
@@ -426,30 +425,38 @@ export class ZilaServer<T extends ZilaClient = ZilaClient> {
           };
           const user = await getUserFromToken(cookiesMap.get("token"));
           if (user === null) ws.close(1000, "Unauthorized");
+          // console.log(user);
           // Determine if the client is a browser based on the s-type header
           const sTypeHeader = req.headers.get("s-type");
           const isBrowser = sTypeHeader !== "1";
 
           // Create a new ZilaClient instance
           const ip = clientIp[0] + clientIp[1];
+          // console.log(cookiesMap);
           let zilaSocket = new this.clientClass(
             ws, // Pass Bun's WebSocket object
             ip,
-            this, // Pass the ZilaServer instance
-            isBrowser,
-            req.headers, // Pass Bun's Headers object
-            cookiesMap, // Pass parsed cookies
-            user as User
+            //@ts-ignore
+            this.server,
+            true,
+            req.headers,
+            // this, // Pass the ZilaServer instance
+            // isBrowser,
+            // req.headers, // Pass Bun's Headers object
+            user as User,
+            cookiesMap // /Pass parsed cookies
           );
+          // console.log("cookies: ", zilaSocket.cookies);
           zilaSocket.setCookie(cookie);
           // Store the ZilaSocket instance on the WebSocket object for easy access in other handlers
-          ws.data = { zilaSocket: zilaSocket, request: req };
+          ws.data = { zilaSocket: zilaSocket, request: req, remoteAddress: ws.remoteAddress };
 
           // Add the client to the server's clients list
           this._clients.push(zilaSocket);
 
           // Trigger the onClientConnect event
           if (this.serverEvents.onClientConnect) {
+            console.log("asdf");
             for (const cb of this.serverEvents.onClientConnect) {
               cb(zilaSocket as T);
             }
@@ -462,8 +469,6 @@ export class ZilaServer<T extends ZilaClient = ZilaClient> {
           const zilaSocket = ws.data.zilaSocket as ZilaClient;
           if (ws.data.req == undefined) ws.data.req = ws.data.request;
           const req = ws.data.req as Request;
-          console.log(message);
-          console.log(req.headers);
 
           const datastring = typeof message === "string" ? message : message.toString(); // Handle Buffer messages
 
@@ -485,8 +490,11 @@ export class ZilaServer<T extends ZilaClient = ZilaClient> {
           console.log("close");
           // Client disconnected
           const zilaSocket = ws.data.zilaSocket as ZilaClient;
+          if (ws.data.req == undefined) ws.data.req = ws.data.request;
+
           const req = ws.data.req as Request;
 
+          if (req === undefined) console.log(ws.data);
           // Remove the client from the server's clients list
           const clientIndex = this._clients.indexOf(zilaSocket);
           if (clientIndex > -1) {
@@ -499,8 +507,8 @@ export class ZilaServer<T extends ZilaClient = ZilaClient> {
               cb(zilaSocket as T, code, reason);
             }
           }
-
-          const clientIp = req.headers.get("host")?.split(":") as [string, string];
+          let clientIp;
+          if (req !== undefined) clientIp = req.headers.get("host")?.split(":") as [string, string];
           if (this.VerbLog) {
             this.VerbLog.log(
               `A client has been disconnected. IP: ${clientIp[0]}:${clientIp[1]} | Code: ${code} | Reason: ${reason}`
@@ -527,6 +535,7 @@ export class ZilaServer<T extends ZilaClient = ZilaClient> {
       // Bun.serve returns a Server object, but we don't need to store it in a baseServer property
       // as all handling is done within the handlers above.
     });
+    //createing the dataase listener
 
     this._status = WSStatus.OPEN;
 
@@ -550,6 +559,23 @@ export class ZilaServer<T extends ZilaClient = ZilaClient> {
       this.stopServerAsync("Server shutting down");
       process.exit(0);
     });
+  }
+
+  async stopServerAsync(message: string) {
+    this._status = WSStatus.CLOSED;
+    this.Logger?.log(message);
+    // Close all WebSocket connections
+    for (const client of this.clients) {
+      client.socket.close(1001, message); // 1001: Going Away
+    }
+
+    // Wait for a short time to allow clients to disconnect
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    // Stop the server
+    this.server.unref();
+    this._status = WSStatus.CLOSED;
+    this.Logger?.log("Server has been stopped.");
   }
 
   /**
@@ -592,12 +618,16 @@ export class ZilaServer<T extends ZilaClient = ZilaClient> {
             }
             console.log("cookie msg ", msgObj.message[0]);
             // Parse the cookie string received from the client
-            const syncedCookies = parseCookie(msgObj.message[0]);
-            console.log("synced cookies ", syncedCookies);
+            const parsedCookies = parseCookie(msgObj.message[0]);
+            console.log("synced cookies ", parsedCookies);
             try {
+              // Filter out undefined values before storing
+              const syncedCookies = Object.fromEntries(
+                Object.entries(parsedCookies).filter(([_, v]) => v !== undefined)
+              ) as Record<string, string>;
               ZilaClient.StoreSyncedCookies(socket, syncedCookies);
             } catch (e) {
-              console.log("error syncing cookies ", syncedCookies);
+              console.log("error syncing cookies ", parsedCookies);
             }
             if (beforeCookies) {
               for (const cb of this.serverEvents.onCookieSync!) {
@@ -615,85 +645,85 @@ export class ZilaServer<T extends ZilaClient = ZilaClient> {
             req.headers.get("host")?.split(":") ||
             req.headers.get("X-Forwarded-For") ||
             req.headers.get("CF-Connecting-IP") ||
-          req.socketAddress?.address;
+            socket.socket.remoteAddress;
           this.Logger?.warn(`Invalid SyncCookies message format from ${clientIp[0]}:${clientIp[1]}`);
           // Optionally close the connection for a bad message
           socket.socket.close(CloseCodes.BAD_MESSAGE, "Invalid SyncCookies message format");
         }
-       }
+      }
 
-       return; // Stop processing if it's a built-in message that's been handled
-     }
+      return; // Stop processing if it's a built-in message that's been handled
+    }
 
-     // Process custom message handlers if the identifier starts with "@" (after slicing)
-     if (msgObj.identifier && msgObj.identifier[0] === "@") {
-       msgObj.identifier = msgObj.identifier.slice(1);
-     } else {
-       // If identifier doesn't start with "@" and wasn't a recognized built-in, treat as bad message
-       const clientIp = req.headers.get("host")?.split(":") as [string, string];
-       //req.socketAddress?.address;
-       this.Logger?.warn(
-         `Unrecognized message identifier format from ${clientIp[0]}:${clientIp[1]}: ${msgObj.identifier}`
-       );
-       socket.socket.close(CloseCodes.BAD_MESSAGE, "Unrecognized message format");
-       return;
-     }
+    // Process custom message handlers if the identifier starts with "@" (after slicing)
+    if (msgObj.identifier && msgObj.identifier[0] === "@") {
+      msgObj.identifier = msgObj.identifier.slice(1);
+    } else {
+      // If identifier doesn't start with "@" and wasn't a recognized built-in, treat as bad message
+      const clientIp = req.headers.get("host")?.split(":") as [string, string];
+      //req.socketAddress?.address;
+      this.Logger?.warn(
+        `Unrecognized message identifier format from ${clientIp[0]}:${clientIp[1]}: ${msgObj.identifier}`
+      );
+      socket.socket.close(CloseCodes.BAD_MESSAGE, "Unrecognized message format");
+      return;
+    }
 
-     if (this.serverEvents.onClientRawMessageBeforeCallback) {
-       for (const cb of this.serverEvents.onClientRawMessageBeforeCallback) {
-         cb(socket as T, msg);
-       }
-     }
+    if (this.serverEvents.onClientRawMessageBeforeCallback) {
+      for (const cb of this.serverEvents.onClientRawMessageBeforeCallback) {
+        cb(socket as T, msg);
+      }
+    }
 
-     if (this.serverEvents.onClientMessageBeforeCallback) {
-       for (const cb of this.serverEvents.onClientMessageBeforeCallback) {
-         cb(socket as T, msgObj.identifier, msgObj.message);
-       }
-     }
+    if (this.serverEvents.onClientMessageBeforeCallback) {
+      for (const cb of this.serverEvents.onClientMessageBeforeCallback) {
+        cb(socket as T, msgObj.identifier, msgObj.message);
+      }
+    }
 
-     const callback = this.callbacks[msgObj.identifier];
-     // Ensure message is not null before calling the callback with spread syntax
-     if (callback !== undefined && callback !== null && msgObj.message !== null) {
-       Promise.resolve(callback(socket, ...msgObj.message))
-         .then((val) => {
-           if (msgObj.callbackId && msgObj.callbackId != null) {
-             this.send(socket, msgObj.callbackId, val);
-           }
-         })
-         .catch((error) => {
-           const clientIp = req.headers.get("host")?.split(":") as [string, string];
-           this.Logger?.error(
-             `Error executing message handler ${msgObj.identifier} for client ${clientIp[0]}:${clientIp[1]}: ${error.stack}`
-           );
-           // Optionally send an error response back to the client or close the connection
-           // socket.send("Error", `Error processing message: ${msgObj.identifier}`);
-         });
-     } else if (callback !== undefined && callback !== null && msgObj.message === null) {
-       // Handle case where message is null but callback exists
-       Promise.resolve(callback(socket))
-         .then((val) => {
-           if (msgObj.callbackId && msgObj.callbackId != null) {
-             this.send(socket, msgObj.callbackId, val);
-           }
-         })
-         .catch((error) => {
-           const clientIp = req.headers.get("host")?.split(":") as [string, string];
-           this.Logger?.error(
-             `Error executing message handler ${msgObj.identifier} for client ${clientIp[0]}:${clientIp[1]}: ${error.stack}`
-           );
-         });
-     } else {
-       // No handler found for the identifier
-       const clientIp = req.headers.get("host")?.split(":") as [string, string];
-       this.Logger?.warn(
-         `No message handler registered for identifier "${msgObj.identifier}" from client ${clientIp[0]}:${clientIp[1]}`
-       );
-       // Optionally send an error back to the client indicating no handler
-       // if (msgObj.callbackId) {
-       //     socket.send(msgObj.callbackId, { error: `No handler for ${msgObj.identifier}` });
-       // }
-     }
-   }
+    const callback = this.callbacks[msgObj.identifier];
+    // Ensure message is not null before calling the callback with spread syntax
+    if (callback !== undefined && callback !== null && msgObj.message !== null) {
+      Promise.resolve(callback(socket, ...msgObj.message))
+        .then((val) => {
+          if (msgObj.callbackId && msgObj.callbackId != null) {
+            this.send(socket, msgObj.callbackId, val);
+          }
+        })
+        .catch((error) => {
+          const clientIp = req.headers.get("host")?.split(":") as [string, string];
+          this.Logger?.error(
+            `Error executing message handler ${msgObj.identifier} for client ${clientIp[0]}:${clientIp[1]}: ${error.stack}`
+          );
+          // Optionally send an error response back to the client or close the connection
+          // socket.send("Error", `Error processing message: ${msgObj.identifier}`);
+        });
+    } else if (callback !== undefined && callback !== null && msgObj.message === null) {
+      // Handle case where message is null but callback exists
+      Promise.resolve(callback(socket))
+        .then((val) => {
+          if (msgObj.callbackId && msgObj.callbackId != null) {
+            this.send(socket, msgObj.callbackId, val);
+          }
+        })
+        .catch((error) => {
+          const clientIp = req.headers.get("host")?.split(":") as [string, string];
+          this.Logger?.error(
+            `Error executing message handler ${msgObj.identifier} for client ${clientIp[0]}:${clientIp[1]}: ${error.stack}`
+          );
+        });
+    } else {
+      // No handler found for the identifier
+      const clientIp = req.headers.get("host")?.split(":") as [string, string];
+      this.Logger?.warn(
+        `No message handler registered for identifier "${msgObj.identifier}" from client ${clientIp[0]}:${clientIp[1]}`
+      );
+      // Optionally send an error back to the client indicating no handler
+      // if (msgObj.callbackId) {
+      //     socket.send(msgObj.callbackId, { error: `No handler for ${msgObj.identifier}` });
+      // }
+    }
+  }
 
   /**
    * Removes a specific callback from the specified event type.
@@ -726,7 +756,7 @@ export class ZilaServer<T extends ZilaClient = ZilaClient> {
       that.removeEventListener(eventType, onceCallback as any); // Cast needed due to function wrapper
       (callback as Function)(...args);
     }
-
+    //@ts-ignore
     this.addEventListener(eventType, onceCallback as any); // Cast needed due to function wrapper
   }
 
@@ -772,9 +802,63 @@ export class ZilaServer<T extends ZilaClient = ZilaClient> {
   }
 
   /**
-   * Calls an eventhandler on the client-side for the specified client. Gets a value of T type back from the client or just waits for the eventhandler to finish.
-   * @param {T} socket The websocket client
-   * @param {string} identifier The callback's name on the client-side.
-   * @param {number} maxWaitingTime The maximum time this waiter will wait for the client. Defaults to the server's maxWaiterTime.
-   * @param {any|undefined} data Arguments that shall be passed to the callback as parameters (optional)
-   * @returns {Promise
+   * Registers an eventhandler.
+   * The registered callback will run when one of the clients ask for it with the given identifier.
+   * Can get overrided with using the same identifier.
+   * @param identifier The eventhandler's name
+   * @param callback The eventhandler
+   */
+  public setMessageHandler(identifier: string, callback: ZilaWSCallback<T>): void {
+    this.callbacks[identifier] = callback as ZilaWSCallback<ZilaClient>;
+  }
+
+  /**
+   * Removes an MessageHandler. The callback will no longer get triggered when one of the client asks for it.
+   * @param identifier
+   */
+  public removeMessageHandler(identifier: string): void {
+    delete this.callbacks[identifier];
+  }
+
+  /**
+   * Registers a MessageHandler that only can be called once.
+   * @param identifier
+   * @param callback
+   */
+  public onceMessageHandler(identifier: string, callback: ZilaWSCallback<T>): void {
+    this.callbacks[identifier] = (socket: ZilaClient, ...args: any[]) => {
+      this.removeMessageHandler(identifier);
+      return callback(socket as T, ...args);
+    };
+  }
+
+  /**
+   * Disconnects a client from the WS server
+   * @param socket
+   * @param reason The reason for this action. Will get sent down to client.
+   */
+  public kickClient(socket: ZilaClient, reason?: string) {
+    socket.socket.close(CloseCodes.KICKED, reason);
+  }
+
+  /**
+   * The server will no longer accept connections from that IP-address.
+   * The list of banned IPs resets on every server restart.
+   * @param socket
+   * @param reason
+   */
+  public banClient(socket: ZilaClient, reason?: string) {
+    socket.socket.close(CloseCodes.BANNED, reason);
+    if (socket.ip) {
+      this.bannedIpsAndReasons.set(socket.ip, reason);
+    }
+  }
+
+  /**
+   * Stops the ZilaWS server
+   */
+  public stopServer() {
+    this.server.stop();
+    // this.baseServer.close();
+  }
+}

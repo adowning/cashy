@@ -1,7 +1,7 @@
 import { EXITTYPE, NetworkData, SENDTYPE } from './NetworkData'
 import axios, { type AxiosInstance, type AxiosRequestConfig } from 'axios'
 import { get } from 'lodash-es'
-import { createWebSocket } from '@/plugins/socket'
+// import { createWebSocket } from '@/plugins/socket'
 
 /**
  * Event Object

@@ -64,7 +64,11 @@ const svgIconTransform = (el: any) => {
 }
 
 /* live win game temp list */
-
+const onImageError = (event: Event) => {
+  const target = event.target as HTMLImageElement
+  target.src = '../assets/logo.png'
+  target.style.objectFit = 'contain'
+}
 const gameBigWinItem = computed(() => {
   // const { getGameBigWinItem } = storeToRefs(gameStore())
   const getGameBigWinItem = gameStore.gameBigWinItem
@@ -102,7 +106,12 @@ onMounted(async () => {
 
 const liveWinList = () => {
   let res = [...gameBigWinItem.value.lucky_bets, ...gameBigWinItem.value.lucky_bets]
-  console.log(res.length)
+  // console.log(res.length)
+  res.forEach((item) => {
+    // console.log(item.game_icon)
+    item.game_icon = item.game_icon.replace('/images/games', 'https://images.cashflowcasino.com')
+    // console.log(item.game_icon)
+  })
   return res
 }
 </script>
@@ -167,7 +176,11 @@ const liveWinList = () => {
             @click="goGame(item)"
           >
             <div class="text-center">
-              <img :src="item.game_icon || '/images/games/heart.png'" class="live-win-img" />
+              <img
+                :src="item.game_icon || '@/assets/logo.png'"
+                class="live-win-img"
+                @error="onImageError"
+              />
               <div class="live-win-level-text">
                 <img :src="vipLevelGroups[item.user_vip_group]" width="12" />
                 <p class="text-500-8 white ml-1">{{ item.user_name }}</p>
@@ -228,7 +241,7 @@ const liveWinList = () => {
 .m-home-live-win {
   height: 133px;
   position: relative;
-  margin: 48px 0px 0px 10px;
+  margin: 0px 0px 0px 10px;
   .m-live-win-img-width {
     width: 100%;
   }

@@ -1,6 +1,6 @@
 // src/composables/useWebSocketNotifications.ts
-import { useNotificationStore } from '@/stores/notifications.ts'
-import { useUserStore } from '@/stores/user.ts'
+import { useNotificationStore } from '@/stores/notifications'
+import { useUserStore } from '@/stores/user'
 import { useWebSocket, type UseWebSocketReturn } from '@vueuse/core'
 import { useQuery, useQueryClient } from '@tanstack/vue-query'
 import { readonly, ref, shallowRef, watch } from 'vue' // Import shallowRef and readonly
@@ -193,7 +193,7 @@ _openProxy.value = (data: any): boolean => {
  * @param url The WebSocket server URL.
  * @param isNotificationMessage Optional custom function to identify notification messages.
  */
-export function initializeWebSocket(
+export function initializeVueWebSocket(
   url: string,
   isNotificationMessage: (data: any) => boolean = defaultIsNotificationMessage,
   isStatsUpdateMessage: (data: any) => boolean = defaultIsStatsUpdateMessage,

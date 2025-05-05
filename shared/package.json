@@ -2,7 +2,9 @@
   "name": "shared",
   "version": "0.2.1",
   "author": "warstekhun",
-  "devDependencies": {},
+  "dependencies": {
+    "server": "workspace:^"
+  },
   "$schema": "https://json.schemastore.org/package",
   "engines": {
     "bun": ">1.1.1"

@@ -2,21 +2,22 @@
   <!-- <div class="container"></div>
     <div class="spinner"></div>
     <div class="backdrop"></div> -->
-  <div class="container" v-if="showLoading" />
-  <div class="loader" style="transform: translateY(-20px) scale(0.4) translateX(20px)">
-    <span style="font-size: 40px; font-weight: 500" class="glow">loading</span>
-    <span style="--i: 1"><i class="fa-solid fa-star"></i></span>
-    <span style="--i: 2"><i class="fa-solid fa-star"></i></span>
-    <span style="--i: 3"><i class="fa-solid fa-star"></i></span>
-    <span style="--i: 4"><i class="fa-solid fa-star"></i></span>
-    <span style="--i: 5"><i class="fa-solid fa-star"></i></span>
-    <span style="--i: 6"><i class="fa-solid fa-star"></i></span>
-    <span style="--i: 7"><i class="fa-solid fa-star"></i></span>
-    <span style="--i: 8"><i class="fa-solid fa-star"></i></span>
-    <span style="--i: 9"><i class="fa-solid fa-star"></i></span>
-    <span style="--i: 10"><i class="fa-solid fa-star"></i></span>
-    <span style="--i: 11"><i class="fa-solid fa-star"></i></span>
-    <span style="--i: 12"><i class="fa-solid fa-star"></i></span>
+  <div class="container">
+    <div class="loader" style="transform: translateY(-20px) scale(0.4) translateX(20px)">
+      <span style="font-size: 40px; font-weight: 500" class="glow">loading</span>
+      <span style="--i: 1"><i class="fa-solid fa-star"></i></span>
+      <span style="--i: 2"><i class="fa-solid fa-star"></i></span>
+      <span style="--i: 3"><i class="fa-solid fa-star"></i></span>
+      <span style="--i: 4"><i class="fa-solid fa-star"></i></span>
+      <span style="--i: 5"><i class="fa-solid fa-star"></i></span>
+      <span style="--i: 6"><i class="fa-solid fa-star"></i></span>
+      <span style="--i: 7"><i class="fa-solid fa-star"></i></span>
+      <span style="--i: 8"><i class="fa-solid fa-star"></i></span>
+      <span style="--i: 9"><i class="fa-solid fa-star"></i></span>
+      <span style="--i: 10"><i class="fa-solid fa-star"></i></span>
+      <span style="--i: 11"><i class="fa-solid fa-star"></i></span>
+      <span style="--i: 12"><i class="fa-solid fa-star"></i></span>
+    </div>
   </div>
   <!-- <div class="logo"> -->
   <!-- <img src="/images/logo.png" w="200" h="180" /> -->
@@ -51,6 +52,7 @@ onMounted(() => {
   margin: 0;
   top: 0px;
   left: 0px;
+  z-index: 999999999;
   padding: 40px;
   display: flex;
   position: fixed;
@@ -60,7 +62,9 @@ onMounted(() => {
   background-image: url('/images/loading.png');
   background-size: 100% 100%;
   min-height: 100vh;
+  height: 100vh;
   min-width: 100vw;
+  width: 100vw;
 }
 
 .logo {
@@ -83,7 +87,7 @@ onMounted(() => {
   height: 200px;
   display: flex;
   align-items: center;
-  top: 60%;
+  top: 55%;
   left: 25%;
   transform: translate(-50%, -50%);
   justify-content: center;

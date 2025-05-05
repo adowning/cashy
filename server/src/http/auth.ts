@@ -8,15 +8,15 @@ import type { BunRequest } from "bun";
 const validateUser = async (username: string, password: string) => {
   // const u = await db.user.findMany({});
   const user = await db.user.findFirst({
-    where: { username: "ash" },
+    where: { username: username },
     include: { activeProfile: { include: { operator: true } } },
   });
 
   if (user === null) {
     return null;
   }
-  // const isPasswordValid = await Bun.password.verify(password, user.passwordHash!);
-  const isPasswordValid = await Bun.password.verify("asdfasdf", user.passwordHash!);
+  const isPasswordValid = await Bun.password.verify(password, user.passwordHash!);
+  // const isPasswordValid = await Bun.password.verify("asdfasdf", user.passwordHash!);
   if (isPasswordValid === false) {
     return null;
   }
@@ -264,7 +264,7 @@ export async function login(req: BunRequest) {
     return new Response(JSON.stringify({ message: "Invalid credentials", code: 401 }), { status: 401 });
   }
 
-  const token = await generateAccessToken(user.id);
+  const token = generateAccessToken(user.id);
 
   const cookieOptions = {
     httpOnly: true,

@@ -6,11 +6,26 @@ export type FriendshipStatus = "PENDING" | "ACCEPTED" | "BLOCKED";
 
 export type Gender = "BOY" | "GIRL" | "ALIEN" | "UNSURE" | "ROBOT" | "COMPLICATED";
 
-export type NotificationType = "SYSTEM" | "FRIEND_REQUEST" | "ACHIEVEMENT" | "BALANCE_UPDATE" | "PROMOTIONAL" | "TOURNAMENT";
+export type NotificationType =
+  | "SYSTEM"
+  | "FRIEND_REQUEST"
+  | "ACHIEVEMENT"
+  | "BALANCE_UPDATE"
+  | "PROMOTIONAL"
+  | "TOURNAMENT";
 
 export type TransactionStatus = "PENDING" | "COMPLETED" | "FAILED" | "CANCELLED" | "REFUNDED";
 
-export type TransactionType = "DEPOSIT" | "WITHDRAWAL" | "BET" | "WIN" | "BONUS" | "DONATION" | "ADJUSTMENT" | "TOURNAMENT_BUYIN" | "TOURNAMENT_PRIZE";
+export type TransactionType =
+  | "DEPOSIT"
+  | "WITHDRAWAL"
+  | "BET"
+  | "WIN"
+  | "BONUS"
+  | "DONATION"
+  | "ADJUSTMENT"
+  | "TOURNAMENT_BUYIN"
+  | "TOURNAMENT_PRIZE";
 
 export type UserStatus = "ACTIVE" | "INACTIVE" | "ONLINE" | "OFFLINE";
 
@@ -47,13 +62,15 @@ export interface IUser {
   username: string;
   passwordHash: string | null;
   totalXp: number;
-  balance: Decimal;
+  balance: number;
   isVerified: boolean;
   active: boolean;
   lastLogin: Date | null;
+  lastDailySpin: Date | null;
   verificationToken: string | null;
   avatar: string | null;
   activeProfileId: string | null;
+  vipInfoId: string | null;
   gender: Gender | null;
   status: UserStatus | null;
   cashtag: string | null;
@@ -68,9 +85,10 @@ export interface IUser {
   friendship_friendship_userIdTouser: Ifriendship[];
   notification: Inotification[];
   operator: Ioperator[];
-  activeProfile: Iprofile[];
+  activeProfile: Iprofile;
   tournamententry: Itournamententry[];
   userachievement: Iuserachievement[];
+  vipInfo: IVipInfo | null;
 }
 
 export interface ISession {
@@ -423,5 +441,57 @@ export interface IRainWinner {
 }
 
 type Decimal = { valueOf(): string };
+
+interface IVipInfo {
+  id: number;
+  level: number;
+  deposit_exp: number;
+  bet_exp: number;
+  rank_bet_exp: number;
+  rank_deposit_exp: number;
+  rank_name: string;
+  icon: string;
+  exp_switch_type: number;
+  now_deposit_exp: string;
+  level_deposit_exp: string;
+  now_bet_exp: string;
+  level_bet_exp: string;
+  telegram: string;
+  is_protection: boolean;
+  protection_deposit_exp: string;
+  protection_deposit_amount: string;
+  protection_bet_exp: string;
+  protection_bet_amount: string;
+  protection_days: number;
+  protection_switch: number;
+  cycle_award_switch: boolean;
+  level_award_switch: boolean;
+  signin_award_switch: boolean;
+  bet_award_switch: boolean;
+  withdrawal_award_switch: boolean;
+  unprotection_deposit_exp: string;
+  unprotection_deposit_amount: string;
+  unprotection_bet_exp: string;
+  unprotection_bet_amount: string;
+  unprotection_days: number;
+  unprotection_switch: number;
+  main_currency: string;
+  can_receive_level_award: boolean;
+  can_receive_rank_award: boolean;
+  can_receive_day_award: boolean;
+  can_receive_week_award: boolean;
+  can_receive_month_award: boolean;
+  can_receive_signin_award: boolean;
+  can_receive_bet_award: boolean;
+  can_receive_withdrawal_award: boolean;
+  userid: string;
+  free_spin_times: number;
+  week_gift: number;
+  month_gift: number;
+  upgrade_gift: number;
+  now_cash_back: number;
+  yesterday_cash_back: number;
+  history_cash_back: number;
+}
 
 type JsonValue = string | number | boolean | { [key in string]?: JsonValue } | Array<JsonValue> | null;

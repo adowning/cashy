@@ -1,6 +1,7 @@
 // import { router } from '@/router'
 import { createApp } from 'vue'
-import Vue3Marquee from 'vue3-marquee'
+// import Vue3Marquee from 'vue3-marquee'
+import { VueQueryPlugin } from '@tanstack/vue-query'
 import App from './App.vue'
 import { setupStore } from './stores'
 // import { posthog } from 'posthog-js'
@@ -23,13 +24,13 @@ async function bootstrap(namespace: string) {
   //   api_host: POSTHOG_HOST,
   //   // Other PostHog options can be added here
   // })
-
+  app.use(VueQueryPlugin)
   // ;(window as any).posthog = posthog
   await setupStore(app)
   app.component('inline-svg', InlineSvg)
 
   app.use(router)
-  app.use(Vue3Marquee)
+  // app.use(Vue3Marquee)
   app.mount('#app')
   // const playerId = ''
   // startSubscriptions()

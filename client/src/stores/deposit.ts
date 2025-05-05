@@ -4,6 +4,7 @@ import { NETWORK_CONFIG } from 'shared/types/NetworkCfg'
 import { Network } from '@/net/Network'
 import type * as Deposit from 'shared/interface/deposit'
 import { handleException } from './exception' // Assuming this path is correct
+import type { Product } from 'shared/prisma/interfaces'
 
 export const useDepositStore = defineStore('deposit', () => {
   // State properties converted to reactive references
@@ -20,6 +21,11 @@ export const useDepositStore = defineStore('deposit', () => {
   const depositSubmit = ref<any>({}) // Keeping 'any' type as in original
   const pixInfo = ref<Deposit.GetPixInfo>({} as Deposit.GetPixInfo) // Keeping type assertion as in original
   const pixInfoToggle = ref(false)
+  const shopOpen = ref(false)
+  const products = ref<Product[]>([])
+  const selectedPaymentMethod = ref<string>('')
+  const selectedProduct = ref<Product>()
+  const operatorData = ref<Deposit.OperatorData>()
   const depositHistoryItem = ref<Deposit.DepositHistoryResponse>(
     {} as Deposit.DepositHistoryResponse,
   ) // Keeping type assertion as in original
@@ -32,12 +38,25 @@ export const useDepositStore = defineStore('deposit', () => {
   const getPixInfo = computed(() => pixInfo.value)
   const getPixInfoToggle = computed(() => pixInfoToggle.value)
   const getDepositHistoryItem = computed(() => depositHistoryItem.value)
+  const getProducts = computed(() => products.value)
+  const getOperatorData = computed(() => operatorData.value)
+  const getSelectedPaymentMethod = computed(() => selectedPaymentMethod.value)
+  const getSelectedProduct = computed(() => selectedProduct.value)
 
   // Actions converted to regular functions
   const setSuccess = (isSuccess: boolean) => {
     success.value = isSuccess
   }
-
+  const toggleShopOpen = () => {
+    shopOpen.value = !shopOpen.value
+    console.log(shopOpen.value)
+  }
+  const setSelectedPaymentMethod = (method: string) => {
+    selectedPaymentMethod.value = method
+  }
+  const setSelectedProduct = (product: Product) => {
+    selectedProduct.value = product
+  }
   const setErrorMessage = (message: string) => {
     errMessage.value = message
   }
@@ -64,6 +83,43 @@ export const useDepositStore = defineStore('deposit', () => {
     depositHistoryItem.value = item
   }
 
+  const setProducts = (item: Product[]) => {
+    products.value = item
+  }
+  const setOperatorData = (item: Deposit.OperatorData) => {
+    operatorData.value = item
+  }
+  const dispatchProducts = async () => {
+    setSuccess(false)
+    const route: string = NETWORK_CONFIG.DEPOSIT_PAGE.PRODUCTS
+    const network: Network = Network.getInstance()
+
+    const next = (response: Deposit.GetProductsResponse) => {
+      if (response.code == 200) {
+        setSuccess(true)
+        setProducts(response.products)
+      } else {
+        setErrorMessage(handleException(response.code))
+      }
+    }
+    await network.sendMsg(route, {}, next, 1, 4)
+  }
+  const dispatchOperatorData = async () => {
+    setSuccess(false)
+    const route: string = NETWORK_CONFIG.DEPOSIT_PAGE.OPERATOR_DATA
+    const network: Network = Network.getInstance()
+
+    const next = (response: Deposit.GetOperatorDataResponse) => {
+      if (response.code == 200) {
+        setSuccess(true)
+        setOperatorData(response.operator)
+        setProducts(response.operator.products)
+      } else {
+        setErrorMessage(handleException(response.code))
+      }
+    }
+    await network.sendMsg(route, {}, next, 1, 4)
+  }
   // user deposit configuration
   const dispatchUserDepositCfg = async () => {
     setSuccess(false)
@@ -118,7 +174,16 @@ export const useDepositStore = defineStore('deposit', () => {
 
   // Return all state, getters, and actions
   return {
-    success,
+    shopOpen,
+    toggleShopOpen,
+    dispatchProducts,
+    getProducts,
+    dispatchOperatorData,
+    getOperatorData,
+    getSelectedPaymentMethod,
+    setSelectedPaymentMethod,
+    getSelectedProduct,
+    setSelectedProduct,
     errMessage,
     depositConfig,
     depositSubmit,

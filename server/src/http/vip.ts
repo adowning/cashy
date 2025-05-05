@@ -1,5 +1,5 @@
 import { BunRequest } from "bun";
-import { NETWORK_CONFIG } from "shared";
+import { NETWORK_CONFIG, User } from "shared";
 import { getUserFromHeader } from "./auth";
 import type {
   VipInfo,
@@ -62,12 +62,7 @@ import type {
     "method": 1
 }
     */
-export async function getVipLevels(req: BunRequest) {
-  const user: any = await getUserFromHeader(req);
-  if (!user) {
-    return new Response(JSON.stringify({ message: "Unauthorized", code: 401 }), { status: 401 });
-  }
-
+export async function getVipLevels() {
   const list: VipLevel = {
     level: 0,
     rank_id: 0,
@@ -105,12 +100,7 @@ export async function getVipLevels(req: BunRequest) {
   return new Response(JSON.stringify(response));
 }
 
-export async function getVipInfo(req: BunRequest) {
-  const user: any = await getUserFromHeader(req);
-  if (!user) {
-    return new Response(JSON.stringify({ message: "Unauthorized", code: 401 }), { status: 401 });
-  }
-
+export async function getVipInfo() {
   const list: VipInfo = {
     level: 0,
     deposit_exp: 0,
@@ -170,12 +160,7 @@ export async function getVipInfo(req: BunRequest) {
   return new Response(JSON.stringify(response));
 }
 
-export async function getVipLevelAward(req: BunRequest) {
-  const user: any = await getUserFromHeader(req);
-  if (!user) {
-    return new Response(JSON.stringify({ message: "Unauthorized", code: 401 }), { status: 401 });
-  }
-
+export async function getVipLevelAward() {
   const list: VipLevelAwardData = {
     level_up_num: 0,
     level: 0,
@@ -194,14 +179,27 @@ export async function getVipLevelAward(req: BunRequest) {
   return new Response(JSON.stringify(response));
 }
 export async function vipRoutes(req: BunRequest, route: string) {
+  const user = await getUserFromHeader(req);
+  if (route === NETWORK_CONFIG.WEB_SOCKET.SOCKET_CONNECT) return false;
+
+  if (!user || !user.activeProfile) {
+    return new Response(
+      JSON.stringify({
+        code: 401,
+        message: "Unauthorized: ",
+        data: { total_pages: 0, record: [] },
+      }),
+      { status: 401 }
+    );
+  }
   try {
     switch (route) {
       case NETWORK_CONFIG.VIP_INFO.USER_VIP_INFO:
-        return await getVipInfo(req);
+        return await getVipInfo();
       case NETWORK_CONFIG.VIP_INFO.USER_VIP_LEVEL:
-        return await getVipLevels(req);
+        return await getVipLevels();
       case NETWORK_CONFIG.VIP_INFO.VIP_LEVEL_AWARD:
-        return await getVipLevelAward(req);
+        return await getVipLevelAward();
       default:
         return false; ///new Response(JSON.stringify({ message: "Route not found", code: 404 }), { status: 404 });
     }

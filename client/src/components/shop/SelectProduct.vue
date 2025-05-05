@@ -1,26 +1,32 @@
 <script lang="ts" setup>
 import type { ProductWithSelected } from './ShopView.vue'
-import { useUserStore } from '@/stores/user'
+import { eventBus } from '@/composables/eventBus'
+
+// import { useUserStore } from '@/stores/user'
+import { useDepositStore } from '@/stores/deposit'
 import { currency } from '@/utils/currency'
-import { computed, ref } from 'vue'
+// import { computed, ref } from 'vue'
+import type { Product } from 'shared/prisma/interfaces'
 
-const props = defineProps(['currentUser', 'products'])
-const userStore = useUserStore()
-
+// const props = defineProps(['currentUser', 'products'])
+// const userStore = useUserStore()
+const depositStore = useDepositStore()
 // const $bus = useEventsBus()
-const state = useGlobalState()
-const activeProfile = store.currentUser
+// const activeProfile = userStore.currentUser.activeProfile
 // const products = inject('productsData') as any
 // const selectedProduct = ref<ProductWithSelected | null>(null)
 
 // const productList = ref<ProductWithSelected[]>([])
-const _productList = store.products
+const _productList = depositStore.getProducts
 const productList = ref<ProductWithSelected[]>([])
 // @ts-ignore
-_productList.forEach((item) => {
-  item.selected = false
-  productList.value.push(item)
-})
+// _productList.forEach((item: Product) => {
+//   const pWithSel: ProductWithSelected = {
+//     ...item,
+//     selected: false,
+//   }
+//   productList.value.push(pWithSel)
+// })
 // props.products.forEach((p: any) =>
 //   productList.value.push({
 //     ...p,
@@ -28,39 +34,39 @@ _productList.forEach((item) => {
 //   }),
 // )
 // const currentUser = inject('userData') as any
-const currentUser = props.currentUser
+// const currentUser = props.currentUser
 function priceFormatted(price: number) {
   return currency(price, 'en-US', { currency: 'USD' })
 }
 
-const usingCustom = ref(false)
-const stepperAmount = ref(1)
-const selectedProduct = ref<ProductWithSelected>({
-  id: '0  ',
-  amountToReceiveInCredits: 0,
-  description: '',
-  type: '',
-  shopId: activeProfile.shopId,
-  bonusSpins: 0,
-  selected: false,
-  title: '',
-  url: '',
-  priceInCents: 0,
-  isPromo: false,
-  // createdAt: new Date(),
-  bonusCode: undefined,
-  bonusTotalInCredits: 0,
-  discountInCents: 0,
-  totalDiscountInCents: 0,
-  Transaction: [],
-  createdAt: '',
-  updatedAt: ''
-})
+// const usingCustom = ref(false)
+// const stepperAmount = ref(1)
+// const selectedProduct = ref<ProductWithSelected>({
+//   id: '0  ',
+//   amountToReceiveInCredits: 0,
+//   description: '',
+//   type: '',
+//   shopId: activeProfile.shopId,
+//   bonusSpins: 0,
+//   selected: false,
+//   title: '',
+//   url: '',
+//   priceInCents: 0,
+//   isPromo: false,
+//   // createdAt: new Date(),
+//   bonusCode: undefined,
+//   bonusTotalInCredits: 0,
+//   discountInCents: 0,
+//   totalDiscountInCents: 0,
+//   Transaction: [],
+//   createdAt: '',
+//   updatedAt: '',
+// })
 const tempDepositAmount = ref(0)
 
-const calculatedSpins = computed(() => {
-  return tempDepositAmount.value / 10
-})
+// const calculatedSpins = computed(() => {
+//   return tempDepositAmount.value / 10
+// })
 
 function selectProduct(val: any) {
   // console.log(val.id)
@@ -72,15 +78,26 @@ function selectProduct(val: any) {
   //   usingCustom.value = true
   //   tempDepositAmount.value = stepperAmount.value * 100
   // }
+  depositStore.setSelectedProduct(val)
   productList.value.forEach((product: any) => {
     product.selected = false
   })
   val.selected = true
   // $bus.$emit(eventTypes.shopSelectProduct, selectedProduct)
 
-  state.value.selectedProduct = val
+  // state.value.selectedProduct = val
   // console.log(state.value.selectedProduct)
 }
+_productList.forEach((item: Product) => {
+  const pWithSel: ProductWithSelected = {
+    ...item,
+    selected: false,
+  }
+  productList.value.push(pWithSel)
+})
+// onMounted(() => {
+
+// })
 </script>
 
 <template>
@@ -104,7 +121,7 @@ function selectProduct(val: any) {
               <img
                 src="/images/shop/shopcoin.avif"
                 style="width: 40px; height: 40px; margin-left: 3px; margin-right: 4px"
-              >
+              />
               <div
                 style="
                   min-width: 65px;
@@ -123,7 +140,7 @@ function selectProduct(val: any) {
                 src="/images/shop/plusicon.avif"
                 class="ml-1 px-0"
                 style="width: 20px; height: 20px; margin-left: 14px"
-              >
+              />
               <div
                 style="
                   background-image: url('/images/freespins.png');
@@ -160,7 +177,7 @@ function selectProduct(val: any) {
                 src="/images/shop/shoparrow.avif"
                 class="px-0"
                 style="width: 20px; height: 20px; margin-right: 10px"
-              >
+              />
             </div>
             <div class="flex flex-row pr-4 items-center justify-end" style="width: 30%">
               <div
@@ -171,11 +188,12 @@ function selectProduct(val: any) {
             </div>
           </div>
         </div>
-        <div class="mt-8 flex flex-row justify-center" style="margin-bottom: 0px">
+        <div
+          class="mt-12 flex flex-row justify-center"
+          style="margin-bottom: 0px; margin-top: 12px"
+        >
           <div @click="eventBus.emit('activeName', 'selectPayment')">
-            <GlassButton :disabled="tempDepositAmount <= 0" color="green">
-Next
-</GlassButton>
+            <GlassButton :disabled="tempDepositAmount <= 0" color="green"> Next </GlassButton>
           </div>
         </div>
       </div>

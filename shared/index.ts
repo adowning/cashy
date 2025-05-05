@@ -1,6 +1,7 @@
 import { Gender, Transaction, UserStatus, VipInfo } from "../server/src/prisma/client";
 
 export * from "./interfaces";
+//@ts-ignore
 export * from "./prisma/interfaces";
 export * from "./types/NetworkCfg";
 export * from "./types/const";
@@ -41,6 +42,9 @@ export interface Profile {
   // tournamententry: tournamententry[];
   transactions: Transaction[];
 }
+export interface UserWithPassword extends User {
+  passwordHash: string;
+}
 export interface User {
   id: string;
   name: string | null;
@@ -61,7 +65,7 @@ export interface User {
   // invitations: Invitation[];
   // twofactors: TwoFactor[];
   username: string;
-  passwordHash: string | null;
+  // passwordHash: string | null;
   totalXp: number;
   balance: number;
   isVerified: boolean;
@@ -87,5 +91,42 @@ export interface User {
   activeProfile: Profile;
   // tournamententry: tournamententry[];
   // userachievement: userachievement[];
-  VipInfo: VipInfo;
+  vipInfo: VipInfo;
 }
+type EmailRequest = {
+  key: string;
+  to: string;
+  from: string;
+  subject: string;
+  html: string;
+};
+
+export { EmailRequest };
+
+export type AuthOptions = {
+  user: string;
+  pass?: string | "";
+};
+
+export type OauthOptions = {
+  type?: string;
+  user: string;
+  clientId?: string;
+  clientSecret?: string;
+  refreshToken?: string | "";
+  accessToken?: string | "";
+};
+
+export const authOptions: AuthOptions = {
+  user: process.env.EMAIL_USER as string,
+  pass: process.env.EMAIL_PASSWORD as string,
+};
+
+export const oauthOptions: OauthOptions = {
+  type: "OAuth2",
+  user: process.env.EMAIL_USER as string,
+  clientId: (process.env.EMAIL_CLIENT_ID as string) || "",
+  clientSecret: (process.env.EMAIL_CLIENT_SECRET as string) || "",
+  refreshToken: (process.env.EMAIL_REFRESH_TOKEN as string) || "",
+  accessToken: (process.env.EMAIL_ACCESS_TOKEN as string) || "",
+};

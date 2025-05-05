@@ -4,8 +4,8 @@ interface JwtPayload {
   id: string;
   sub: string;
 }
-async function generateAccessToken(userId: string) {
-  const token = await jwt.sign(
+function generateAccessToken(userId: string) {
+  const token = jwt.sign(
     {
       id: userId,
       sub: userId,
@@ -21,8 +21,8 @@ function decodeToken(token: string) {
   // console.log('this token: ', payload)
   return payload as JwtPayload;
 }
-async function generateRefreshToken(userId: string) {
-  return await jwt.sign(
+function generateRefreshToken(userId: string) {
+  return jwt.sign(
     {
       id: userId,
       sub: userId,

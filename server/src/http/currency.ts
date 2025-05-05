@@ -1,14 +1,9 @@
 import { BunRequest } from "bun";
-import { NETWORK_CONFIG } from "shared";
+import { NETWORK_CONFIG, User } from "shared";
 import { GetCurrencyBalanceList, GetCurrencyBalanceListResponse } from "shared/interface/currency";
 import { getUserFromHeader } from "./auth";
 
-export async function getCurrencyList(req: BunRequest) {
-  const user: any = await getUserFromHeader(req);
-  if (!user) {
-    return new Response(JSON.stringify({ message: "Unauthorized", code: 401 }), { status: 401 });
-  }
-
+export async function getCurrencyList(req: BunRequest, user: User) {
   const list: GetCurrencyBalanceList = {
     amount: user.activeProfile.balance.toString(),
     availabe_balance: user.activeProfile.balance.toString(),
@@ -27,10 +22,22 @@ export async function getCurrencyList(req: BunRequest) {
 }
 
 export async function currencyRoutes(req: BunRequest, route: string) {
+  const user = await getUserFromHeader(req);
+  if (!user || !user.activeProfile) {
+    return new Response(
+      JSON.stringify({
+        code: 401,
+        message: "Unauthorized",
+        data: { total_pages: 0, record: [] },
+      }),
+      { status: 401 }
+    );
+  }
+
   try {
     switch (route) {
       case NETWORK_CONFIG.CURRENCY.CURRENCY_LIST:
-        return await getCurrencyList(req);
+        return await getCurrencyList(req, user);
       default:
         return false; ///new Response(JSON.stringify({ message: "Route not found", code: 404 }), { status: 404 });
     }

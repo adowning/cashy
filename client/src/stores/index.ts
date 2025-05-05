@@ -1,16 +1,15 @@
 import { createPinia } from 'pinia'
 import type { Pinia } from 'pinia'
-import { useShopStore } from './shop'
+import { useOperatorStore } from './operator'
 import { useUserStore } from './user'
 import userController from '../sdk/userModule/userController'
 import shopController from '../sdk/shopModule/shopController'
 import spinDataController from '../sdk/spinDataModule/spinDataController'
-import { App } from 'vue'
 
 const pinia: Pinia = createPinia()
 const { stopLoading } = useLoading()
 
-export async function setupStore(app: App) {
+export async function setupStore(app: any) {
   const env = import.meta.env.PROD ? 'prod' : 'dev'
   const appVersion = import.meta.env.VITE_APP_VERSION
   const namespace = `${import.meta.env.VITE_APP_NAMESPACE}-${appVersion}-${env}`
@@ -51,7 +50,7 @@ async function getMultipleResources(calls) {
 
 export async function hydrateStores(): Promise<boolean> {
   const userStore = useUserStore()
-  const shopStore = useShopStore()
+  const shopStore = useOperatorStore()
   const crudQuery = {
     where: {
       OR: [

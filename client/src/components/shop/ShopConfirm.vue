@@ -1,27 +1,31 @@
 <!-- eslint-disable ts/ban-ts-comment -->
 <script lang="ts" setup>
 import { eventBus } from '@/composables/eventBus'
-import { useShopStore } from '@/stores/shop'
+// import { useOperatorStore } from '@/stores/operator'
 import { useUserStore } from '@/stores/user'
+import { useDepositStore } from '@/stores/deposit'
 import { currency } from '@/utils/currency'
 import { AppLauncher } from '@capacitor/app-launcher'
 import { nextTick, onMounted, ref } from 'vue'
+import type { Transaction } from 'shared'
 
+const depositStore = useDepositStore()
 const userStore = useUserStore()
-const { api } = useRequest()
-const shopStore = useShopStore()
-const shop = shopStore.currentShop
-const currentUser = userStore.currentUser
-const _cashtag = ref(userStore.currentUser.cashtag)
+// const shopStore = useOperatorStore()
+// const shop = shopStore.currentShop
+const currentUser = userStore.getCurrentUser
+const _cashtag = ref()
 const changeStores = ref(false)
 const storeId = ref()
-const paymentMethods = shop.acceptedPaymentMethods
+const operatorData = depositStore.getOperatorData
+// if (operatorData === undefined) return
+// if (currentUser === undefined) return
 const showKeyboard = ref(false)
-if (currentUser.cashtag !== undefined) {
+if (currentUser?.cashtag !== undefined) {
   _cashtag.value = currentUser.cashtag
 }
-if (shop.id !== undefined) {
-  storeId.value = shop.id
+if (operatorData?.id !== undefined) {
+  storeId.value = operatorData.id
 }
 const errorMsg = ref('')
 const value = ref<any>([])
@@ -37,36 +41,34 @@ function priceFormatted(price: number) {
 async function setCashtag(val: string) {
   // const tmp_cashtag = val.substring('$', '')
   //   const check = await checkCashtag(accessToken.value, val)
-  const check: any = await api.userControllerCashtagCheck.send({
-    data: {
-      cashtag: val
-    }
-  })
-  // console.log(check)
-  if (check === 'invalid tag') {
-    badTag.value = true
-    errorMsg.value = 'Unable to verify cashtag'
-  }
-  if (check === 'cashtag in use') {
-    badTag.value = true
-    errorMsg.value = 'Cashtag in use'
-  }
-  if (badTag.value) {
-    setTimeout(() => {
-      badTag.value = false
-      _cashtag_field.value = ''
-      errorMsg.value = ''
-    }, 3000)
-  } else {
-    // const updatedUser = await updateUserCashtag(accessToken.value, val)
-    const updatedUser: any = await api.userControllerCashtagUpdate.send({ data: { cashtag: val } })
+  // const check: any = await userStore.dispatchUserCashtag(
+  //     val
+  // )
+  // // console.log(check)
+  // if (check === 'invalid tag') {
+  //   badTag.value = true
+  //   errorMsg.value = 'Unable to verify cashtag'
+  // }
+  // if (check === 'cashtag in use') {
+  //   badTag.value = true
+  //   errorMsg.value = 'Cashtag in use'
+  // // }
+  // if (badTag.value) {
+  //   setTimeout(() => {
+  //     badTag.value = false
+  //     _cashtag_field.value = ''
+  //     errorMsg.value = ''
+  //   }, 3000)
+  // } else {
+  // const updatedUser = await updateUserCashtag(accessToken.value, val)
+  const updatedUser: any = await userStore.dispatchUserCashtag(val)
 
-    _cashtag_field.value = ''
-    errorMsg.value = ''
-    _cashtag.value = updatedUser.cashtag
-    // router.push('/shop')
-    eventBus.emit('activeName', 'confirmPayment')
-  }
+  _cashtag_field.value = ''
+  errorMsg.value = ''
+  _cashtag.value = updatedUser.cashtag
+  // router.push('/shop')
+  eventBus.emit('activeName', 'confirmPayment')
+  // }
 
   method.value = 0
 }
@@ -122,36 +124,37 @@ async function checkCanOpenUrl() {
 
 async function confirm(method: string) {
   // console.log(method)
-  const data: CreateTransactionDto = {
+  const data: Partial<Transaction> = {
     type: 'DEPOSIT',
-    channel: method.toLowerCase() === 'cashapp' ? 'CASHAPP' : 'INSTORE',
-    totalSpentInCents: store.shop.selectedProduct.priceInCents,
-    amountCredits: store.shop.selectedProduct.amountToReceiveInCredits,
-    buyerCashtag: currentUser.cashtag,
+    // channel: method.toLowerCase() === 'cashapp' ? 'CASHAPP' : 'INSTORE',
+    amount: depositStore.getSelectedProduct?.priceInCents,
+    amountCredits: depositStore.getSelectedProduct?.amountToReceiveInCredits,
+    buyerCashtag: currentUser?.cashtag,
     // userAvatar: currentUser.avatar,
-    username: currentUser.username,
-    bonusType: store.shop.selectedProduct.bonusType,
+    username: currentUser?.username,
+    // bonusType: depositStore.getSelectedProduct?.bonusType,
     cashierAvatar: '',
     cashiername: '',
-    buyerUserId: currentUser.id,
+    buyerUserId: currentUser?.id,
     cashierId: '',
-    status: 'PENDING_PAYMENT',
-    productId: store.shop.selectedProduct.id,
+    status: 'PENDING',
+    productid: depositStore.getSelectedProduct?.id,
     // @ts-ignore
-    selectedProduct: state.value.selectedProduct,
-    shopId: store.shop.activeProfile.shopId
+    // selectedProduct: state.value.selectedProduct,
+    shopId: store.shop.activeProfile.shopId,
   }
   if (method === 'CASHAPP') {
-    data.channel = 'CASHAPP'
+    data.paymentMethod = 'CASHAPP'
   }
 
   if (method === 'INSTORE') {
-    data.channel = 'INSTORE'
+    data.paymentMethod = 'INSTORE'
   }
-  data.productId = store.shop.selectedProduct.id
+  data.productid = depositStore.getSelectedProduct?.id
 
   //   const balanceTransaction = await createbalanceTransaction(accessToken.value, data)
   const tran = await api.transactionControllerCreate.send({ data })
+  await depositStore.dispatchUserDepositSubmit(data)
   // const sse = await api.transactionSseControllerCreate({ body: tran })
   // console.log(tran)
   // //console.log(sse)
@@ -249,7 +252,7 @@ onMounted(async () => {
               margin: auto;
               margin-top: 12px;
             "
-          >
+          />
           <!-- <FormControl v-model="_cashtag_field" /> -->
           <!-- </FormField> -->
           <!-- <GlassButton
@@ -283,10 +286,10 @@ onMounted(async () => {
 
       <div
         v-if="
-          store.shop.selectedPaymentMethod === 'INSTORE'
-          && storeId !== null
-          && paymentMethods.includes('cashapp')
-          && paymentMethodCorrect === true
+          store.shop.selectedPaymentMethod === 'INSTORE' &&
+          storeId !== null &&
+          paymentMethods.includes('cashapp') &&
+          paymentMethodCorrect === true
         "
         class="flex flex-col justify-start"
       >
@@ -325,7 +328,7 @@ onMounted(async () => {
               src="/images/shop/shopcoin.avif"
               color="green"
               style="color: white; width: 35px; height: 35px"
-            >
+            />
             <div class="bungee mt-0" style="font-weight: 700; font-size: x-large; color: white">
               <h4 class="bungee" style="font-size: x-large">
                 &nbsp;&nbsp;{{ selectedProduct.coins }}
@@ -338,7 +341,7 @@ onMounted(async () => {
               src="/images/shop/shoparrow.avif"
               color="green"
               style="width: 20px; height: 20px"
-            >
+            />
             <div color="green" style="width: 15px; font-weight: 700" />
             <div
               class="mt-0 text-align-center"
@@ -381,15 +384,13 @@ onMounted(async () => {
     </div>
     <div
       v-if="
-        store.shop.selectedPaymentMethod === 'CASHAPP'
-        && _cashtag !== null
-        && paymentMethods.includes('CASHAPP')
+        store.shop.selectedPaymentMethod === 'CASHAPP' &&
+        _cashtag !== null &&
+        paymentMethods.includes('CASHAPP')
       "
       class="flex flex-col"
     >
-      <div class="glow-light">
-Click confirm to be taken to cashapp
-</div>
+      <div class="glow-light">Click confirm to be taken to cashapp</div>
       <div
         class="margin-auto mx-3 flex flex-row justify-start pt-2 text-align-center"
         style="
@@ -408,7 +409,7 @@ Click confirm to be taken to cashapp
             src="/images/shop/shopcoin.avif"
             color="green"
             style="color: white; width: 35px; height: 35px"
-          >
+          />
           <div class="bungee mt-0" style="font-weight: 700; font-size: x-large; color: white">
             <h4 class="bungee" style="font-size: x-large">
               &nbsp;&nbsp;{{ store.shop.selectedProduct.amountToReceiveInCredits }}
@@ -417,7 +418,7 @@ Click confirm to be taken to cashapp
 
           <div class="flex grow-1" style="width: 15px" />
           <div />
-          <img src="/images/shop/shoparrow.avif" color="green" style="width: 20px; height: 20px">
+          <img src="/images/shop/shoparrow.avif" color="green" style="width: 20px; height: 20px" />
           <div color="green" style="width: 15px; font-weight: 700" />
           <div
             class="mt-0 text-align-center"
@@ -475,10 +476,10 @@ Click confirm to be taken to cashapp
     <div v-if="store.shop.selectedPaymentMethod === 'INSTORE'">
       <div
         v-if="
-          storeId == null
-          || storeId.length === 0
-          || storeId === undefined
-          || (changeStores === true && paymentMethodCorrect === false)
+          storeId == null ||
+          storeId.length === 0 ||
+          storeId === undefined ||
+          (changeStores === true && paymentMethodCorrect === false)
         "
       >
         <div class="mx-auto flex flex-col justify-start">
@@ -488,7 +489,7 @@ Click confirm to be taken to cashapp
             class="glow text-small mb-2 w-full text-pretty text-white"
             style="font-size: 24px"
           >
-            Cannot find a store associated with this account. <br>Please enter a valid store id
+            Cannot find a store associated with this account. <br />Please enter a valid store id
           </h3>
           <h3
             v-if="changeStores === true"
@@ -496,7 +497,7 @@ Click confirm to be taken to cashapp
             class="glow text-small mb-2 w-full text-pretty text-white"
             style="font-size: 24px"
           >
-            <br>Please enter a valid store id
+            <br />Please enter a valid store id
           </h3>
           <div
             v-if="badStore"
@@ -585,11 +586,11 @@ Click confirm to be taken to cashapp
       </div>
       <div
         v-if="
-          store.shop.selectedPaymentMethod === 'INSTORE'
-          && storeId !== null
-          && changeStores === false
-          && !paymentMethods.includes('INSTORE')
-          && paymentMethodCorrect === false
+          store.shop.selectedPaymentMethod === 'INSTORE' &&
+          storeId !== null &&
+          changeStores === false &&
+          !paymentMethods.includes('INSTORE') &&
+          paymentMethodCorrect === false
         "
       >
         <div class="mx-auto flex flex-col justify-start">
@@ -637,10 +638,10 @@ Click confirm to be taken to cashapp
       </div>
       <div
         v-if="
-          store.shop.selectedPaymentMethod === 'INSTORE'
-          && storeId !== null
-          && paymentMethods.includes('INSTORE')
-          && paymentMethodCorrect === true
+          store.shop.selectedPaymentMethod === 'INSTORE' &&
+          storeId !== null &&
+          paymentMethods.includes('INSTORE') &&
+          paymentMethodCorrect === true
         "
         class="flex flex-col justify-start"
       >
@@ -667,7 +668,7 @@ Click confirm to be taken to cashapp
               src="/images/shop/shopcoin.avif"
               color="green"
               style="color: white; width: 35px; height: 35px"
-            >
+            />
             <div class="bungee mt-0" style="font-weight: 700; font-size: x-large; color: white">
               <h4 class="bungee" style="font-size: x-large">
                 &nbsp;&nbsp;{{ selectedProduct.coins }}
@@ -680,7 +681,7 @@ Click confirm to be taken to cashapp
               src="/images/shop/shoparrow.avif"
               color="green"
               style="width: 20px; height: 20px"
-            >
+            />
             <div color="green" style="width: 15px; font-weight: 700" />
             <div
               class="mt-0 text-align-center"

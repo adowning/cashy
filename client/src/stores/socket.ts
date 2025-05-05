@@ -1,22 +1,26 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import Cookies from 'js-cookie'
-import { CacheKey } from '@/utils/cache-key'
+// import Cookies from 'js-cookie'
+// import { CacheKey } from '@/utils/cache-key'
 import { NETWORK_CONFIG } from 'shared/types/NetworkCfg'
-import { Network } from '@/net/Network'
-import { Network as Network1 } from '@/net/Network1'
+// import { Network } from '@/net/Network'
+// import { Network as Network1 } from '@/net/Network1'
 import { useAuthStore } from './auth'
+import { WSStatus } from 'zilaws-client'
+// import { useCashflow } from '@/libs/cashflowClient/vue'
+import { useCashflowSocket } from '@/composables/useZilaWebsocket'
+import { useUserStore } from './user'
 // import { NETWORK } from '@/utils/socket/NetworkCfg'
 // import { Network } from '@/utils/socket/network'
 
-export const createWebSocket = (route: string) => {
-  console.log(`${import.meta.env.VITE_SOKET_URL}${route}?token=${Cookies.get(CacheKey.TOKEN)}`)
-  const socket = new WebSocket(
-    `wss://mobile.cashflowcasino.com/api/setup?token=mock_token`, //?token=${Cookies.get(CacheKey.TOKEN)}`,
-    // `${import.meta.env.VITE_SOKET_URL}${route}?token=${Cookies.get(CacheKey.TOKEN)}`,
-  )
-  return socket
-}
+// export const createWebSocket = (route: string) => {
+//   console.log(`${import.meta.env.VITE_SOKET_URL}${route}?token=${Cookies.get(CacheKey.TOKEN)}`)
+//   const socket = new WebSocket(
+//     `wss://mobile.cashflowcasino.com/api/setup?token=mock_token`, //?token=${Cookies.get(CacheKey.TOKEN)}`,
+//     // `${import.meta.env.VITE_SOKET_URL}${route}?token=${Cookies.get(CacheKey.TOKEN)}`,
+//   )
+//   return socket
+// }
 
 export interface GetUserBalance {
   bal: string | number
@@ -26,7 +30,9 @@ export interface GetUserBalance {
 export const useSocketStore = defineStore('socket', () => {
   // State
   const success = ref<boolean>(false)
+  const cashflowSocket = ref()
   const errMessage = ref<string>('')
+  const connectionStatus = ref<WSStatus>(WSStatus.CLOSED)
   const socket = ref<any>(null)
   const socketBalance = ref<GetUserBalance>({
     bal: '',
@@ -51,21 +57,24 @@ export const useSocketStore = defineStore('socket', () => {
   function setSocketBalance(newSocketBalance: GetUserBalance) {
     socketBalance.value = newSocketBalance
   }
-  async function connected(x: any) {
-    console.log('connected ', x)
-  }
+  // async function connected(x: any) {
+  //   console.log('connected ', x)
+  // }
   // socket connect check
   async function dispatchSocketConnect() {
     console.log('dispatchSocketConnect')
     setSuccess(false)
+    const userStore = useUserStore()
     const route: string = NETWORK_CONFIG.WEB_SOCKET.SOCKET_CONNECT
     console.log(route)
-    const network: Network = Network.getInstance()
-    const network1: Network1 = Network1.getInstance()
-    network1.connect(connected)
-    console.log('x')
-    socket.value = createWebSocket(route)
-    console.log(socket.value)
+    // const network: Network = Network.getInstance()
+    // const network1: Network1 = Network1.getInstance()
+    // network1.connect(connected)
+    // console.log('x')
+    // socket.value = createWebSocket(route)
+    await initializeWebSocket(route, userStore.currentUser.id)
+    const cashflowSocket = useCashflowSocket()
+    console.log(cashflowSocket)
     if (socket.value) {
       socket.value.onopen = handleOpen
       socket.value.onmessage = handleMessage
@@ -112,6 +121,7 @@ export const useSocketStore = defineStore('socket', () => {
     socket,
     socketBalance,
     getSuccess,
+    connectionStatus,
     getErrMessage,
     getSocketBalance,
     setSuccess,

@@ -8,7 +8,7 @@ export type Gender = "BOY" | "GIRL" | "ALIEN" | "UNSURE" | "ROBOT" | "COMPLICATE
 
 export type NotificationType = "SYSTEM" | "FRIEND_REQUEST" | "ACHIEVEMENT" | "BALANCE_UPDATE" | "PROMOTIONAL" | "TOURNAMENT";
 
-export type TransactionStatus = "PENDING" | "COMPLETED" | "FAILED" | "CANCELLED" | "REFUNDED";
+export type TransactionStatus = "PENDING" | "COMPLETED" | "FAILED" | "CANCELLED" | "REFUNDED" | "EXPIRED" | "REJECTED";
 
 export type TransactionType = "DEPOSIT" | "WITHDRAWAL" | "BET" | "WIN" | "BONUS" | "DONATION" | "ADJUSTMENT" | "TOURNAMENT_BUYIN" | "TOURNAMENT_PRIZE";
 
@@ -41,11 +41,6 @@ export interface User {
   banned: boolean | null;
   banReason: string | null;
   banExpires: Date | null;
-  sessions: Session[];
-  accounts: Account[];
-  members: Member[];
-  invitations: Invitation[];
-  twofactors: TwoFactor[];
   username: string;
   passwordHash: string | null;
   totalXp: number;
@@ -53,29 +48,34 @@ export interface User {
   isVerified: boolean;
   active: boolean;
   lastLogin: Date | null;
-  lastDailySpin: Date | null;
   verificationToken: string | null;
   avatar: string | null;
   activeProfileId: string | null;
-  vipInfoId: string | null;
   gender: Gender | null;
   status: UserStatus | null;
   cashtag: string | null;
   phpId: number | null;
   accessToken: string | null;
+  vipInfoId: string | null;
+  lastDailySpin: Date | null;
+  operator: Operator[];
+  activeProfile: Profile[];
   RainBet: RainBet[];
   RainHistory: RainHistory[];
   RainTip: RainTip[];
   RainWinner: RainWinner[];
+  sessions: Session[];
+  accounts: Account[];
   chatmessage: chatmessage[];
   friendship_friendship_friendIdTouser: friendship[];
   friendship_friendship_userIdTouser: friendship[];
+  invitations: Invitation[];
+  members: Member[];
   notification: notification[];
-  operator: Operator[];
-  activeProfile: Profile[];
   tournamententry: tournamententry[];
+  twofactors: TwoFactor[];
   userachievement: userachievement[];
-  vipInfo: VipInfo[];
+  vipInfo: VipInfo | null;
 }
 
 export interface Session {
@@ -88,9 +88,9 @@ export interface Session {
   createdAt: Date;
   refreshToken: string | null;
   active: boolean;
-  user: User;
   token: string;
   updatedAt: Date | null;
+  user: User;
 }
 
 export interface Operator {
@@ -102,13 +102,14 @@ export interface Operator {
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date | null;
+  acceptedPayments: string[];
   ownerId: string;
   balance: number;
   owner: User;
-  games: Game[];
   profiles: Profile[];
+  games: Game[];
+  products: Product[];
   tournaments: tournament[];
-  Product: Product[];
 }
 
 export interface Message {
@@ -131,9 +132,9 @@ export interface Profile {
   userId: string;
   currency: string;
   shopId: string;
-  gamesession: gamesession[];
   operator: Operator;
   user_profile_userIdTouser: User;
+  gamesession: gamesession[];
   tournamententry: tournamententry[];
   transactions: Transaction[];
 }
@@ -182,10 +183,10 @@ export interface Game {
   providerId: string | null;
   createdAt: Date;
   updatedAt: Date;
-  category: GameCategory;
   jackpotGroupId: string | null;
   active: boolean;
   password: string | null;
+  category: GameCategory;
   operator: Operator | null;
   gamesession: gamesession[];
   tournamentgame: tournamentgame[];
@@ -196,7 +197,6 @@ export interface Account {
   accountId: string;
   providerId: string;
   userId: string;
-  user: User;
   accessToken: string | null;
   refreshToken: string | null;
   idToken: string | null;
@@ -206,6 +206,7 @@ export interface Account {
   password: string | null;
   createdAt: Date;
   updatedAt: Date | null;
+  user: User;
 }
 
 export interface operatorgame {
@@ -240,30 +241,30 @@ export interface Organization {
   logo: string | null;
   createdAt: Date;
   metadata: string | null;
-  members: Member[];
   invitations: Invitation[];
+  members: Member[];
 }
 
 export interface Member {
   id: string;
   organizationId: string;
-  organization: Organization;
   userId: string;
-  user: User;
   role: string;
   createdAt: Date;
+  organization: Organization;
+  user: User;
 }
 
 export interface Invitation {
   id: string;
   organizationId: string;
-  organization: Organization;
   email: string;
   role: string | null;
   status: string;
   expiresAt: Date;
   inviterId: string;
   user: User;
+  organization: Organization;
 }
 
 export interface TwoFactor {
@@ -343,7 +344,7 @@ export interface Product {
   totalDiscountInCents: number;
   shopId: string | null;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt: Date | null;
   operator: Operator | null;
   transactions: Transaction[];
 }
@@ -407,6 +408,13 @@ export interface Transaction {
   id: string;
   type: TransactionType;
   amount: number;
+  amountCredits: number;
+  buyerCashtag: string | null;
+  buyerUserId: string | null;
+  username: string | null;
+  cashiername: string | null;
+  cashierAvatar: string | null;
+  cashierId: string | null;
   reference: string | null;
   status: TransactionStatus;
   metadata: JsonValue | null;
@@ -417,9 +425,11 @@ export interface Transaction {
   processedAt: Date | null;
   gameSessionId: string | null;
   profileId: string;
+  cashtag: string | null;
   gamesession: gamesession | null;
   profile: Profile;
-  Product: Product[];
+  product: Product | null;
+  productid: string | null;
 }
 
 export interface userachievement {
@@ -523,6 +533,15 @@ export interface VipInfo {
   can_receive_withdrawal_award: boolean;
   userid: string;
   user: User;
+}
+
+export interface event_log {
+  id: bigint;
+  table_name: string;
+  row_id: string | null;
+  operation: string;
+  payload: JsonValue | null;
+  created_at: Date | null;
 }
 
 type JsonValue = string | number | boolean | { [key in string]?: JsonValue } | Array<JsonValue> | null;

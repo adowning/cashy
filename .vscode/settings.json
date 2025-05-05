@@ -30,7 +30,6 @@
     "client/bun.lock": true,
     "client/env.d.ts": true,
     "client/eslint.config.js": true,
-    "client/index.html": true,
     "client/openapi-ts.config.ts": true,
     "client/sdk-generator.json": true,
     "client/swagger.json": true,

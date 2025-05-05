@@ -12,8 +12,10 @@ import { useAuthStore } from './stores/auth'
 // import { useUserStore } from './stores/user'
 // import { createAuthClient } from 'better-auth/vue'
 import { loadingFadeOut } from 'virtual:app-loading'
+import { useGlobalStore } from './stores/global'
 
 // const authClient = createAuthClient()
+const globalStore = useGlobalStore()
 
 // const levelPopup = ref()
 // // Get access to the shared state/functions
@@ -115,8 +117,8 @@ onMounted(async () => {
         <RouterView />
       </DesktopSection>
       <MobileSection v-if="isMobile">
-        <!-- <Avatar /> -->
-        <RouterView />
+        <GlobalLoading v-if="globalStore.isLoading"></GlobalLoading>
+        <RouterView v-else />
       </MobileSection>
     </template>
     <template v-else-if="!authStore.isAuthenticated">

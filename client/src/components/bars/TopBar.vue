@@ -22,10 +22,12 @@ console.log(eventBus)
 // const { api } = useRequest()
 const router = useRouter()
 const countdownActive = ref(false)
+const sparkle = ref(false)
 const currency = ref('0')
 const userStore = useUserStore()
 const authStore = useAuthStore()
 const currentUser = authStore.userInfo
+// const raceProgress = ref(22)
 // const raceProgress = ref(22)
 // const playbackProgress = ref(13)
 // const funmeterProgress = ref(1)
@@ -280,6 +282,7 @@ onMounted(() => {
         @click="router.push('/client/profile')"
         style="z-index: 99; width: 55px"
         :currentExp="currentExp"
+        :sparkle="sparkle"
         :maxExp="100"
       />
       <div id="PlayerCredits" class="flex flex-col color-white pl-1 pb-1 text-center">
@@ -326,19 +329,43 @@ onMounted(() => {
           <div
             v-if="userStore.currentUser !== undefined"
             class="flex justify-center mt--2 glow"
-            style="line-height: 0.6; text-align: center"
+            style="line-height: 0.6; text-align: center; letter-spacing: 0px; font-weight: 800"
           >
-            {{ userStore.currentUser.balance }}
+            {{ userStore.currentUser.activeProfile.balance }}
           </div>
         </div>
       </div>
     </div>
     <div
-      style="width: 52px; height: 52px; z-index: 99999999"
-      src="/images/settings.avif"
       @click="openSettings"
-    />
-    <div
+      style="
+        height: 50px;
+        width: 50px;
+        position: absolute;
+        top: 0px;
+        right: 8px;
+        gap: 0px;
+        margin: 0px;
+        padding: 4px;
+        background-size: cover;
+        z-index: 999999;
+      "
+    >
+      <img
+        style="
+          top: 0px;
+          right: 8px;
+          gap: 0px;
+          margin: 0px;
+          padding: 0px;
+          background-size: cover;
+          z-index: 999999;
+        "
+        src="@/assets/bars/settings.avif"
+        @click="openSettings"
+      />
+    </div>
+    <!-- <div
       class=""
       style="
         position: absolute;
@@ -350,10 +377,9 @@ onMounted(() => {
         background-size: cover;
         z-index: 99;
       "
-      @click="openSettings"
     >
       <img style="width: 52px; height: 52px" src="@/assets/bars/settings.avif" />
-    </div>
+    </div> -->
   </div>
   <!-- </div> -->
 </template>

@@ -1,0 +1,100 @@
+{
+  "frames": [
+    {
+      "filename": "CoinAnim_0000.png",
+      "frame": { "x": 1, "y": 70, "w": 66, "h": 67 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 122, "h": 89 },
+      "sourceSize": { "w": 122, "h": 89 }
+    },
+    {
+      "filename": "CoinAnim_0001.png",
+      "frame": { "x": 1, "y": 1, "w": 68, "h": 67 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 122, "h": 89 },
+      "sourceSize": { "w": 122, "h": 89 }
+    },
+    {
+      "filename": "CoinAnim_0002.png",
+      "frame": { "x": 1, "y": 139, "w": 66, "h": 67 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 122, "h": 89 },
+      "sourceSize": { "w": 122, "h": 89 }
+    },
+    {
+      "filename": "CoinAnim_0003.png",
+      "frame": { "x": 1, "y": 208, "w": 60, "h": 67 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 122, "h": 89 },
+      "sourceSize": { "w": 122, "h": 89 }
+    },
+    {
+      "filename": "CoinAnim_0004.png",
+      "frame": { "x": 69, "y": 70, "w": 50, "h": 67 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 122, "h": 89 },
+      "sourceSize": { "w": 122, "h": 89 }
+    },
+    {
+      "filename": "CoinAnim_0005.png",
+      "frame": { "x": 69, "y": 139, "w": 42, "h": 67 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 122, "h": 89 },
+      "sourceSize": { "w": 122, "h": 89 }
+    },
+    {
+      "filename": "CoinAnim_0006.png",
+      "frame": { "x": 63, "y": 277, "w": 24, "h": 67 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 122, "h": 89 },
+      "sourceSize": { "w": 122, "h": 89 }
+    },
+    {
+      "filename": "CoinAnim_0007.png",
+      "frame": { "x": 97, "y": 208, "w": 20, "h": 67 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 122, "h": 89 },
+      "sourceSize": { "w": 122, "h": 89 }
+    },
+    {
+      "filename": "CoinAnim_0008.png",
+      "frame": { "x": 89, "y": 277, "w": 24, "h": 67 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 122, "h": 89 },
+      "sourceSize": { "w": 122, "h": 89 }
+    },
+    {
+      "filename": "CoinAnim_0009.png",
+      "frame": { "x": 63, "y": 208, "w": 32, "h": 67 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 122, "h": 89 },
+      "sourceSize": { "w": 122, "h": 89 }
+    },
+    {
+      "filename": "CoinAnim_0010.png",
+      "frame": { "x": 71, "y": 1, "w": 44, "h": 67 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 122, "h": 89 },
+      "sourceSize": { "w": 122, "h": 89 }
+    },
+    {
+      "filename": "CoinAnim_0011.png",
+      "frame": { "x": 1, "y": 277, "w": 60, "h": 67 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 122, "h": 89 },
+      "sourceSize": { "w": 122, "h": 89 }
+    }
+  ]
+}

@@ -12,16 +12,13 @@ import type {
   UpdatePassword,
   UpdateSuspendUser,
   GetUserEmailVerifyResponseData,
+  UpdateCashtag,
 } from "shared/interface/user";
 import { NETWORK_CONFIG } from "shared/types/NetworkCfg";
 import { GetCurrencyBalanceList, GetCurrencyBalanceListResponse } from "shared/interface/currency";
+import { User } from "shared";
 // GET /user/amount - get user amount
-export async function getUserAmount(req: BunRequest) {
-  const user = await getUserFromHeader(req);
-  if (!user) {
-    return new Response(JSON.stringify({ message: "Unauthorized", code: 401 }), { status: 401 });
-  }
-
+export async function getUserAmount(req: BunRequest, user: User) {
   // Fetch user's main balance and potentially other relevant data
   // Based on the GetUserAmount interface, we need amount, currency, withdraw, rate.
   // Schema has user.balance (Decimal). Withdraw and rate are not directly available.
@@ -49,12 +46,7 @@ export async function getUserAmount(req: BunRequest) {
 }
 
 // GET /user/info - get user profile
-export async function getUserInfo(req: BunRequest) {
-  const user = await getUserFromHeader(req);
-  if (!user) {
-    return new Response(JSON.stringify({ message: "Unauthorized", code: 401 }), { status: 401 });
-  }
-
+export async function getUserInfo(req: BunRequest, user: User) {
   // The user object attached by the middleware already includes the necessary info
   // Map Prisma User object to GetUserInfo interface
   // const userInfoData: GetUserInfo = {
@@ -94,12 +86,7 @@ export async function getUserInfo(req: BunRequest) {
 }
 
 // GET /user/balance - get user balance
-export async function getUserBalance(req: BunRequest) {
-  const user = await getUserFromHeader(req);
-  if (!user) {
-    return new Response(JSON.stringify({ message: "Unauthorized", code: 401 }), { status: 401 });
-  }
-
+export async function getUserBalance(req: BunRequest, user: User) {
   // Fetch user's balance. Based on GetUserBalance interface, needs amount, currency, available_balance, real, bonus.
   // Schema has user.balance (Decimal) and profile.balance (Int).
   // Assuming user.balance is the main balance. available_balance, real, bonus might be derived or require more complex logic.
@@ -122,11 +109,7 @@ export async function getUserBalance(req: BunRequest) {
 }
 
 // POST /user/currency - set user currency
-export async function setUserCurrency(req: BunRequest) {
-  const user = await getUserFromHeader(req);
-  if (!user) {
-    return new Response(JSON.stringify({ message: "Unauthorized", code: 401 }), { status: 401 });
-  }
+export async function setUserCurrency(req: BunRequest, user: User) {
   const body = await req.json();
   const { currency_type } = body; // Assuming the body contains { currency_type: string }
 
@@ -171,18 +154,14 @@ export async function setUserCurrency(req: BunRequest) {
 }
 
 // POST /user/change - update user info
-export async function updateUserInfo(req: BunRequest) {
-  const user = await getUserFromHeader(req);
-  if (!user) {
-    return new Response(JSON.stringify({ message: "Unauthorized", code: 401 }), { status: 401 });
-  }
+export async function updateUserInfo(req: BunRequest, user: User) {
   const body = await req.json();
   // Extract fields that are allowed to be updated.
   // Be cautious about which fields you allow users to change directly.
   const { username, name, avatar /* add other updatable fields */ } = body;
 
   try {
-    const updatedUser = await prisma.user.update({
+    const updatedUser: any = await prisma.user.update({
       where: { id: user.id },
       data: {
         username: username !== undefined ? username : user.username,
@@ -192,11 +171,9 @@ export async function updateUserInfo(req: BunRequest) {
         // e.g., email: body.email, // Be careful with email updates, might need verification
       },
       include: {
-        activeProfile: { include: { operator: true } },
+        activeProfile: true,
         // operator: true,
-        vipInfo: {
-          take: 1,
-        },
+        vipInfo: true,
       },
     });
 
@@ -227,7 +204,6 @@ export async function updateUserInfo(req: BunRequest) {
     //   locked_personal_info_fields: [], // Placeholder
     //   create_at: updatedUser.createdAt.getTime(),
     // };
-
     const response: GetUserInfoResponseData = {
       code: 200,
       data: updatedUser,
@@ -244,11 +220,7 @@ export async function updateUserInfo(req: BunRequest) {
 }
 
 // POST /user/email - update email
-export async function updateUserEmail(req: BunRequest) {
-  const user = await getUserFromHeader(req);
-  if (!user) {
-    return new Response(JSON.stringify({ message: "Unauthorized", code: 401 }), { status: 401 });
-  }
+export async function updateUserEmail(req: BunRequest, user: User) {
   const body: UpdateEmail = await req.json();
   const { email, password } = body;
 
@@ -291,12 +263,55 @@ export async function updateUserEmail(req: BunRequest) {
   }
 }
 
-// POST /user/password - update password
-export async function updateUserPassword(req: BunRequest) {
-  const user = await getUserFromHeader(req);
-  if (!user) {
-    return new Response(JSON.stringify({ message: "Unauthorized", code: 401 }), { status: 401 });
+// POST /user/email - update cashtag
+export async function updateUserCashtag(req: BunRequest, user: User) {
+  const body: UpdateCashtag = await req.json();
+  const { cashtag, password } = body;
+
+  if (!cashtag) {
+    return new Response(JSON.stringify({ message: "Missing email or password in request body", code: 400 }), {
+      status: 400,
+    });
   }
+
+  // TODO: Implement password verification before changing email
+  // You would typically hash the provided password and compare it to user.passwordHash
+
+  try {
+    // Check if the new email is already in use by another user
+    const existingUser = await prisma.user.findFirst({ where: { cashtag } });
+    if (existingUser && existingUser.id !== user.id) {
+      return new Response(JSON.stringify({ message: "cashtag already in use", code: 400 }), { status: 400 });
+    }
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        cashtag,
+        emailVerified: false, // Mark email as unverified after change
+        // You might want to generate a new verification token here
+      },
+    });
+
+    return new Response(
+      JSON.stringify({
+        code: 200,
+        message: "User cashtag updated successfully. Verification required.",
+      })
+    );
+  } catch (error: any) {
+    console.error("Error updating user cashtag:", error);
+    return new Response(
+      JSON.stringify({ message: `Failed to update user cashtag: ${error.message}`, code: 500 }),
+      {
+        status: 500,
+      }
+    );
+  }
+}
+
+// POST /user/password - update password
+export async function updateUserPassword(req: BunRequest, user: User) {
   const body: UpdatePassword = await req.json();
   const { now_password, new_password } = body;
 
@@ -335,11 +350,7 @@ export async function updateUserPassword(req: BunRequest) {
 }
 
 // POST /user/suspend - suspend user
-export async function suspendUser(req: BunRequest) {
-  const user = await getUserFromHeader(req);
-  if (!user) {
-    return new Response(JSON.stringify({ message: "Unauthorized", code: 401 }), { status: 401 });
-  }
+export async function suspendUser(req: BunRequest, user: User) {
   const body: UpdateSuspendUser = await req.json();
   const { time } = body; // 'time' is in the interface but not directly in schema status
 
@@ -380,11 +391,7 @@ export async function checkUser(req: BunRequest) {
 }
 
 // POST /user/verifyemail - user email verify
-export async function verifyUserEmail(req: BunRequest) {
-  const user = await getUserFromHeader(req);
-  if (!user) {
-    return new Response(JSON.stringify({ message: "Unauthorized", code: 401 }), { status: 401 });
-  }
+export async function verifyUserEmail(req: BunRequest, user: User) {
   const body = await req.json();
   const { token } = body; // Assuming the verification token is sent in the body
 
@@ -435,12 +442,7 @@ export async function verifyUserEmail(req: BunRequest) {
     });
   } // Main user router function
 }
-export async function getCurrencyList(req: BunRequest) {
-  const user: any = await getUserFromHeader(req);
-  if (!user) {
-    return new Response(JSON.stringify({ message: "Unauthorized", code: 401 }), { status: 401 });
-  }
-
+export async function getCurrencyList(req: BunRequest, user: User) {
   const list: GetCurrencyBalanceList = {
     amount: user.activeProfile.balance.toString(),
     availabe_balance: user.activeProfile.balance.toString(),
@@ -459,30 +461,44 @@ export async function getCurrencyList(req: BunRequest) {
 }
 
 export async function userRoutes(req: BunRequest, route: string) {
+  const user = await getUserFromHeader(req);
+  if (route === NETWORK_CONFIG.WEB_SOCKET.SOCKET_CONNECT) return false;
+  if (!user || !user.activeProfile) {
+    return new Response(
+      JSON.stringify({
+        code: 401,
+        message: "Unauthorized: ",
+        data: { total_pages: 0, record: [] },
+      }),
+      { status: 401 }
+    );
+  }
   try {
     switch (route) {
       case NETWORK_CONFIG.PERSONAL_INFO_PAGE.USER_AMOUNT:
-        return await getUserAmount(req);
+        return await getUserAmount(req, user);
       case NETWORK_CONFIG.PERSONAL_INFO_PAGE.USER_INFO:
-        return await getUserInfo(req);
+        return await getUserInfo(req, user);
       case NETWORK_CONFIG.PERSONAL_INFO_PAGE.USER_BALANCE:
-        return await getUserBalance(req);
+        return await getUserBalance(req, user);
       case NETWORK_CONFIG.PERSONAL_INFO_PAGE.SET_USER_CURRENCY:
-        return await setUserCurrency(req);
+        return await setUserCurrency(req, user);
       case NETWORK_CONFIG.PERSONAL_INFO_PAGE.USER_CHANGE:
-        return await updateUserInfo(req);
+        return await updateUserInfo(req, user);
       case NETWORK_CONFIG.PERSONAL_INFO_PAGE.USER_EMAIL:
-        return await updateUserEmail(req);
+        return await updateUserEmail(req, user);
+      case NETWORK_CONFIG.PERSONAL_INFO_PAGE.USER_CASHTAG:
+        return await updateUserCashtag(req, user);
       case NETWORK_CONFIG.PERSONAL_INFO_PAGE.USER_PASSWORD:
-        return await updateUserPassword(req);
+        return await updateUserPassword(req, user);
       case NETWORK_CONFIG.PERSONAL_INFO_PAGE.USER_SUSPEND:
-        return await suspendUser(req);
+        return await suspendUser(req, user);
       case NETWORK_CONFIG.PERSONAL_INFO_PAGE.USER_CHECK:
         return await checkUser(req);
       case NETWORK_CONFIG.PERSONAL_INFO_PAGE.USER_EMAIL_VERIFY:
-        return await verifyUserEmail(req);
+        return await verifyUserEmail(req, user);
       case NETWORK_CONFIG.CURRENCY.CURRENCY_LIST:
-        return await getCurrencyList(req);
+        return await getCurrencyList(req, user);
       default:
         return false; ///new Response(JSON.stringify({ message: "Route not found", code: 404 }), { status: 404 });
     }

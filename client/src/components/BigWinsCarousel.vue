@@ -1,5 +1,5 @@
 <script setup>
-import { useShopStore } from '@/stores/shop'
+import { useOperatorStore } from '@/stores/operator'
 import Autoplay from 'embla-carousel-autoplay'
 import emblaCarouselVue from 'embla-carousel-vue'
 import { onMounted } from 'vue'
@@ -14,7 +14,7 @@ const loaded = ref(false)
 const TWEEN_FACTOR_BASE = 0.52
 let tweenFactor = 0
 let tweenNodes = []
-const shopStore = useShopStore()
+const shopStore = useOperatorStore()
 // const bigWins = shopStore.bigWins
 const numberWithinRange = (number, min, max) => Math.min(Math.max(number, min), max)
 

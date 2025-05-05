@@ -340,6 +340,8 @@
     "makeDisplayProps": true,
     "useDisplay": true,
     "useMonitorSize": true,
-    "useWindowSizeFn": true
+    "useWindowSizeFn": true,
+    "initializeVueWebSocket": true,
+    "useCashflowSocket": true
   }
 }

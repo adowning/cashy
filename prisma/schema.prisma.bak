@@ -1,0 +1,687 @@
+// schema.txt - Provided by the user
+generator client {
+  provider = "prisma-client-js"
+  output   = "../server/src/prisma/client"
+}
+generator typescriptInterfaces {
+  provider = "ts-node ./node_modules/.bin/prisma-generator-typescript-interfaces"
+  output   = "../shared/prisma/interfaces.ts"
+  client = "../server/src/prisma/client"
+  // modelPrefix = "I"
+  prettier = false
+  optionalRelations = false
+}
+// generator enums {
+//   provider = "ts-node ./prisma/enum-generator"
+//   output   = "../shared/prisma/enums.ts"
+// }
+  // generator prismaClassGenerator {
+  // provider      = "prisma-class-generator"
+  // output        = "../shared/classes"
+  // dryRun        = "false"
+  // makeIndexFile = "true"
+//   clientImportPath = "../shared/prisma/client"
+
+//   useSwagger    = "false"
+// }
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model achievement {
+  id               String       @id @default(cuid())
+  name            String
+  description     String
+  targetXp        Int
+  reward          Int?
+  isActive        Boolean           @default(true)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime?
+  userachievement userachievement[]
+}
+
+model User {
+  // id                                   String            @id(map: "User_pkey")
+  id               String       @id @default(cuid())
+  name             String?
+  email            String
+  emailVerified    Boolean?
+  image            String?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime?
+  twoFactorEnabled Boolean?
+  role             String?
+  banned           Boolean?
+  banReason        String?
+  banExpires       DateTime?
+  sessions         Session[]
+  accounts         Account[]
+  members          Member[]
+  invitations      Invitation[]
+  twofactors       TwoFactor[]
+
+  username                             String            @unique(map: "User_username_key")
+  passwordHash                         String?
+  totalXp                              Int               @default(0)
+  balance                              Int           @default(0)
+  isVerified                           Boolean           @default(false)
+  active                               Boolean           @default(false)
+  lastLogin                            DateTime?
+  lastDailySpin                            DateTime?
+  verificationToken                    String?
+  avatar                               String?
+  activeProfileId                      String?           @unique(map: "User_activeProfileId_key")
+  vipInfoId                      String?
+
+  gender                               Gender?
+  status                               UserStatus?
+  cashtag                              String?
+  phpId                                Int?
+  accessToken                          String?
+  RainBet                              RainBet[]
+  RainHistory                          RainHistory[]
+  RainTip                              RainTip[]
+  RainWinner                           RainWinner[]
+  chatmessage                          chatmessage[]
+  friendship_friendship_friendIdTouser friendship[]      @relation("friendship_friendIdTouser")
+  friendship_friendship_userIdTouser   friendship[]      @relation("friendship_userIdTouser")
+  notification                         notification[]
+  operator                             Operator[]
+  activeProfile                        Profile[]         @relation("profile_userIdTouser")
+  tournamententry                      tournamententry[]
+  userachievement                      userachievement[]
+  vipInfo VipInfo?
+
+  @@index([createdAt], map: "user_created_at_idx")
+  @@index([username, email])
+  @@map("user")
+}
+
+model Session {
+  id           String    @id @default(cuid())
+  userId       String
+  activeGameId String?
+  ipAddress    String?
+  userAgent    String?
+  expiresAt    DateTime
+  createdAt    DateTime  @default(now())
+  refreshToken String?
+  active       Boolean   @default(false)
+  user         User      @relation(fields: [userId], references: [id], map: "Session_userId_fkey")
+  token        String
+  updatedAt    DateTime?
+
+  @@unique([token])
+  @@index([refreshToken], map: "Session_refreshToken_idx")
+  @@index([userId], map: "Session_userId_idx")
+}
+
+model Operator {
+  id           String         @id @default(cuid())
+  name         String
+  slug         String         @unique(map: "Operator_slug_key")
+  logo         String?
+  description  String?
+  isActive     Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime?
+  ownerId      String
+  balance Int @default(0)
+  // banks         bank[]
+  owner         User           @relation(fields: [ownerId], references: [id], map: "Operator_ownerId_fkey")
+  games Game[]
+  profiles      Profile[]
+  tournaments   tournament[]
+
+  @@index([slug])
+  Product Product[]
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  authorId  String // Assuming a user exists
+  // Add relationships if needed
+}
+
+model Profile {
+  id                        String            @id @default(cuid())
+  balance                   Int               @default(0)
+  xpEarned                  Int               @default(0)
+  isActive                  Boolean           @default(false)
+  lastPlayed                DateTime?
+  createdAt                 DateTime          @default(now())
+  updatedAt                 DateTime?
+  phpId                     Int?              @unique(map: "Profile_phpId_key")
+  userId                    String
+  // bankId                    String
+  currency  String @default("USD")
+  shopId                    String
+  gamesession               gamesession[]
+  // bank                      bank              @relation(fields: [bankId], references: [id], onDelete: Cascade, map: "Profile_bankId_fkey")
+  operator                  Operator          @relation(fields: [shopId], references: [id], onDelete: Cascade, map: "Profile_shopId_fkey")
+  user_profile_userIdTouser User              @relation("profile_userIdTouser", fields: [userId], references: [id], onDelete: Cascade, map: "Profile_userId_fkey")
+  tournamententry           tournamententry[]
+  transactions               Transaction[]
+
+  @@unique([userId, shopId], map: "Profile_userId_shopId_key")
+  @@index([shopId, isActive], map: "operator_active_profile_idx")
+  // @@index([profileNumber], map: "profile_number_idx")
+  @@index([userId, isActive], map: "user_active_profile_idx")
+}
+
+model Game {
+  id                           String        @id @default(cuid())
+  name                         String
+  title                        String
+  temperature                  String?
+  developer                    String?
+  vipLevel                     Int?          @default(0)
+  isActive                     Boolean?      @default(false)
+  device                       Int?          @default(0)
+  featured                     Boolean?      @default(false)
+  gamebank                     String?       @default("slots")
+  bet                          Float?        @default(0)
+  denomination                 Float?        @default(0)
+  categoryTemp                 Float?        @default(0)
+  originalId                   Int?          @default(0)
+  bids                         Int?          @default(0)
+  statIn                       Float?        @default(0)
+  statOut                      Float?        @default(0)
+  currentRtp                   Float?        @default(0)
+  rtpStatIn                    Float?        @default(0)
+  rtpStatOut                   Float?        @default(0)
+  standardRtp                  Float?        @default(0)
+  popularity                   Float?        @default(0)
+  chanceFirepot1               Float?
+  chanceFirepot2               Float?
+  chanceFirepot3               Float?
+  fireCount1                   Float?
+  fireCount2                   Float?
+  fireCount3                   Float?
+  linesPercentConfigSpin       String?
+  linesPercentConfigSpinBonus  String?
+  linesPercentConfigBonus      String?
+  linesPercentConfigBonusBonus String?
+  rezerv                       Float?        @default(0)
+  cask                         Float?        @default(0)
+  advanced                     String?       @default("")
+  scaleMode                    String        @default("")
+  slotViewState                String        @default("")
+  view                         Int?          @default(0)
+  categoryId                   String?
+  operatorId                       String?
+  providerId                   String?
+  createdAt                    DateTime      @default(now())
+  updatedAt                    DateTime      @updatedAt
+  category                    GameCategory   @default(SLOTS)
+  jackpotGroupId               String?
+  active                       Boolean       @default(true)
+  password                     String?
+  // jackpotGroup                 JackpotGroup? @relation(fields: [jackpotGroupId], references: [id])
+  operator                         Operator?         @relation(fields: [operatorId], references: [id])
+  // leaderboards                 Leaderboard[] @relation("GameToLeaderboard")
+
+  @@map("games")
+  gamesession gamesession[] @relation(map: "GameSession_gameId_fkey")
+  tournamentgame tournamentgame[] @relation(map: "TournamentGame_gameId_fkey")
+}
+model Account {
+  id                    String    @id @default(cuid())
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime?
+
+  @@map("account")
+}
+
+model operatorgame {
+  id             String           @id @default(cuid())
+  name           String
+  slug           String           @unique(map: "OperatorGame_slug_key")
+  description    String?
+  thumbnail      String?
+  minBet         Int?
+  maxBet         Int?
+  xpMultiplier   Float            @default(1.0)
+  isActive       Boolean          @default(true)
+  isPromoted     Boolean          @default(false)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime?
+  operatorId     String
+  // gamesession    gamesession[]
+  // operator       Operator         @relation(fields: [operatorId], references: [id], map: "OperatorGame_operatorId_fkey")
+  // tournamentgame tournamentgame[]
+
+  @@index([slug], map: "game_slug_idx")
+}
+
+model Verification {
+  id         String    @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+model Organization {
+  id          String       @id @default(cuid())
+  name        String
+  slug        String?
+  logo        String?
+  createdAt   DateTime
+  metadata    String?
+  members     Member[]
+  invitations Invitation[]
+
+  @@unique([slug])
+  @@map("organization")
+}
+
+model Member {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role           String
+  createdAt      DateTime
+
+  @@map("member")
+}
+
+model Invitation {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email          String
+  role           String?
+  status         String
+  expiresAt      DateTime
+  inviterId      String
+  user           User         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
+
+  @@map("invitation")
+}
+
+model TwoFactor {
+  id          String @id @default(cuid())
+  secret      String
+  backupCodes String
+  userId      String
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("twoFactor")
+}
+
+// model bank {
+//   id         String    @id @default(cuid())
+//   name       String
+//   currency   String    @default("USD")
+//   isActive   Boolean   @default(true)
+//   createdAt  DateTime  @default(now())
+//   operatorId String
+//   operator   Operator  @relation(fields: [operatorId], references: [id], map: "Bank_operatorId_fkey")
+//   profile    Profile[]
+
+//   @@unique([operatorId, name], map: "Bank_operatorId_name_key")
+// }
+
+model chatmessage {
+  id        String      @id @default(cuid())
+  content   String
+  channel   ChatChannel
+  metadata  Json?
+  createdAt DateTime    @default(now())
+  userId    String
+  roomId    String?
+  chatroom  chatroom?   @relation(fields: [roomId], references: [id], map: "ChatMessage_roomId_fkey")
+  user      User        @relation(fields: [userId], references: [id], map: "ChatMessage_userId_fkey")
+
+  @@index([channel], map: "chat_channel_idx")
+  @@index([roomId], map: "chat_room_idx")
+}
+
+model chatroom {
+  id            String        @id @default(cuid())
+  name          String
+  isGameRoom    Boolean       @default(false)
+  createdAt     DateTime      @default(now())
+  gameSessionId String?
+  chatmessage   chatmessage[]
+  gamesession   gamesession?  @relation(fields: [gameSessionId], references: [id], map: "ChatRoom_gameSessionId_fkey")
+}
+
+model friendship {
+  id                             String           @id @default(cuid())
+  status                         FriendshipStatus @default(PENDING)
+  createdAt                      DateTime         @default(now())
+  updatedAt                      DateTime?
+  userId                         String
+  friendId                       String
+  user_friendship_friendIdTouser User             @relation("friendship_friendIdTouser", fields: [friendId], references: [id], map: "Friendship_friendId_fkey")
+  user_friendship_userIdTouser   User             @relation("friendship_userIdTouser", fields: [userId], references: [id], map: "Friendship_userId_fkey")
+
+  @@unique([userId, friendId], map: "Friendship_userId_friendId_key")
+}
+
+model gamesession {
+  id           String        @id @default(cuid())
+  startTime    DateTime      @default(now())
+  endTime      DateTime?
+  betAmount    Int?
+  winAmount    Int?
+  xpEarned     Int           @default(0)
+  metadata     Json?
+  gameId       String
+  tournamentId String?
+  active       Boolean       @default(false)
+  profileId    String
+  chatroom     chatroom[]
+  game Game  @relation(fields: [gameId], references: [id], map: "GameSession_gameId_fkey")
+  profile      Profile       @relation(fields: [profileId], references: [id], map: "GameSession_profileId_fkey")
+  tournament   tournament?   @relation(fields: [tournamentId], references: [id], map: "GameSession_tournamentId_fkey")
+  Transaction  Transaction[]
+
+  @@index([gameId], map: "session_game_idx")
+  @@index([profileId], map: "session_profile_idx")
+}
+
+model Product {
+  id                       String        @id @default(cuid())
+  title                    String
+  description              String
+  url                      String
+  type                     String
+  bonusCode                String?       @default("")
+  bonusTotalInCredits      Int?          @default(0)
+  priceInCents             Int           @default(0)
+  amountToReceiveInCredits Int           @default(0)
+  bestValue                 Int           @default(0)
+
+  discountInCents          Int           @default(0)
+  bonusSpins               Int?
+  isPromo                  Boolean?      @default(false)
+  totalDiscountInCents     Int
+  shopId                   String?
+  createdAt                DateTime      @default(now())
+  updatedAt                DateTime?      @updatedAt
+  operator                     Operator?         @relation(fields: [shopId], references: [id])
+  transactions              Transaction[]
+
+  @@map("products")
+}
+
+model notification {
+  id        String           @id @default(cuid())
+  type      NotificationType
+  title     String
+  message   String
+  isRead    Boolean          @default(false)
+  readAt    DateTime?
+  metadata  Json?
+  createdAt DateTime         @default(now())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], map: "Notification_userId_fkey")
+
+  @@index([userId, isRead], map: "notification_user_status_idx")
+}
+
+model tournament {
+  id              String            @id @default(cuid())
+  name            String
+  description     String?
+  startTime       DateTime
+  endTime         DateTime
+  entryFee        Int?
+  prizePool       Int           @default(0)
+  isActive        Boolean           @default(true)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime?
+  operatorId      String
+  leaderboard     Json?
+  gamesession     gamesession[]
+  operator        Operator          @relation(fields: [operatorId], references: [id], map: "Tournament_operatorId_fkey")
+  tournamententry tournamententry[]
+  tournamentgame  tournamentgame[]
+
+  @@index([operatorId], map: "tournament_operator_idx")
+}
+
+model tournamententry {
+  id           String     @id @default(cuid())
+  score        Int        @default(0)
+  wagered      Int    @default(0)
+  won          Int    @default(0)
+  joinedAt     DateTime   @default(now())
+  userId       String
+  tournamentId String
+  profileId    String
+  profile      Profile    @relation(fields: [profileId], references: [id], map: "TournamentEntry_profileId_fkey")
+  tournament   tournament @relation(fields: [tournamentId], references: [id], map: "TournamentEntry_tournamentId_fkey")
+  user         User       @relation(fields: [userId], references: [id], map: "TournamentEntry_userId_fkey")
+
+  @@unique([userId, tournamentId], map: "TournamentEntry_userId_tournamentId_key")
+}
+
+model tournamentgame {
+  id           String       @id @default(cuid())
+  multiplier   Float        @default(1.0)
+  tournamentId String
+  gameId       String
+  game Game @relation(fields: [gameId], references: [id], map: "TournamentGame_gameId_fkey")
+  tournament   tournament   @relation(fields: [tournamentId], references: [id], map: "TournamentGame_tournamentId_fkey")
+
+  @@unique([tournamentId, gameId], map: "TournamentGame_tournamentId_gameId_key")
+}
+
+model Transaction {
+  id             String            @id @default(cuid())
+  type           TransactionType
+  amount         Int
+  reference      String?
+  cashtag      String?
+  status         TransactionStatus @default(PENDING)
+  metadata       Json?
+  isRealMoney    Boolean           @default(false)
+  paymentMethod  String?
+  paymentDetails Json?
+  createdAt      DateTime          @default(now())
+  processedAt    DateTime?
+  gameSessionId  String?
+  profileId      String
+  gamesession    gamesession?      @relation(fields: [gameSessionId], references: [id], map: "Transaction_gameSessionId_fkey")
+  profile        Profile           @relation(fields: [profileId], references: [id], map: "Transaction_profileId_fkey")
+
+  @@index([profileId], map: "transaction_profile_idx")
+  @@index([type])
+  @@map("transactions")
+  Product Product[]
+}
+
+model userachievement {
+  id            String      @id @default(cuid())
+  progress      Int         @default(0)
+  isUnlocked    Boolean     @default(false)
+  unlockedAt    DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime?
+  userId        String
+  achievementId String
+  achievement   achievement @relation(fields: [achievementId], references: [id], map: "UserAchievement_achievementId_fkey")
+  user          User        @relation(fields: [userId], references: [id], map: "UserAchievement_userId_fkey")
+
+  @@unique([userId, achievementId], map: "UserAchievement_userId_achievementId_key")
+}
+
+model RainBet {
+  id            String      @id @default(cuid())
+  rainHistoryId String
+  userId        String
+  betAmount     Int
+  odds          Int
+  outcome       String?
+  settledAt     DateTime?
+  RainHistory   RainHistory @relation(fields: [rainHistoryId], references: [id], onDelete: Cascade, map: "RainBet_rainHistoryId_RainHistory_id_fk")
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade, map: "RainBet_userId_user_id_fk")
+}
+
+model RainHistory {
+  id         String       @id @default(cuid())
+  userId     String
+  amount     Int
+  rainType   String
+  createdAt  DateTime     @default(now())
+  RainBet    RainBet[]
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade, map: "RainHistory_userId_user_id_fk")
+  RainTip    RainTip[]
+  RainWinner RainWinner[]
+}
+
+model RainTip {
+  id            String      @id @default(cuid())
+  rainHistoryId String
+  userId        String
+  tipAmount     Int
+  tippedAt      DateTime    @default(now())
+  RainHistory   RainHistory @relation(fields: [rainHistoryId], references: [id], onDelete: Cascade, map: "RainTip_rainHistoryId_RainHistory_id_fk")
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade, map: "RainTip_userId_user_id_fk")
+}
+
+model RainWinner {
+  id            String      @id @default(cuid())
+  rainHistoryId String
+  userId        String
+  wonAmount     Int
+  wonAt         DateTime    @default(now())
+  RainHistory   RainHistory @relation(fields: [rainHistoryId], references: [id], onDelete: Cascade, map: "RainWinner_rainHistoryId_RainHistory_id_fk")
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade, map: "RainWinner_userId_user_id_fk")
+}
+
+model VipInfo {
+  id                           Int     @id @default(autoincrement())
+  level                        Int
+  deposit_exp                  Int
+  bet_exp                      Int
+  rank_bet_exp                 Int
+  rank_deposit_exp             Int
+  rank_name                    String
+  icon                         String
+  exp_switch_type              Int
+  now_deposit_exp              String
+  level_deposit_exp            String
+  now_bet_exp                  String
+  level_bet_exp                String
+  telegram                     String
+  is_protection                Boolean @default(false)
+  protection_deposit_exp       String
+  protection_deposit_amount    String
+  protection_bet_exp           String
+  protection_bet_amount        String
+  protection_days              Int
+  protection_switch            Int
+  cycle_award_switch           Boolean @default(true)
+  level_award_switch           Boolean @default(true)
+  signin_award_switch          Boolean @default(true)
+  bet_award_switch             Boolean @default(true)
+  withdrawal_award_switch      Boolean @default(true)
+  unprotection_deposit_exp     String
+  unprotection_deposit_amount  String
+  unprotection_bet_exp         String
+  unprotection_bet_amount      String
+  unprotection_days            Int
+  unprotection_switch          Int
+  main_currency                String
+  can_receive_level_award      Boolean @default(false)
+  can_receive_rank_award       Boolean @default(false)
+  can_receive_day_award        Boolean @default(false)
+  can_receive_week_award       Boolean @default(true)
+  can_receive_month_award      Boolean @default(false)
+  can_receive_signin_award     Boolean @default(false)
+  can_receive_bet_award        Boolean @default(false)
+  can_receive_withdrawal_award Boolean @default(false)
+  userid                       String  @unique
+  user                         User    @relation(fields: [userid], references: [id])
+
+  @@map("vip_infos")
+}
+enum ChatChannel {
+  LOBBY
+  GAME
+  TOURNAMENT
+  PRIVATE
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  BLOCKED
+}
+
+enum Gender {
+  BOY
+  GIRL
+  ALIEN
+  UNSURE
+  ROBOT
+  COMPLICATED
+}
+
+enum NotificationType {
+  SYSTEM
+  FRIEND_REQUEST
+  ACHIEVEMENT
+  BALANCE_UPDATE
+  PROMOTIONAL
+  TOURNAMENT
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
+  REFUNDED
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  BET
+  WIN
+  BONUS
+  DONATION
+  ADJUSTMENT
+  TOURNAMENT_BUYIN
+  TOURNAMENT_PRIZE
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  ONLINE
+  OFFLINE
+}
+enum GameCategory {
+  TABLE
+  FISH
+  POKER
+  SLOTS
+  OTHER
+}

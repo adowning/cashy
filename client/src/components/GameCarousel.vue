@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useShopStore } from '@/stores/shop'
+import { useOperatorStore } from '@/stores/operator'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import FlameEffectOverlay from './FlameEffectOverlay.vue'
@@ -44,7 +44,7 @@ async function loadGame(game: any) {
 
 onMounted(() => {
   games.value = gameStore.gameSearchList.list
-  console.log('Games loaded:', games.value)
+  // console.log('Games loaded:', games.value)
 })
 
 // Fallback for broken images
@@ -53,6 +53,9 @@ const onImageError = (event: Event) => {
   target.src = 'https://placehold.co/300x400/64748b/ffffff?text=Image+Error'
   target.style.objectFit = 'contain'
 }
+// games.filter((game: Game) => {
+//   console.log(`https://images.cashflowcasino.com/${game.developer}/${game.name.toLowerCase()}.avif`)
+// })
 
 const isFeatured = (game: Game) => game.featured === true
 </script>
@@ -115,7 +118,7 @@ const isFeatured = (game: Game) => game.featured === true
               style="z-index: 1"
             >
               <img
-                :src="`/images/games/${game.developer}/${game.name.toLowerCase()}.avif`"
+                :src="`https://images.cashflowcasino.com/${game.developer}/${game.name.toLowerCase()}.avif`"
                 :alt="game.title"
                 class="game-image absolute top-0"
                 style="z-index: 0"

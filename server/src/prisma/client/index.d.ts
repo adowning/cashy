@@ -163,6 +163,11 @@ export type RainWinner = $Result.DefaultSelection<Prisma.$RainWinnerPayload>
  * 
  */
 export type VipInfo = $Result.DefaultSelection<Prisma.$VipInfoPayload>
+/**
+ * Model event_log
+ * 
+ */
+export type event_log = $Result.DefaultSelection<Prisma.$event_logPayload>
 
 /**
  * Enums
@@ -216,7 +221,9 @@ export const TransactionStatus: {
   COMPLETED: 'COMPLETED',
   FAILED: 'FAILED',
   CANCELLED: 'CANCELLED',
-  REFUNDED: 'REFUNDED'
+  REFUNDED: 'REFUNDED',
+  EXPIRED: 'EXPIRED',
+  REJECTED: 'REJECTED'
 };
 
 export type TransactionStatus = (typeof TransactionStatus)[keyof typeof TransactionStatus]
@@ -715,6 +722,16 @@ export class PrismaClient<
     * ```
     */
   get vipInfo(): Prisma.VipInfoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.event_log`: Exposes CRUD operations for the **event_log** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Event_logs
+    * const event_logs = await prisma.event_log.findMany()
+    * ```
+    */
+  get event_log(): Prisma.event_logDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1184,7 +1201,8 @@ export namespace Prisma {
     RainHistory: 'RainHistory',
     RainTip: 'RainTip',
     RainWinner: 'RainWinner',
-    VipInfo: 'VipInfo'
+    VipInfo: 'VipInfo',
+    event_log: 'event_log'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1203,7 +1221,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "achievement" | "user" | "session" | "operator" | "message" | "profile" | "game" | "account" | "operatorgame" | "verification" | "organization" | "member" | "invitation" | "twoFactor" | "chatmessage" | "chatroom" | "friendship" | "gamesession" | "product" | "notification" | "tournament" | "tournamententry" | "tournamentgame" | "transaction" | "userachievement" | "rainBet" | "rainHistory" | "rainTip" | "rainWinner" | "vipInfo"
+      modelProps: "achievement" | "user" | "session" | "operator" | "message" | "profile" | "game" | "account" | "operatorgame" | "verification" | "organization" | "member" | "invitation" | "twoFactor" | "chatmessage" | "chatroom" | "friendship" | "gamesession" | "product" | "notification" | "tournament" | "tournamententry" | "tournamentgame" | "transaction" | "userachievement" | "rainBet" | "rainHistory" | "rainTip" | "rainWinner" | "vipInfo" | "event_log"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3427,6 +3445,80 @@ export namespace Prisma {
           }
         }
       }
+      event_log: {
+        payload: Prisma.$event_logPayload<ExtArgs>
+        fields: Prisma.event_logFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.event_logFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$event_logPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.event_logFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$event_logPayload>
+          }
+          findFirst: {
+            args: Prisma.event_logFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$event_logPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.event_logFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$event_logPayload>
+          }
+          findMany: {
+            args: Prisma.event_logFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$event_logPayload>[]
+          }
+          create: {
+            args: Prisma.event_logCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$event_logPayload>
+          }
+          createMany: {
+            args: Prisma.event_logCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.event_logCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$event_logPayload>[]
+          }
+          delete: {
+            args: Prisma.event_logDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$event_logPayload>
+          }
+          update: {
+            args: Prisma.event_logUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$event_logPayload>
+          }
+          deleteMany: {
+            args: Prisma.event_logDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.event_logUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.event_logUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$event_logPayload>[]
+          }
+          upsert: {
+            args: Prisma.event_logUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$event_logPayload>
+          }
+          aggregate: {
+            args: Prisma.Event_logAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEvent_log>
+          }
+          groupBy: {
+            args: Prisma.event_logGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Event_logGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.event_logCountArgs<ExtArgs>
+            result: $Utils.Optional<Event_logCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3541,6 +3633,7 @@ export namespace Prisma {
     rainTip?: RainTipOmit
     rainWinner?: RainWinnerOmit
     vipInfo?: VipInfoOmit
+    event_log?: event_logOmit
   }
 
   /* Types for Logging */
@@ -3666,45 +3759,43 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    sessions: number
-    accounts: number
-    members: number
-    invitations: number
-    twofactors: number
+    operator: number
+    activeProfile: number
     RainBet: number
     RainHistory: number
     RainTip: number
     RainWinner: number
+    sessions: number
+    accounts: number
     chatmessage: number
     friendship_friendship_friendIdTouser: number
     friendship_friendship_userIdTouser: number
+    invitations: number
+    members: number
     notification: number
-    operator: number
-    activeProfile: number
     tournamententry: number
+    twofactors: number
     userachievement: number
-    vipInfo: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sessions?: boolean | UserCountOutputTypeCountSessionsArgs
-    accounts?: boolean | UserCountOutputTypeCountAccountsArgs
-    members?: boolean | UserCountOutputTypeCountMembersArgs
-    invitations?: boolean | UserCountOutputTypeCountInvitationsArgs
-    twofactors?: boolean | UserCountOutputTypeCountTwofactorsArgs
+    operator?: boolean | UserCountOutputTypeCountOperatorArgs
+    activeProfile?: boolean | UserCountOutputTypeCountActiveProfileArgs
     RainBet?: boolean | UserCountOutputTypeCountRainBetArgs
     RainHistory?: boolean | UserCountOutputTypeCountRainHistoryArgs
     RainTip?: boolean | UserCountOutputTypeCountRainTipArgs
     RainWinner?: boolean | UserCountOutputTypeCountRainWinnerArgs
+    sessions?: boolean | UserCountOutputTypeCountSessionsArgs
+    accounts?: boolean | UserCountOutputTypeCountAccountsArgs
     chatmessage?: boolean | UserCountOutputTypeCountChatmessageArgs
     friendship_friendship_friendIdTouser?: boolean | UserCountOutputTypeCountFriendship_friendship_friendIdTouserArgs
     friendship_friendship_userIdTouser?: boolean | UserCountOutputTypeCountFriendship_friendship_userIdTouserArgs
+    invitations?: boolean | UserCountOutputTypeCountInvitationsArgs
+    members?: boolean | UserCountOutputTypeCountMembersArgs
     notification?: boolean | UserCountOutputTypeCountNotificationArgs
-    operator?: boolean | UserCountOutputTypeCountOperatorArgs
-    activeProfile?: boolean | UserCountOutputTypeCountActiveProfileArgs
     tournamententry?: boolean | UserCountOutputTypeCountTournamententryArgs
+    twofactors?: boolean | UserCountOutputTypeCountTwofactorsArgs
     userachievement?: boolean | UserCountOutputTypeCountUserachievementArgs
-    vipInfo?: boolean | UserCountOutputTypeCountVipInfoArgs
   }
 
   // Custom InputTypes
@@ -3721,36 +3812,15 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SessionWhereInput
+  export type UserCountOutputTypeCountOperatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OperatorWhereInput
   }
 
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AccountWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MemberWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountInvitationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: InvitationWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountTwofactorsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TwoFactorWhereInput
+  export type UserCountOutputTypeCountActiveProfileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProfileWhereInput
   }
 
   /**
@@ -3784,6 +3854,20 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
+  export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AccountWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
   export type UserCountOutputTypeCountChatmessageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: chatmessageWhereInput
   }
@@ -3805,22 +3889,22 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
+  export type UserCountOutputTypeCountInvitationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InvitationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MemberWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
   export type UserCountOutputTypeCountNotificationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: notificationWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountOperatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: OperatorWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountActiveProfileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ProfileWhereInput
   }
 
   /**
@@ -3833,15 +3917,15 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountUserachievementArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: userachievementWhereInput
+  export type UserCountOutputTypeCountTwofactorsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TwoFactorWhereInput
   }
 
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountVipInfoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: VipInfoWhereInput
+  export type UserCountOutputTypeCountUserachievementArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: userachievementWhereInput
   }
 
 
@@ -3850,17 +3934,17 @@ export namespace Prisma {
    */
 
   export type OperatorCountOutputType = {
-    games: number
     profiles: number
+    games: number
+    products: number
     tournaments: number
-    Product: number
   }
 
   export type OperatorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    games?: boolean | OperatorCountOutputTypeCountGamesArgs
     profiles?: boolean | OperatorCountOutputTypeCountProfilesArgs
+    games?: boolean | OperatorCountOutputTypeCountGamesArgs
+    products?: boolean | OperatorCountOutputTypeCountProductsArgs
     tournaments?: boolean | OperatorCountOutputTypeCountTournamentsArgs
-    Product?: boolean | OperatorCountOutputTypeCountProductArgs
   }
 
   // Custom InputTypes
@@ -3877,13 +3961,6 @@ export namespace Prisma {
   /**
    * OperatorCountOutputType without action
    */
-  export type OperatorCountOutputTypeCountGamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: GameWhereInput
-  }
-
-  /**
-   * OperatorCountOutputType without action
-   */
   export type OperatorCountOutputTypeCountProfilesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProfileWhereInput
   }
@@ -3891,15 +3968,22 @@ export namespace Prisma {
   /**
    * OperatorCountOutputType without action
    */
-  export type OperatorCountOutputTypeCountTournamentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: tournamentWhereInput
+  export type OperatorCountOutputTypeCountGamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GameWhereInput
   }
 
   /**
    * OperatorCountOutputType without action
    */
-  export type OperatorCountOutputTypeCountProductArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type OperatorCountOutputTypeCountProductsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProductWhereInput
+  }
+
+  /**
+   * OperatorCountOutputType without action
+   */
+  export type OperatorCountOutputTypeCountTournamentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: tournamentWhereInput
   }
 
 
@@ -3997,13 +4081,13 @@ export namespace Prisma {
    */
 
   export type OrganizationCountOutputType = {
-    members: number
     invitations: number
+    members: number
   }
 
   export type OrganizationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    members?: boolean | OrganizationCountOutputTypeCountMembersArgs
     invitations?: boolean | OrganizationCountOutputTypeCountInvitationsArgs
+    members?: boolean | OrganizationCountOutputTypeCountMembersArgs
   }
 
   // Custom InputTypes
@@ -4020,15 +4104,15 @@ export namespace Prisma {
   /**
    * OrganizationCountOutputType without action
    */
-  export type OrganizationCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MemberWhereInput
+  export type OrganizationCountOutputTypeCountInvitationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InvitationWhereInput
   }
 
   /**
    * OrganizationCountOutputType without action
    */
-  export type OrganizationCountOutputTypeCountInvitationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: InvitationWhereInput
+  export type OrganizationCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MemberWhereInput
   }
 
 
@@ -4180,37 +4264,6 @@ export namespace Prisma {
    */
   export type TournamentCountOutputTypeCountTournamentgameArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: tournamentgameWhereInput
-  }
-
-
-  /**
-   * Count Type TransactionCountOutputType
-   */
-
-  export type TransactionCountOutputType = {
-    Product: number
-  }
-
-  export type TransactionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Product?: boolean | TransactionCountOutputTypeCountProductArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * TransactionCountOutputType without action
-   */
-  export type TransactionCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the TransactionCountOutputType
-     */
-    select?: TransactionCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * TransactionCountOutputType without action
-   */
-  export type TransactionCountOutputTypeCountProductArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ProductWhereInput
   }
 
 
@@ -5458,16 +5511,16 @@ export namespace Prisma {
     isVerified: boolean | null
     active: boolean | null
     lastLogin: Date | null
-    lastDailySpin: Date | null
     verificationToken: string | null
     avatar: string | null
     activeProfileId: string | null
-    vipInfoId: string | null
     gender: $Enums.Gender | null
     status: $Enums.UserStatus | null
     cashtag: string | null
     phpId: number | null
     accessToken: string | null
+    vipInfoId: string | null
+    lastDailySpin: Date | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -5490,16 +5543,16 @@ export namespace Prisma {
     isVerified: boolean | null
     active: boolean | null
     lastLogin: Date | null
-    lastDailySpin: Date | null
     verificationToken: string | null
     avatar: string | null
     activeProfileId: string | null
-    vipInfoId: string | null
     gender: $Enums.Gender | null
     status: $Enums.UserStatus | null
     cashtag: string | null
     phpId: number | null
     accessToken: string | null
+    vipInfoId: string | null
+    lastDailySpin: Date | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -5522,16 +5575,16 @@ export namespace Prisma {
     isVerified: number
     active: number
     lastLogin: number
-    lastDailySpin: number
     verificationToken: number
     avatar: number
     activeProfileId: number
-    vipInfoId: number
     gender: number
     status: number
     cashtag: number
     phpId: number
     accessToken: number
+    vipInfoId: number
+    lastDailySpin: number
     _all: number
   }
 
@@ -5568,16 +5621,16 @@ export namespace Prisma {
     isVerified?: true
     active?: true
     lastLogin?: true
-    lastDailySpin?: true
     verificationToken?: true
     avatar?: true
     activeProfileId?: true
-    vipInfoId?: true
     gender?: true
     status?: true
     cashtag?: true
     phpId?: true
     accessToken?: true
+    vipInfoId?: true
+    lastDailySpin?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -5600,16 +5653,16 @@ export namespace Prisma {
     isVerified?: true
     active?: true
     lastLogin?: true
-    lastDailySpin?: true
     verificationToken?: true
     avatar?: true
     activeProfileId?: true
-    vipInfoId?: true
     gender?: true
     status?: true
     cashtag?: true
     phpId?: true
     accessToken?: true
+    vipInfoId?: true
+    lastDailySpin?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -5632,16 +5685,16 @@ export namespace Prisma {
     isVerified?: true
     active?: true
     lastLogin?: true
-    lastDailySpin?: true
     verificationToken?: true
     avatar?: true
     activeProfileId?: true
-    vipInfoId?: true
     gender?: true
     status?: true
     cashtag?: true
     phpId?: true
     accessToken?: true
+    vipInfoId?: true
+    lastDailySpin?: true
     _all?: true
   }
 
@@ -5751,16 +5804,16 @@ export namespace Prisma {
     isVerified: boolean
     active: boolean
     lastLogin: Date | null
-    lastDailySpin: Date | null
     verificationToken: string | null
     avatar: string | null
     activeProfileId: string | null
-    vipInfoId: string | null
     gender: $Enums.Gender | null
     status: $Enums.UserStatus | null
     cashtag: string | null
     phpId: number | null
     accessToken: string | null
+    vipInfoId: string | null
+    lastDailySpin: Date | null
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -5802,32 +5855,32 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: boolean
-    lastDailySpin?: boolean
     verificationToken?: boolean
     avatar?: boolean
     activeProfileId?: boolean
-    vipInfoId?: boolean
     gender?: boolean
     status?: boolean
     cashtag?: boolean
     phpId?: boolean
     accessToken?: boolean
-    sessions?: boolean | User$sessionsArgs<ExtArgs>
-    accounts?: boolean | User$accountsArgs<ExtArgs>
-    members?: boolean | User$membersArgs<ExtArgs>
-    invitations?: boolean | User$invitationsArgs<ExtArgs>
-    twofactors?: boolean | User$twofactorsArgs<ExtArgs>
+    vipInfoId?: boolean
+    lastDailySpin?: boolean
+    operator?: boolean | User$operatorArgs<ExtArgs>
+    activeProfile?: boolean | User$activeProfileArgs<ExtArgs>
     RainBet?: boolean | User$RainBetArgs<ExtArgs>
     RainHistory?: boolean | User$RainHistoryArgs<ExtArgs>
     RainTip?: boolean | User$RainTipArgs<ExtArgs>
     RainWinner?: boolean | User$RainWinnerArgs<ExtArgs>
+    sessions?: boolean | User$sessionsArgs<ExtArgs>
+    accounts?: boolean | User$accountsArgs<ExtArgs>
     chatmessage?: boolean | User$chatmessageArgs<ExtArgs>
     friendship_friendship_friendIdTouser?: boolean | User$friendship_friendship_friendIdTouserArgs<ExtArgs>
     friendship_friendship_userIdTouser?: boolean | User$friendship_friendship_userIdTouserArgs<ExtArgs>
+    invitations?: boolean | User$invitationsArgs<ExtArgs>
+    members?: boolean | User$membersArgs<ExtArgs>
     notification?: boolean | User$notificationArgs<ExtArgs>
-    operator?: boolean | User$operatorArgs<ExtArgs>
-    activeProfile?: boolean | User$activeProfileArgs<ExtArgs>
     tournamententry?: boolean | User$tournamententryArgs<ExtArgs>
+    twofactors?: boolean | User$twofactorsArgs<ExtArgs>
     userachievement?: boolean | User$userachievementArgs<ExtArgs>
     vipInfo?: boolean | User$vipInfoArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -5853,16 +5906,16 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: boolean
-    lastDailySpin?: boolean
     verificationToken?: boolean
     avatar?: boolean
     activeProfileId?: boolean
-    vipInfoId?: boolean
     gender?: boolean
     status?: boolean
     cashtag?: boolean
     phpId?: boolean
     accessToken?: boolean
+    vipInfoId?: boolean
+    lastDailySpin?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5885,16 +5938,16 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: boolean
-    lastDailySpin?: boolean
     verificationToken?: boolean
     avatar?: boolean
     activeProfileId?: boolean
-    vipInfoId?: boolean
     gender?: boolean
     status?: boolean
     cashtag?: boolean
     phpId?: boolean
     accessToken?: boolean
+    vipInfoId?: boolean
+    lastDailySpin?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -5917,36 +5970,36 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: boolean
-    lastDailySpin?: boolean
     verificationToken?: boolean
     avatar?: boolean
     activeProfileId?: boolean
-    vipInfoId?: boolean
     gender?: boolean
     status?: boolean
     cashtag?: boolean
     phpId?: boolean
     accessToken?: boolean
+    vipInfoId?: boolean
+    lastDailySpin?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "twoFactorEnabled" | "role" | "banned" | "banReason" | "banExpires" | "username" | "passwordHash" | "totalXp" | "balance" | "isVerified" | "active" | "lastLogin" | "lastDailySpin" | "verificationToken" | "avatar" | "activeProfileId" | "vipInfoId" | "gender" | "status" | "cashtag" | "phpId" | "accessToken", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "twoFactorEnabled" | "role" | "banned" | "banReason" | "banExpires" | "username" | "passwordHash" | "totalXp" | "balance" | "isVerified" | "active" | "lastLogin" | "verificationToken" | "avatar" | "activeProfileId" | "gender" | "status" | "cashtag" | "phpId" | "accessToken" | "vipInfoId" | "lastDailySpin", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sessions?: boolean | User$sessionsArgs<ExtArgs>
-    accounts?: boolean | User$accountsArgs<ExtArgs>
-    members?: boolean | User$membersArgs<ExtArgs>
-    invitations?: boolean | User$invitationsArgs<ExtArgs>
-    twofactors?: boolean | User$twofactorsArgs<ExtArgs>
+    operator?: boolean | User$operatorArgs<ExtArgs>
+    activeProfile?: boolean | User$activeProfileArgs<ExtArgs>
     RainBet?: boolean | User$RainBetArgs<ExtArgs>
     RainHistory?: boolean | User$RainHistoryArgs<ExtArgs>
     RainTip?: boolean | User$RainTipArgs<ExtArgs>
     RainWinner?: boolean | User$RainWinnerArgs<ExtArgs>
+    sessions?: boolean | User$sessionsArgs<ExtArgs>
+    accounts?: boolean | User$accountsArgs<ExtArgs>
     chatmessage?: boolean | User$chatmessageArgs<ExtArgs>
     friendship_friendship_friendIdTouser?: boolean | User$friendship_friendship_friendIdTouserArgs<ExtArgs>
     friendship_friendship_userIdTouser?: boolean | User$friendship_friendship_userIdTouserArgs<ExtArgs>
+    invitations?: boolean | User$invitationsArgs<ExtArgs>
+    members?: boolean | User$membersArgs<ExtArgs>
     notification?: boolean | User$notificationArgs<ExtArgs>
-    operator?: boolean | User$operatorArgs<ExtArgs>
-    activeProfile?: boolean | User$activeProfileArgs<ExtArgs>
     tournamententry?: boolean | User$tournamententryArgs<ExtArgs>
+    twofactors?: boolean | User$twofactorsArgs<ExtArgs>
     userachievement?: boolean | User$userachievementArgs<ExtArgs>
     vipInfo?: boolean | User$vipInfoArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -5957,24 +6010,24 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      sessions: Prisma.$SessionPayload<ExtArgs>[]
-      accounts: Prisma.$AccountPayload<ExtArgs>[]
-      members: Prisma.$MemberPayload<ExtArgs>[]
-      invitations: Prisma.$InvitationPayload<ExtArgs>[]
-      twofactors: Prisma.$TwoFactorPayload<ExtArgs>[]
+      operator: Prisma.$OperatorPayload<ExtArgs>[]
+      activeProfile: Prisma.$ProfilePayload<ExtArgs>[]
       RainBet: Prisma.$RainBetPayload<ExtArgs>[]
       RainHistory: Prisma.$RainHistoryPayload<ExtArgs>[]
       RainTip: Prisma.$RainTipPayload<ExtArgs>[]
       RainWinner: Prisma.$RainWinnerPayload<ExtArgs>[]
+      sessions: Prisma.$SessionPayload<ExtArgs>[]
+      accounts: Prisma.$AccountPayload<ExtArgs>[]
       chatmessage: Prisma.$chatmessagePayload<ExtArgs>[]
       friendship_friendship_friendIdTouser: Prisma.$friendshipPayload<ExtArgs>[]
       friendship_friendship_userIdTouser: Prisma.$friendshipPayload<ExtArgs>[]
+      invitations: Prisma.$InvitationPayload<ExtArgs>[]
+      members: Prisma.$MemberPayload<ExtArgs>[]
       notification: Prisma.$notificationPayload<ExtArgs>[]
-      operator: Prisma.$OperatorPayload<ExtArgs>[]
-      activeProfile: Prisma.$ProfilePayload<ExtArgs>[]
       tournamententry: Prisma.$tournamententryPayload<ExtArgs>[]
+      twofactors: Prisma.$TwoFactorPayload<ExtArgs>[]
       userachievement: Prisma.$userachievementPayload<ExtArgs>[]
-      vipInfo: Prisma.$VipInfoPayload<ExtArgs>[]
+      vipInfo: Prisma.$VipInfoPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5996,16 +6049,16 @@ export namespace Prisma {
       isVerified: boolean
       active: boolean
       lastLogin: Date | null
-      lastDailySpin: Date | null
       verificationToken: string | null
       avatar: string | null
       activeProfileId: string | null
-      vipInfoId: string | null
       gender: $Enums.Gender | null
       status: $Enums.UserStatus | null
       cashtag: string | null
       phpId: number | null
       accessToken: string | null
+      vipInfoId: string | null
+      lastDailySpin: Date | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -6400,24 +6453,24 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    members<T extends User$membersArgs<ExtArgs> = {}>(args?: Subset<T, User$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    invitations<T extends User$invitationsArgs<ExtArgs> = {}>(args?: Subset<T, User$invitationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    twofactors<T extends User$twofactorsArgs<ExtArgs> = {}>(args?: Subset<T, User$twofactorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TwoFactorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    operator<T extends User$operatorArgs<ExtArgs> = {}>(args?: Subset<T, User$operatorArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OperatorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    activeProfile<T extends User$activeProfileArgs<ExtArgs> = {}>(args?: Subset<T, User$activeProfileArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     RainBet<T extends User$RainBetArgs<ExtArgs> = {}>(args?: Subset<T, User$RainBetArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RainBetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     RainHistory<T extends User$RainHistoryArgs<ExtArgs> = {}>(args?: Subset<T, User$RainHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RainHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     RainTip<T extends User$RainTipArgs<ExtArgs> = {}>(args?: Subset<T, User$RainTipArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RainTipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     RainWinner<T extends User$RainWinnerArgs<ExtArgs> = {}>(args?: Subset<T, User$RainWinnerArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RainWinnerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     chatmessage<T extends User$chatmessageArgs<ExtArgs> = {}>(args?: Subset<T, User$chatmessageArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$chatmessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     friendship_friendship_friendIdTouser<T extends User$friendship_friendship_friendIdTouserArgs<ExtArgs> = {}>(args?: Subset<T, User$friendship_friendship_friendIdTouserArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$friendshipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     friendship_friendship_userIdTouser<T extends User$friendship_friendship_userIdTouserArgs<ExtArgs> = {}>(args?: Subset<T, User$friendship_friendship_userIdTouserArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$friendshipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    invitations<T extends User$invitationsArgs<ExtArgs> = {}>(args?: Subset<T, User$invitationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    members<T extends User$membersArgs<ExtArgs> = {}>(args?: Subset<T, User$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notification<T extends User$notificationArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$notificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    operator<T extends User$operatorArgs<ExtArgs> = {}>(args?: Subset<T, User$operatorArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OperatorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    activeProfile<T extends User$activeProfileArgs<ExtArgs> = {}>(args?: Subset<T, User$activeProfileArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tournamententry<T extends User$tournamententryArgs<ExtArgs> = {}>(args?: Subset<T, User$tournamententryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$tournamententryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    twofactors<T extends User$twofactorsArgs<ExtArgs> = {}>(args?: Subset<T, User$twofactorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TwoFactorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     userachievement<T extends User$userachievementArgs<ExtArgs> = {}>(args?: Subset<T, User$userachievementArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$userachievementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    vipInfo<T extends User$vipInfoArgs<ExtArgs> = {}>(args?: Subset<T, User$vipInfoArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VipInfoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    vipInfo<T extends User$vipInfoArgs<ExtArgs> = {}>(args?: Subset<T, User$vipInfoArgs<ExtArgs>>): Prisma__VipInfoClient<$Result.GetResult<Prisma.$VipInfoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6466,16 +6519,16 @@ export namespace Prisma {
     readonly isVerified: FieldRef<"User", 'Boolean'>
     readonly active: FieldRef<"User", 'Boolean'>
     readonly lastLogin: FieldRef<"User", 'DateTime'>
-    readonly lastDailySpin: FieldRef<"User", 'DateTime'>
     readonly verificationToken: FieldRef<"User", 'String'>
     readonly avatar: FieldRef<"User", 'String'>
     readonly activeProfileId: FieldRef<"User", 'String'>
-    readonly vipInfoId: FieldRef<"User", 'String'>
     readonly gender: FieldRef<"User", 'Gender'>
     readonly status: FieldRef<"User", 'UserStatus'>
     readonly cashtag: FieldRef<"User", 'String'>
     readonly phpId: FieldRef<"User", 'Int'>
     readonly accessToken: FieldRef<"User", 'String'>
+    readonly vipInfoId: FieldRef<"User", 'String'>
+    readonly lastDailySpin: FieldRef<"User", 'DateTime'>
   }
     
 
@@ -6864,123 +6917,51 @@ export namespace Prisma {
   }
 
   /**
-   * User.sessions
+   * User.operator
    */
-  export type User$sessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$operatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Session
+     * Select specific fields to fetch from the Operator
      */
-    select?: SessionSelect<ExtArgs> | null
+    select?: OperatorSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Session
+     * Omit specific fields from the Operator
      */
-    omit?: SessionOmit<ExtArgs> | null
+    omit?: OperatorOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SessionInclude<ExtArgs> | null
-    where?: SessionWhereInput
-    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
-    cursor?: SessionWhereUniqueInput
+    include?: OperatorInclude<ExtArgs> | null
+    where?: OperatorWhereInput
+    orderBy?: OperatorOrderByWithRelationInput | OperatorOrderByWithRelationInput[]
+    cursor?: OperatorWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
+    distinct?: OperatorScalarFieldEnum | OperatorScalarFieldEnum[]
   }
 
   /**
-   * User.accounts
+   * User.activeProfile
    */
-  export type User$accountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$activeProfileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Account
+     * Select specific fields to fetch from the Profile
      */
-    select?: AccountSelect<ExtArgs> | null
+    select?: ProfileSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Account
+     * Omit specific fields from the Profile
      */
-    omit?: AccountOmit<ExtArgs> | null
+    omit?: ProfileOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: AccountInclude<ExtArgs> | null
-    where?: AccountWhereInput
-    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
-    cursor?: AccountWhereUniqueInput
+    include?: ProfileInclude<ExtArgs> | null
+    where?: ProfileWhereInput
+    orderBy?: ProfileOrderByWithRelationInput | ProfileOrderByWithRelationInput[]
+    cursor?: ProfileWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
-  }
-
-  /**
-   * User.members
-   */
-  export type User$membersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Member
-     */
-    select?: MemberSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Member
-     */
-    omit?: MemberOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MemberInclude<ExtArgs> | null
-    where?: MemberWhereInput
-    orderBy?: MemberOrderByWithRelationInput | MemberOrderByWithRelationInput[]
-    cursor?: MemberWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: MemberScalarFieldEnum | MemberScalarFieldEnum[]
-  }
-
-  /**
-   * User.invitations
-   */
-  export type User$invitationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Invitation
-     */
-    select?: InvitationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Invitation
-     */
-    omit?: InvitationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: InvitationInclude<ExtArgs> | null
-    where?: InvitationWhereInput
-    orderBy?: InvitationOrderByWithRelationInput | InvitationOrderByWithRelationInput[]
-    cursor?: InvitationWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: InvitationScalarFieldEnum | InvitationScalarFieldEnum[]
-  }
-
-  /**
-   * User.twofactors
-   */
-  export type User$twofactorsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the TwoFactor
-     */
-    select?: TwoFactorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the TwoFactor
-     */
-    omit?: TwoFactorOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: TwoFactorInclude<ExtArgs> | null
-    where?: TwoFactorWhereInput
-    orderBy?: TwoFactorOrderByWithRelationInput | TwoFactorOrderByWithRelationInput[]
-    cursor?: TwoFactorWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: TwoFactorScalarFieldEnum | TwoFactorScalarFieldEnum[]
+    distinct?: ProfileScalarFieldEnum | ProfileScalarFieldEnum[]
   }
 
   /**
@@ -7080,6 +7061,54 @@ export namespace Prisma {
   }
 
   /**
+   * User.sessions
+   */
+  export type User$sessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    where?: SessionWhereInput
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    cursor?: SessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
+  }
+
+  /**
+   * User.accounts
+   */
+  export type User$accountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    where?: AccountWhereInput
+    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
+    cursor?: AccountWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+  }
+
+  /**
    * User.chatmessage
    */
   export type User$chatmessageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7152,6 +7181,54 @@ export namespace Prisma {
   }
 
   /**
+   * User.invitations
+   */
+  export type User$invitationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invitation
+     */
+    select?: InvitationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invitation
+     */
+    omit?: InvitationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvitationInclude<ExtArgs> | null
+    where?: InvitationWhereInput
+    orderBy?: InvitationOrderByWithRelationInput | InvitationOrderByWithRelationInput[]
+    cursor?: InvitationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InvitationScalarFieldEnum | InvitationScalarFieldEnum[]
+  }
+
+  /**
+   * User.members
+   */
+  export type User$membersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Member
+     */
+    select?: MemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Member
+     */
+    omit?: MemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemberInclude<ExtArgs> | null
+    where?: MemberWhereInput
+    orderBy?: MemberOrderByWithRelationInput | MemberOrderByWithRelationInput[]
+    cursor?: MemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MemberScalarFieldEnum | MemberScalarFieldEnum[]
+  }
+
+  /**
    * User.notification
    */
   export type User$notificationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7176,54 +7253,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.operator
-   */
-  export type User$operatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Operator
-     */
-    select?: OperatorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Operator
-     */
-    omit?: OperatorOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OperatorInclude<ExtArgs> | null
-    where?: OperatorWhereInput
-    orderBy?: OperatorOrderByWithRelationInput | OperatorOrderByWithRelationInput[]
-    cursor?: OperatorWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: OperatorScalarFieldEnum | OperatorScalarFieldEnum[]
-  }
-
-  /**
-   * User.activeProfile
-   */
-  export type User$activeProfileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Profile
-     */
-    select?: ProfileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Profile
-     */
-    omit?: ProfileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProfileInclude<ExtArgs> | null
-    where?: ProfileWhereInput
-    orderBy?: ProfileOrderByWithRelationInput | ProfileOrderByWithRelationInput[]
-    cursor?: ProfileWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ProfileScalarFieldEnum | ProfileScalarFieldEnum[]
-  }
-
-  /**
    * User.tournamententry
    */
   export type User$tournamententryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7245,6 +7274,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TournamententryScalarFieldEnum | TournamententryScalarFieldEnum[]
+  }
+
+  /**
+   * User.twofactors
+   */
+  export type User$twofactorsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TwoFactor
+     */
+    select?: TwoFactorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TwoFactor
+     */
+    omit?: TwoFactorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TwoFactorInclude<ExtArgs> | null
+    where?: TwoFactorWhereInput
+    orderBy?: TwoFactorOrderByWithRelationInput | TwoFactorOrderByWithRelationInput[]
+    cursor?: TwoFactorWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TwoFactorScalarFieldEnum | TwoFactorScalarFieldEnum[]
   }
 
   /**
@@ -7288,11 +7341,6 @@ export namespace Prisma {
      */
     include?: VipInfoInclude<ExtArgs> | null
     where?: VipInfoWhereInput
-    orderBy?: VipInfoOrderByWithRelationInput | VipInfoOrderByWithRelationInput[]
-    cursor?: VipInfoWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: VipInfoScalarFieldEnum | VipInfoScalarFieldEnum[]
   }
 
   /**
@@ -8505,6 +8553,7 @@ export namespace Prisma {
     isActive: number
     createdAt: number
     updatedAt: number
+    acceptedPayments: number
     ownerId: number
     balance: number
     _all: number
@@ -8554,6 +8603,7 @@ export namespace Prisma {
     isActive?: true
     createdAt?: true
     updatedAt?: true
+    acceptedPayments?: true
     ownerId?: true
     balance?: true
     _all?: true
@@ -8654,6 +8704,7 @@ export namespace Prisma {
     isActive: boolean
     createdAt: Date
     updatedAt: Date | null
+    acceptedPayments: string[]
     ownerId: string
     balance: number
     _count: OperatorCountAggregateOutputType | null
@@ -8686,13 +8737,14 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    acceptedPayments?: boolean
     ownerId?: boolean
     balance?: boolean
     owner?: boolean | UserDefaultArgs<ExtArgs>
-    games?: boolean | Operator$gamesArgs<ExtArgs>
     profiles?: boolean | Operator$profilesArgs<ExtArgs>
+    games?: boolean | Operator$gamesArgs<ExtArgs>
+    products?: boolean | Operator$productsArgs<ExtArgs>
     tournaments?: boolean | Operator$tournamentsArgs<ExtArgs>
-    Product?: boolean | Operator$ProductArgs<ExtArgs>
     _count?: boolean | OperatorCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["operator"]>
 
@@ -8705,6 +8757,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    acceptedPayments?: boolean
     ownerId?: boolean
     balance?: boolean
     owner?: boolean | UserDefaultArgs<ExtArgs>
@@ -8719,6 +8772,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    acceptedPayments?: boolean
     ownerId?: boolean
     balance?: boolean
     owner?: boolean | UserDefaultArgs<ExtArgs>
@@ -8733,17 +8787,18 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    acceptedPayments?: boolean
     ownerId?: boolean
     balance?: boolean
   }
 
-  export type OperatorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "logo" | "description" | "isActive" | "createdAt" | "updatedAt" | "ownerId" | "balance", ExtArgs["result"]["operator"]>
+  export type OperatorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "logo" | "description" | "isActive" | "createdAt" | "updatedAt" | "acceptedPayments" | "ownerId" | "balance", ExtArgs["result"]["operator"]>
   export type OperatorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     owner?: boolean | UserDefaultArgs<ExtArgs>
-    games?: boolean | Operator$gamesArgs<ExtArgs>
     profiles?: boolean | Operator$profilesArgs<ExtArgs>
+    games?: boolean | Operator$gamesArgs<ExtArgs>
+    products?: boolean | Operator$productsArgs<ExtArgs>
     tournaments?: boolean | Operator$tournamentsArgs<ExtArgs>
-    Product?: boolean | Operator$ProductArgs<ExtArgs>
     _count?: boolean | OperatorCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OperatorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8757,10 +8812,10 @@ export namespace Prisma {
     name: "Operator"
     objects: {
       owner: Prisma.$UserPayload<ExtArgs>
-      games: Prisma.$GamePayload<ExtArgs>[]
       profiles: Prisma.$ProfilePayload<ExtArgs>[]
+      games: Prisma.$GamePayload<ExtArgs>[]
+      products: Prisma.$ProductPayload<ExtArgs>[]
       tournaments: Prisma.$tournamentPayload<ExtArgs>[]
-      Product: Prisma.$ProductPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8771,6 +8826,7 @@ export namespace Prisma {
       isActive: boolean
       createdAt: Date
       updatedAt: Date | null
+      acceptedPayments: string[]
       ownerId: string
       balance: number
     }, ExtArgs["result"]["operator"]>
@@ -9168,10 +9224,10 @@ export namespace Prisma {
   export interface Prisma__OperatorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     owner<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    games<T extends Operator$gamesArgs<ExtArgs> = {}>(args?: Subset<T, Operator$gamesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GamePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     profiles<T extends Operator$profilesArgs<ExtArgs> = {}>(args?: Subset<T, Operator$profilesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    games<T extends Operator$gamesArgs<ExtArgs> = {}>(args?: Subset<T, Operator$gamesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GamePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    products<T extends Operator$productsArgs<ExtArgs> = {}>(args?: Subset<T, Operator$productsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tournaments<T extends Operator$tournamentsArgs<ExtArgs> = {}>(args?: Subset<T, Operator$tournamentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$tournamentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    Product<T extends Operator$ProductArgs<ExtArgs> = {}>(args?: Subset<T, Operator$ProductArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9209,6 +9265,7 @@ export namespace Prisma {
     readonly isActive: FieldRef<"Operator", 'Boolean'>
     readonly createdAt: FieldRef<"Operator", 'DateTime'>
     readonly updatedAt: FieldRef<"Operator", 'DateTime'>
+    readonly acceptedPayments: FieldRef<"Operator", 'String[]'>
     readonly ownerId: FieldRef<"Operator", 'String'>
     readonly balance: FieldRef<"Operator", 'Int'>
   }
@@ -9607,30 +9664,6 @@ export namespace Prisma {
   }
 
   /**
-   * Operator.games
-   */
-  export type Operator$gamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Game
-     */
-    select?: GameSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Game
-     */
-    omit?: GameOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GameInclude<ExtArgs> | null
-    where?: GameWhereInput
-    orderBy?: GameOrderByWithRelationInput | GameOrderByWithRelationInput[]
-    cursor?: GameWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: GameScalarFieldEnum | GameScalarFieldEnum[]
-  }
-
-  /**
    * Operator.profiles
    */
   export type Operator$profilesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9655,6 +9688,54 @@ export namespace Prisma {
   }
 
   /**
+   * Operator.games
+   */
+  export type Operator$gamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Game
+     */
+    select?: GameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Game
+     */
+    omit?: GameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GameInclude<ExtArgs> | null
+    where?: GameWhereInput
+    orderBy?: GameOrderByWithRelationInput | GameOrderByWithRelationInput[]
+    cursor?: GameWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GameScalarFieldEnum | GameScalarFieldEnum[]
+  }
+
+  /**
+   * Operator.products
+   */
+  export type Operator$productsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Product
+     */
+    select?: ProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Product
+     */
+    omit?: ProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductInclude<ExtArgs> | null
+    where?: ProductWhereInput
+    orderBy?: ProductOrderByWithRelationInput | ProductOrderByWithRelationInput[]
+    cursor?: ProductWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProductScalarFieldEnum | ProductScalarFieldEnum[]
+  }
+
+  /**
    * Operator.tournaments
    */
   export type Operator$tournamentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9676,30 +9757,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TournamentScalarFieldEnum | TournamentScalarFieldEnum[]
-  }
-
-  /**
-   * Operator.Product
-   */
-  export type Operator$ProductArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Product
-     */
-    select?: ProductSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Product
-     */
-    omit?: ProductOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProductInclude<ExtArgs> | null
-    where?: ProductWhereInput
-    orderBy?: ProductOrderByWithRelationInput | ProductOrderByWithRelationInput[]
-    cursor?: ProductWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ProductScalarFieldEnum | ProductScalarFieldEnum[]
   }
 
   /**
@@ -10970,9 +11027,9 @@ export namespace Prisma {
     userId?: boolean
     currency?: boolean
     shopId?: boolean
-    gamesession?: boolean | Profile$gamesessionArgs<ExtArgs>
     operator?: boolean | OperatorDefaultArgs<ExtArgs>
     user_profile_userIdTouser?: boolean | UserDefaultArgs<ExtArgs>
+    gamesession?: boolean | Profile$gamesessionArgs<ExtArgs>
     tournamententry?: boolean | Profile$tournamententryArgs<ExtArgs>
     transactions?: boolean | Profile$transactionsArgs<ExtArgs>
     _count?: boolean | ProfileCountOutputTypeDefaultArgs<ExtArgs>
@@ -11026,9 +11083,9 @@ export namespace Prisma {
 
   export type ProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "balance" | "xpEarned" | "isActive" | "lastPlayed" | "createdAt" | "updatedAt" | "phpId" | "userId" | "currency" | "shopId", ExtArgs["result"]["profile"]>
   export type ProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    gamesession?: boolean | Profile$gamesessionArgs<ExtArgs>
     operator?: boolean | OperatorDefaultArgs<ExtArgs>
     user_profile_userIdTouser?: boolean | UserDefaultArgs<ExtArgs>
+    gamesession?: boolean | Profile$gamesessionArgs<ExtArgs>
     tournamententry?: boolean | Profile$tournamententryArgs<ExtArgs>
     transactions?: boolean | Profile$transactionsArgs<ExtArgs>
     _count?: boolean | ProfileCountOutputTypeDefaultArgs<ExtArgs>
@@ -11045,9 +11102,9 @@ export namespace Prisma {
   export type $ProfilePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Profile"
     objects: {
-      gamesession: Prisma.$gamesessionPayload<ExtArgs>[]
       operator: Prisma.$OperatorPayload<ExtArgs>
       user_profile_userIdTouser: Prisma.$UserPayload<ExtArgs>
+      gamesession: Prisma.$gamesessionPayload<ExtArgs>[]
       tournamententry: Prisma.$tournamententryPayload<ExtArgs>[]
       transactions: Prisma.$TransactionPayload<ExtArgs>[]
     }
@@ -11457,9 +11514,9 @@ export namespace Prisma {
    */
   export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    gamesession<T extends Profile$gamesessionArgs<ExtArgs> = {}>(args?: Subset<T, Profile$gamesessionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$gamesessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     operator<T extends OperatorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OperatorDefaultArgs<ExtArgs>>): Prisma__OperatorClient<$Result.GetResult<Prisma.$OperatorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     user_profile_userIdTouser<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    gamesession<T extends Profile$gamesessionArgs<ExtArgs> = {}>(args?: Subset<T, Profile$gamesessionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$gamesessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tournamententry<T extends Profile$tournamententryArgs<ExtArgs> = {}>(args?: Subset<T, Profile$tournamententryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$tournamententryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     transactions<T extends Profile$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, Profile$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -12096,10 +12153,10 @@ export namespace Prisma {
     providerId: string | null
     createdAt: Date | null
     updatedAt: Date | null
-    category: $Enums.GameCategory | null
     jackpotGroupId: string | null
     active: boolean | null
     password: string | null
+    category: $Enums.GameCategory | null
   }
 
   export type GameMaxAggregateOutputType = {
@@ -12146,10 +12203,10 @@ export namespace Prisma {
     providerId: string | null
     createdAt: Date | null
     updatedAt: Date | null
-    category: $Enums.GameCategory | null
     jackpotGroupId: string | null
     active: boolean | null
     password: string | null
+    category: $Enums.GameCategory | null
   }
 
   export type GameCountAggregateOutputType = {
@@ -12196,10 +12253,10 @@ export namespace Prisma {
     providerId: number
     createdAt: number
     updatedAt: number
-    category: number
     jackpotGroupId: number
     active: number
     password: number
+    category: number
     _all: number
   }
 
@@ -12300,10 +12357,10 @@ export namespace Prisma {
     providerId?: true
     createdAt?: true
     updatedAt?: true
-    category?: true
     jackpotGroupId?: true
     active?: true
     password?: true
+    category?: true
   }
 
   export type GameMaxAggregateInputType = {
@@ -12350,10 +12407,10 @@ export namespace Prisma {
     providerId?: true
     createdAt?: true
     updatedAt?: true
-    category?: true
     jackpotGroupId?: true
     active?: true
     password?: true
+    category?: true
   }
 
   export type GameCountAggregateInputType = {
@@ -12400,10 +12457,10 @@ export namespace Prisma {
     providerId?: true
     createdAt?: true
     updatedAt?: true
-    category?: true
     jackpotGroupId?: true
     active?: true
     password?: true
+    category?: true
     _all?: true
   }
 
@@ -12537,10 +12594,10 @@ export namespace Prisma {
     providerId: string | null
     createdAt: Date
     updatedAt: Date
-    category: $Enums.GameCategory
     jackpotGroupId: string | null
     active: boolean
     password: string | null
+    category: $Enums.GameCategory
     _count: GameCountAggregateOutputType | null
     _avg: GameAvgAggregateOutputType | null
     _sum: GameSumAggregateOutputType | null
@@ -12606,10 +12663,10 @@ export namespace Prisma {
     providerId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    category?: boolean
     jackpotGroupId?: boolean
     active?: boolean
     password?: boolean
+    category?: boolean
     operator?: boolean | Game$operatorArgs<ExtArgs>
     gamesession?: boolean | Game$gamesessionArgs<ExtArgs>
     tournamentgame?: boolean | Game$tournamentgameArgs<ExtArgs>
@@ -12660,10 +12717,10 @@ export namespace Prisma {
     providerId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    category?: boolean
     jackpotGroupId?: boolean
     active?: boolean
     password?: boolean
+    category?: boolean
     operator?: boolean | Game$operatorArgs<ExtArgs>
   }, ExtArgs["result"]["game"]>
 
@@ -12711,10 +12768,10 @@ export namespace Prisma {
     providerId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    category?: boolean
     jackpotGroupId?: boolean
     active?: boolean
     password?: boolean
+    category?: boolean
     operator?: boolean | Game$operatorArgs<ExtArgs>
   }, ExtArgs["result"]["game"]>
 
@@ -12762,13 +12819,13 @@ export namespace Prisma {
     providerId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    category?: boolean
     jackpotGroupId?: boolean
     active?: boolean
     password?: boolean
+    category?: boolean
   }
 
-  export type GameOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "title" | "temperature" | "developer" | "vipLevel" | "isActive" | "device" | "featured" | "gamebank" | "bet" | "denomination" | "categoryTemp" | "originalId" | "bids" | "statIn" | "statOut" | "currentRtp" | "rtpStatIn" | "rtpStatOut" | "standardRtp" | "popularity" | "chanceFirepot1" | "chanceFirepot2" | "chanceFirepot3" | "fireCount1" | "fireCount2" | "fireCount3" | "linesPercentConfigSpin" | "linesPercentConfigSpinBonus" | "linesPercentConfigBonus" | "linesPercentConfigBonusBonus" | "rezerv" | "cask" | "advanced" | "scaleMode" | "slotViewState" | "view" | "categoryId" | "operatorId" | "providerId" | "createdAt" | "updatedAt" | "category" | "jackpotGroupId" | "active" | "password", ExtArgs["result"]["game"]>
+  export type GameOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "title" | "temperature" | "developer" | "vipLevel" | "isActive" | "device" | "featured" | "gamebank" | "bet" | "denomination" | "categoryTemp" | "originalId" | "bids" | "statIn" | "statOut" | "currentRtp" | "rtpStatIn" | "rtpStatOut" | "standardRtp" | "popularity" | "chanceFirepot1" | "chanceFirepot2" | "chanceFirepot3" | "fireCount1" | "fireCount2" | "fireCount3" | "linesPercentConfigSpin" | "linesPercentConfigSpinBonus" | "linesPercentConfigBonus" | "linesPercentConfigBonusBonus" | "rezerv" | "cask" | "advanced" | "scaleMode" | "slotViewState" | "view" | "categoryId" | "operatorId" | "providerId" | "createdAt" | "updatedAt" | "jackpotGroupId" | "active" | "password" | "category", ExtArgs["result"]["game"]>
   export type GameInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     operator?: boolean | Game$operatorArgs<ExtArgs>
     gamesession?: boolean | Game$gamesessionArgs<ExtArgs>
@@ -12833,10 +12890,10 @@ export namespace Prisma {
       providerId: string | null
       createdAt: Date
       updatedAt: Date
-      category: $Enums.GameCategory
       jackpotGroupId: string | null
       active: boolean
       password: string | null
+      category: $Enums.GameCategory
     }, ExtArgs["result"]["game"]>
     composites: {}
   }
@@ -13306,10 +13363,10 @@ export namespace Prisma {
     readonly providerId: FieldRef<"Game", 'String'>
     readonly createdAt: FieldRef<"Game", 'DateTime'>
     readonly updatedAt: FieldRef<"Game", 'DateTime'>
-    readonly category: FieldRef<"Game", 'GameCategory'>
     readonly jackpotGroupId: FieldRef<"Game", 'String'>
     readonly active: FieldRef<"Game", 'Boolean'>
     readonly password: FieldRef<"Game", 'String'>
+    readonly category: FieldRef<"Game", 'GameCategory'>
   }
     
 
@@ -17274,8 +17331,8 @@ export namespace Prisma {
     logo?: boolean
     createdAt?: boolean
     metadata?: boolean
-    members?: boolean | Organization$membersArgs<ExtArgs>
     invitations?: boolean | Organization$invitationsArgs<ExtArgs>
+    members?: boolean | Organization$membersArgs<ExtArgs>
     _count?: boolean | OrganizationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["organization"]>
 
@@ -17308,8 +17365,8 @@ export namespace Prisma {
 
   export type OrganizationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "logo" | "createdAt" | "metadata", ExtArgs["result"]["organization"]>
   export type OrganizationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    members?: boolean | Organization$membersArgs<ExtArgs>
     invitations?: boolean | Organization$invitationsArgs<ExtArgs>
+    members?: boolean | Organization$membersArgs<ExtArgs>
     _count?: boolean | OrganizationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OrganizationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -17318,8 +17375,8 @@ export namespace Prisma {
   export type $OrganizationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Organization"
     objects: {
-      members: Prisma.$MemberPayload<ExtArgs>[]
       invitations: Prisma.$InvitationPayload<ExtArgs>[]
+      members: Prisma.$MemberPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -17722,8 +17779,8 @@ export namespace Prisma {
    */
   export interface Prisma__OrganizationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    members<T extends Organization$membersArgs<ExtArgs> = {}>(args?: Subset<T, Organization$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     invitations<T extends Organization$invitationsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$invitationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    members<T extends Organization$membersArgs<ExtArgs> = {}>(args?: Subset<T, Organization$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18147,30 +18204,6 @@ export namespace Prisma {
   }
 
   /**
-   * Organization.members
-   */
-  export type Organization$membersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Member
-     */
-    select?: MemberSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Member
-     */
-    omit?: MemberOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MemberInclude<ExtArgs> | null
-    where?: MemberWhereInput
-    orderBy?: MemberOrderByWithRelationInput | MemberOrderByWithRelationInput[]
-    cursor?: MemberWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: MemberScalarFieldEnum | MemberScalarFieldEnum[]
-  }
-
-  /**
    * Organization.invitations
    */
   export type Organization$invitationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -18192,6 +18225,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: InvitationScalarFieldEnum | InvitationScalarFieldEnum[]
+  }
+
+  /**
+   * Organization.members
+   */
+  export type Organization$membersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Member
+     */
+    select?: MemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Member
+     */
+    omit?: MemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemberInclude<ExtArgs> | null
+    where?: MemberWhereInput
+    orderBy?: MemberOrderByWithRelationInput | MemberOrderByWithRelationInput[]
+    cursor?: MemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MemberScalarFieldEnum | MemberScalarFieldEnum[]
   }
 
   /**
@@ -19459,8 +19516,8 @@ export namespace Prisma {
     status?: boolean
     expiresAt?: boolean
     inviterId?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["invitation"]>
 
   export type InvitationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -19471,8 +19528,8 @@ export namespace Prisma {
     status?: boolean
     expiresAt?: boolean
     inviterId?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["invitation"]>
 
   export type InvitationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -19483,8 +19540,8 @@ export namespace Prisma {
     status?: boolean
     expiresAt?: boolean
     inviterId?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["invitation"]>
 
   export type InvitationSelectScalar = {
@@ -19499,23 +19556,23 @@ export namespace Prisma {
 
   export type InvitationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organizationId" | "email" | "role" | "status" | "expiresAt" | "inviterId", ExtArgs["result"]["invitation"]>
   export type InvitationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
   }
   export type InvitationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
   }
   export type InvitationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
   }
 
   export type $InvitationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Invitation"
     objects: {
-      organization: Prisma.$OrganizationPayload<ExtArgs>
       user: Prisma.$UserPayload<ExtArgs>
+      organization: Prisma.$OrganizationPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -19919,8 +19976,8 @@ export namespace Prisma {
    */
   export interface Prisma__InvitationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    organization<T extends OrganizationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationDefaultArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    organization<T extends OrganizationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationDefaultArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -26254,7 +26311,7 @@ export namespace Prisma {
     totalDiscountInCents: number
     shopId: string | null
     createdAt: Date
-    updatedAt: Date
+    updatedAt: Date | null
     _count: ProductCountAggregateOutputType | null
     _avg: ProductAvgAggregateOutputType | null
     _sum: ProductSumAggregateOutputType | null
@@ -26397,7 +26454,7 @@ export namespace Prisma {
       totalDiscountInCents: number
       shopId: string | null
       createdAt: Date
-      updatedAt: Date
+      updatedAt: Date | null
     }, ExtArgs["result"]["product"]>
     composites: {}
   }
@@ -31928,16 +31985,25 @@ export namespace Prisma {
 
   export type TransactionAvgAggregateOutputType = {
     amount: number | null
+    amountCredits: number | null
   }
 
   export type TransactionSumAggregateOutputType = {
     amount: number | null
+    amountCredits: number | null
   }
 
   export type TransactionMinAggregateOutputType = {
     id: string | null
     type: $Enums.TransactionType | null
     amount: number | null
+    amountCredits: number | null
+    buyerCashtag: string | null
+    buyerUserId: string | null
+    username: string | null
+    cashiername: string | null
+    cashierAvatar: string | null
+    cashierId: string | null
     reference: string | null
     status: $Enums.TransactionStatus | null
     isRealMoney: boolean | null
@@ -31946,12 +32012,21 @@ export namespace Prisma {
     processedAt: Date | null
     gameSessionId: string | null
     profileId: string | null
+    cashtag: string | null
+    productid: string | null
   }
 
   export type TransactionMaxAggregateOutputType = {
     id: string | null
     type: $Enums.TransactionType | null
     amount: number | null
+    amountCredits: number | null
+    buyerCashtag: string | null
+    buyerUserId: string | null
+    username: string | null
+    cashiername: string | null
+    cashierAvatar: string | null
+    cashierId: string | null
     reference: string | null
     status: $Enums.TransactionStatus | null
     isRealMoney: boolean | null
@@ -31960,12 +32035,21 @@ export namespace Prisma {
     processedAt: Date | null
     gameSessionId: string | null
     profileId: string | null
+    cashtag: string | null
+    productid: string | null
   }
 
   export type TransactionCountAggregateOutputType = {
     id: number
     type: number
     amount: number
+    amountCredits: number
+    buyerCashtag: number
+    buyerUserId: number
+    username: number
+    cashiername: number
+    cashierAvatar: number
+    cashierId: number
     reference: number
     status: number
     metadata: number
@@ -31976,22 +32060,33 @@ export namespace Prisma {
     processedAt: number
     gameSessionId: number
     profileId: number
+    cashtag: number
+    productid: number
     _all: number
   }
 
 
   export type TransactionAvgAggregateInputType = {
     amount?: true
+    amountCredits?: true
   }
 
   export type TransactionSumAggregateInputType = {
     amount?: true
+    amountCredits?: true
   }
 
   export type TransactionMinAggregateInputType = {
     id?: true
     type?: true
     amount?: true
+    amountCredits?: true
+    buyerCashtag?: true
+    buyerUserId?: true
+    username?: true
+    cashiername?: true
+    cashierAvatar?: true
+    cashierId?: true
     reference?: true
     status?: true
     isRealMoney?: true
@@ -32000,12 +32095,21 @@ export namespace Prisma {
     processedAt?: true
     gameSessionId?: true
     profileId?: true
+    cashtag?: true
+    productid?: true
   }
 
   export type TransactionMaxAggregateInputType = {
     id?: true
     type?: true
     amount?: true
+    amountCredits?: true
+    buyerCashtag?: true
+    buyerUserId?: true
+    username?: true
+    cashiername?: true
+    cashierAvatar?: true
+    cashierId?: true
     reference?: true
     status?: true
     isRealMoney?: true
@@ -32014,12 +32118,21 @@ export namespace Prisma {
     processedAt?: true
     gameSessionId?: true
     profileId?: true
+    cashtag?: true
+    productid?: true
   }
 
   export type TransactionCountAggregateInputType = {
     id?: true
     type?: true
     amount?: true
+    amountCredits?: true
+    buyerCashtag?: true
+    buyerUserId?: true
+    username?: true
+    cashiername?: true
+    cashierAvatar?: true
+    cashierId?: true
     reference?: true
     status?: true
     metadata?: true
@@ -32030,6 +32143,8 @@ export namespace Prisma {
     processedAt?: true
     gameSessionId?: true
     profileId?: true
+    cashtag?: true
+    productid?: true
     _all?: true
   }
 
@@ -32123,6 +32238,13 @@ export namespace Prisma {
     id: string
     type: $Enums.TransactionType
     amount: number
+    amountCredits: number
+    buyerCashtag: string | null
+    buyerUserId: string | null
+    username: string | null
+    cashiername: string | null
+    cashierAvatar: string | null
+    cashierId: string | null
     reference: string | null
     status: $Enums.TransactionStatus
     metadata: JsonValue | null
@@ -32133,6 +32255,8 @@ export namespace Prisma {
     processedAt: Date | null
     gameSessionId: string | null
     profileId: string
+    cashtag: string | null
+    productid: string | null
     _count: TransactionCountAggregateOutputType | null
     _avg: TransactionAvgAggregateOutputType | null
     _sum: TransactionSumAggregateOutputType | null
@@ -32158,6 +32282,13 @@ export namespace Prisma {
     id?: boolean
     type?: boolean
     amount?: boolean
+    amountCredits?: boolean
+    buyerCashtag?: boolean
+    buyerUserId?: boolean
+    username?: boolean
+    cashiername?: boolean
+    cashierAvatar?: boolean
+    cashierId?: boolean
     reference?: boolean
     status?: boolean
     metadata?: boolean
@@ -32168,16 +32299,24 @@ export namespace Prisma {
     processedAt?: boolean
     gameSessionId?: boolean
     profileId?: boolean
+    cashtag?: boolean
+    productid?: boolean
     gamesession?: boolean | Transaction$gamesessionArgs<ExtArgs>
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
-    Product?: boolean | Transaction$ProductArgs<ExtArgs>
-    _count?: boolean | TransactionCountOutputTypeDefaultArgs<ExtArgs>
+    product?: boolean | Transaction$productArgs<ExtArgs>
   }, ExtArgs["result"]["transaction"]>
 
   export type TransactionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
     amount?: boolean
+    amountCredits?: boolean
+    buyerCashtag?: boolean
+    buyerUserId?: boolean
+    username?: boolean
+    cashiername?: boolean
+    cashierAvatar?: boolean
+    cashierId?: boolean
     reference?: boolean
     status?: boolean
     metadata?: boolean
@@ -32188,14 +32327,24 @@ export namespace Prisma {
     processedAt?: boolean
     gameSessionId?: boolean
     profileId?: boolean
+    cashtag?: boolean
+    productid?: boolean
     gamesession?: boolean | Transaction$gamesessionArgs<ExtArgs>
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
+    product?: boolean | Transaction$productArgs<ExtArgs>
   }, ExtArgs["result"]["transaction"]>
 
   export type TransactionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
     amount?: boolean
+    amountCredits?: boolean
+    buyerCashtag?: boolean
+    buyerUserId?: boolean
+    username?: boolean
+    cashiername?: boolean
+    cashierAvatar?: boolean
+    cashierId?: boolean
     reference?: boolean
     status?: boolean
     metadata?: boolean
@@ -32206,14 +32355,24 @@ export namespace Prisma {
     processedAt?: boolean
     gameSessionId?: boolean
     profileId?: boolean
+    cashtag?: boolean
+    productid?: boolean
     gamesession?: boolean | Transaction$gamesessionArgs<ExtArgs>
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
+    product?: boolean | Transaction$productArgs<ExtArgs>
   }, ExtArgs["result"]["transaction"]>
 
   export type TransactionSelectScalar = {
     id?: boolean
     type?: boolean
     amount?: boolean
+    amountCredits?: boolean
+    buyerCashtag?: boolean
+    buyerUserId?: boolean
+    username?: boolean
+    cashiername?: boolean
+    cashierAvatar?: boolean
+    cashierId?: boolean
     reference?: boolean
     status?: boolean
     metadata?: boolean
@@ -32224,22 +32383,25 @@ export namespace Prisma {
     processedAt?: boolean
     gameSessionId?: boolean
     profileId?: boolean
+    cashtag?: boolean
+    productid?: boolean
   }
 
-  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "amount" | "reference" | "status" | "metadata" | "isRealMoney" | "paymentMethod" | "paymentDetails" | "createdAt" | "processedAt" | "gameSessionId" | "profileId", ExtArgs["result"]["transaction"]>
+  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "amount" | "amountCredits" | "buyerCashtag" | "buyerUserId" | "username" | "cashiername" | "cashierAvatar" | "cashierId" | "reference" | "status" | "metadata" | "isRealMoney" | "paymentMethod" | "paymentDetails" | "createdAt" | "processedAt" | "gameSessionId" | "profileId" | "cashtag" | "productid", ExtArgs["result"]["transaction"]>
   export type TransactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     gamesession?: boolean | Transaction$gamesessionArgs<ExtArgs>
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
-    Product?: boolean | Transaction$ProductArgs<ExtArgs>
-    _count?: boolean | TransactionCountOutputTypeDefaultArgs<ExtArgs>
+    product?: boolean | Transaction$productArgs<ExtArgs>
   }
   export type TransactionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     gamesession?: boolean | Transaction$gamesessionArgs<ExtArgs>
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
+    product?: boolean | Transaction$productArgs<ExtArgs>
   }
   export type TransactionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     gamesession?: boolean | Transaction$gamesessionArgs<ExtArgs>
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
+    product?: boolean | Transaction$productArgs<ExtArgs>
   }
 
   export type $TransactionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -32247,12 +32409,19 @@ export namespace Prisma {
     objects: {
       gamesession: Prisma.$gamesessionPayload<ExtArgs> | null
       profile: Prisma.$ProfilePayload<ExtArgs>
-      Product: Prisma.$ProductPayload<ExtArgs>[]
+      product: Prisma.$ProductPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       type: $Enums.TransactionType
       amount: number
+      amountCredits: number
+      buyerCashtag: string | null
+      buyerUserId: string | null
+      username: string | null
+      cashiername: string | null
+      cashierAvatar: string | null
+      cashierId: string | null
       reference: string | null
       status: $Enums.TransactionStatus
       metadata: Prisma.JsonValue | null
@@ -32263,6 +32432,8 @@ export namespace Prisma {
       processedAt: Date | null
       gameSessionId: string | null
       profileId: string
+      cashtag: string | null
+      productid: string | null
     }, ExtArgs["result"]["transaction"]>
     composites: {}
   }
@@ -32659,7 +32830,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     gamesession<T extends Transaction$gamesessionArgs<ExtArgs> = {}>(args?: Subset<T, Transaction$gamesessionArgs<ExtArgs>>): Prisma__gamesessionClient<$Result.GetResult<Prisma.$gamesessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     profile<T extends ProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProfileDefaultArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    Product<T extends Transaction$ProductArgs<ExtArgs> = {}>(args?: Subset<T, Transaction$ProductArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    product<T extends Transaction$productArgs<ExtArgs> = {}>(args?: Subset<T, Transaction$productArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -32692,6 +32863,13 @@ export namespace Prisma {
     readonly id: FieldRef<"Transaction", 'String'>
     readonly type: FieldRef<"Transaction", 'TransactionType'>
     readonly amount: FieldRef<"Transaction", 'Int'>
+    readonly amountCredits: FieldRef<"Transaction", 'Int'>
+    readonly buyerCashtag: FieldRef<"Transaction", 'String'>
+    readonly buyerUserId: FieldRef<"Transaction", 'String'>
+    readonly username: FieldRef<"Transaction", 'String'>
+    readonly cashiername: FieldRef<"Transaction", 'String'>
+    readonly cashierAvatar: FieldRef<"Transaction", 'String'>
+    readonly cashierId: FieldRef<"Transaction", 'String'>
     readonly reference: FieldRef<"Transaction", 'String'>
     readonly status: FieldRef<"Transaction", 'TransactionStatus'>
     readonly metadata: FieldRef<"Transaction", 'Json'>
@@ -32702,6 +32880,8 @@ export namespace Prisma {
     readonly processedAt: FieldRef<"Transaction", 'DateTime'>
     readonly gameSessionId: FieldRef<"Transaction", 'String'>
     readonly profileId: FieldRef<"Transaction", 'String'>
+    readonly cashtag: FieldRef<"Transaction", 'String'>
+    readonly productid: FieldRef<"Transaction", 'String'>
   }
     
 
@@ -33117,9 +33297,9 @@ export namespace Prisma {
   }
 
   /**
-   * Transaction.Product
+   * Transaction.product
    */
-  export type Transaction$ProductArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Transaction$productArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Product
      */
@@ -33133,11 +33313,6 @@ export namespace Prisma {
      */
     include?: ProductInclude<ExtArgs> | null
     where?: ProductWhereInput
-    orderBy?: ProductOrderByWithRelationInput | ProductOrderByWithRelationInput[]
-    cursor?: ProductWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ProductScalarFieldEnum | ProductScalarFieldEnum[]
   }
 
   /**
@@ -40420,6 +40595,1044 @@ export namespace Prisma {
 
 
   /**
+   * Model event_log
+   */
+
+  export type AggregateEvent_log = {
+    _count: Event_logCountAggregateOutputType | null
+    _avg: Event_logAvgAggregateOutputType | null
+    _sum: Event_logSumAggregateOutputType | null
+    _min: Event_logMinAggregateOutputType | null
+    _max: Event_logMaxAggregateOutputType | null
+  }
+
+  export type Event_logAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type Event_logSumAggregateOutputType = {
+    id: bigint | null
+  }
+
+  export type Event_logMinAggregateOutputType = {
+    id: bigint | null
+    table_name: string | null
+    row_id: string | null
+    operation: string | null
+    created_at: Date | null
+  }
+
+  export type Event_logMaxAggregateOutputType = {
+    id: bigint | null
+    table_name: string | null
+    row_id: string | null
+    operation: string | null
+    created_at: Date | null
+  }
+
+  export type Event_logCountAggregateOutputType = {
+    id: number
+    table_name: number
+    row_id: number
+    operation: number
+    payload: number
+    created_at: number
+    _all: number
+  }
+
+
+  export type Event_logAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type Event_logSumAggregateInputType = {
+    id?: true
+  }
+
+  export type Event_logMinAggregateInputType = {
+    id?: true
+    table_name?: true
+    row_id?: true
+    operation?: true
+    created_at?: true
+  }
+
+  export type Event_logMaxAggregateInputType = {
+    id?: true
+    table_name?: true
+    row_id?: true
+    operation?: true
+    created_at?: true
+  }
+
+  export type Event_logCountAggregateInputType = {
+    id?: true
+    table_name?: true
+    row_id?: true
+    operation?: true
+    payload?: true
+    created_at?: true
+    _all?: true
+  }
+
+  export type Event_logAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which event_log to aggregate.
+     */
+    where?: event_logWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of event_logs to fetch.
+     */
+    orderBy?: event_logOrderByWithRelationInput | event_logOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: event_logWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` event_logs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` event_logs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned event_logs
+    **/
+    _count?: true | Event_logCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Event_logAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Event_logSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Event_logMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Event_logMaxAggregateInputType
+  }
+
+  export type GetEvent_logAggregateType<T extends Event_logAggregateArgs> = {
+        [P in keyof T & keyof AggregateEvent_log]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEvent_log[P]>
+      : GetScalarType<T[P], AggregateEvent_log[P]>
+  }
+
+
+
+
+  export type event_logGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: event_logWhereInput
+    orderBy?: event_logOrderByWithAggregationInput | event_logOrderByWithAggregationInput[]
+    by: Event_logScalarFieldEnum[] | Event_logScalarFieldEnum
+    having?: event_logScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Event_logCountAggregateInputType | true
+    _avg?: Event_logAvgAggregateInputType
+    _sum?: Event_logSumAggregateInputType
+    _min?: Event_logMinAggregateInputType
+    _max?: Event_logMaxAggregateInputType
+  }
+
+  export type Event_logGroupByOutputType = {
+    id: bigint
+    table_name: string
+    row_id: string | null
+    operation: string
+    payload: JsonValue | null
+    created_at: Date | null
+    _count: Event_logCountAggregateOutputType | null
+    _avg: Event_logAvgAggregateOutputType | null
+    _sum: Event_logSumAggregateOutputType | null
+    _min: Event_logMinAggregateOutputType | null
+    _max: Event_logMaxAggregateOutputType | null
+  }
+
+  type GetEvent_logGroupByPayload<T extends event_logGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Event_logGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Event_logGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Event_logGroupByOutputType[P]>
+            : GetScalarType<T[P], Event_logGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type event_logSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    table_name?: boolean
+    row_id?: boolean
+    operation?: boolean
+    payload?: boolean
+    created_at?: boolean
+  }, ExtArgs["result"]["event_log"]>
+
+  export type event_logSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    table_name?: boolean
+    row_id?: boolean
+    operation?: boolean
+    payload?: boolean
+    created_at?: boolean
+  }, ExtArgs["result"]["event_log"]>
+
+  export type event_logSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    table_name?: boolean
+    row_id?: boolean
+    operation?: boolean
+    payload?: boolean
+    created_at?: boolean
+  }, ExtArgs["result"]["event_log"]>
+
+  export type event_logSelectScalar = {
+    id?: boolean
+    table_name?: boolean
+    row_id?: boolean
+    operation?: boolean
+    payload?: boolean
+    created_at?: boolean
+  }
+
+  export type event_logOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "table_name" | "row_id" | "operation" | "payload" | "created_at", ExtArgs["result"]["event_log"]>
+
+  export type $event_logPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "event_log"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: bigint
+      table_name: string
+      row_id: string | null
+      operation: string
+      payload: Prisma.JsonValue | null
+      created_at: Date | null
+    }, ExtArgs["result"]["event_log"]>
+    composites: {}
+  }
+
+  type event_logGetPayload<S extends boolean | null | undefined | event_logDefaultArgs> = $Result.GetResult<Prisma.$event_logPayload, S>
+
+  type event_logCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<event_logFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Event_logCountAggregateInputType | true
+    }
+
+  export interface event_logDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['event_log'], meta: { name: 'event_log' } }
+    /**
+     * Find zero or one Event_log that matches the filter.
+     * @param {event_logFindUniqueArgs} args - Arguments to find a Event_log
+     * @example
+     * // Get one Event_log
+     * const event_log = await prisma.event_log.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends event_logFindUniqueArgs>(args: SelectSubset<T, event_logFindUniqueArgs<ExtArgs>>): Prisma__event_logClient<$Result.GetResult<Prisma.$event_logPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Event_log that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {event_logFindUniqueOrThrowArgs} args - Arguments to find a Event_log
+     * @example
+     * // Get one Event_log
+     * const event_log = await prisma.event_log.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends event_logFindUniqueOrThrowArgs>(args: SelectSubset<T, event_logFindUniqueOrThrowArgs<ExtArgs>>): Prisma__event_logClient<$Result.GetResult<Prisma.$event_logPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Event_log that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {event_logFindFirstArgs} args - Arguments to find a Event_log
+     * @example
+     * // Get one Event_log
+     * const event_log = await prisma.event_log.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends event_logFindFirstArgs>(args?: SelectSubset<T, event_logFindFirstArgs<ExtArgs>>): Prisma__event_logClient<$Result.GetResult<Prisma.$event_logPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Event_log that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {event_logFindFirstOrThrowArgs} args - Arguments to find a Event_log
+     * @example
+     * // Get one Event_log
+     * const event_log = await prisma.event_log.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends event_logFindFirstOrThrowArgs>(args?: SelectSubset<T, event_logFindFirstOrThrowArgs<ExtArgs>>): Prisma__event_logClient<$Result.GetResult<Prisma.$event_logPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Event_logs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {event_logFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Event_logs
+     * const event_logs = await prisma.event_log.findMany()
+     * 
+     * // Get first 10 Event_logs
+     * const event_logs = await prisma.event_log.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const event_logWithIdOnly = await prisma.event_log.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends event_logFindManyArgs>(args?: SelectSubset<T, event_logFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$event_logPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Event_log.
+     * @param {event_logCreateArgs} args - Arguments to create a Event_log.
+     * @example
+     * // Create one Event_log
+     * const Event_log = await prisma.event_log.create({
+     *   data: {
+     *     // ... data to create a Event_log
+     *   }
+     * })
+     * 
+     */
+    create<T extends event_logCreateArgs>(args: SelectSubset<T, event_logCreateArgs<ExtArgs>>): Prisma__event_logClient<$Result.GetResult<Prisma.$event_logPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Event_logs.
+     * @param {event_logCreateManyArgs} args - Arguments to create many Event_logs.
+     * @example
+     * // Create many Event_logs
+     * const event_log = await prisma.event_log.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends event_logCreateManyArgs>(args?: SelectSubset<T, event_logCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Event_logs and returns the data saved in the database.
+     * @param {event_logCreateManyAndReturnArgs} args - Arguments to create many Event_logs.
+     * @example
+     * // Create many Event_logs
+     * const event_log = await prisma.event_log.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Event_logs and only return the `id`
+     * const event_logWithIdOnly = await prisma.event_log.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends event_logCreateManyAndReturnArgs>(args?: SelectSubset<T, event_logCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$event_logPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Event_log.
+     * @param {event_logDeleteArgs} args - Arguments to delete one Event_log.
+     * @example
+     * // Delete one Event_log
+     * const Event_log = await prisma.event_log.delete({
+     *   where: {
+     *     // ... filter to delete one Event_log
+     *   }
+     * })
+     * 
+     */
+    delete<T extends event_logDeleteArgs>(args: SelectSubset<T, event_logDeleteArgs<ExtArgs>>): Prisma__event_logClient<$Result.GetResult<Prisma.$event_logPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Event_log.
+     * @param {event_logUpdateArgs} args - Arguments to update one Event_log.
+     * @example
+     * // Update one Event_log
+     * const event_log = await prisma.event_log.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends event_logUpdateArgs>(args: SelectSubset<T, event_logUpdateArgs<ExtArgs>>): Prisma__event_logClient<$Result.GetResult<Prisma.$event_logPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Event_logs.
+     * @param {event_logDeleteManyArgs} args - Arguments to filter Event_logs to delete.
+     * @example
+     * // Delete a few Event_logs
+     * const { count } = await prisma.event_log.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends event_logDeleteManyArgs>(args?: SelectSubset<T, event_logDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Event_logs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {event_logUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Event_logs
+     * const event_log = await prisma.event_log.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends event_logUpdateManyArgs>(args: SelectSubset<T, event_logUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Event_logs and returns the data updated in the database.
+     * @param {event_logUpdateManyAndReturnArgs} args - Arguments to update many Event_logs.
+     * @example
+     * // Update many Event_logs
+     * const event_log = await prisma.event_log.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Event_logs and only return the `id`
+     * const event_logWithIdOnly = await prisma.event_log.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends event_logUpdateManyAndReturnArgs>(args: SelectSubset<T, event_logUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$event_logPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Event_log.
+     * @param {event_logUpsertArgs} args - Arguments to update or create a Event_log.
+     * @example
+     * // Update or create a Event_log
+     * const event_log = await prisma.event_log.upsert({
+     *   create: {
+     *     // ... data to create a Event_log
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Event_log we want to update
+     *   }
+     * })
+     */
+    upsert<T extends event_logUpsertArgs>(args: SelectSubset<T, event_logUpsertArgs<ExtArgs>>): Prisma__event_logClient<$Result.GetResult<Prisma.$event_logPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Event_logs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {event_logCountArgs} args - Arguments to filter Event_logs to count.
+     * @example
+     * // Count the number of Event_logs
+     * const count = await prisma.event_log.count({
+     *   where: {
+     *     // ... the filter for the Event_logs we want to count
+     *   }
+     * })
+    **/
+    count<T extends event_logCountArgs>(
+      args?: Subset<T, event_logCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Event_logCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Event_log.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Event_logAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Event_logAggregateArgs>(args: Subset<T, Event_logAggregateArgs>): Prisma.PrismaPromise<GetEvent_logAggregateType<T>>
+
+    /**
+     * Group by Event_log.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {event_logGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends event_logGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: event_logGroupByArgs['orderBy'] }
+        : { orderBy?: event_logGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, event_logGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEvent_logGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the event_log model
+   */
+  readonly fields: event_logFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for event_log.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__event_logClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the event_log model
+   */
+  interface event_logFieldRefs {
+    readonly id: FieldRef<"event_log", 'BigInt'>
+    readonly table_name: FieldRef<"event_log", 'String'>
+    readonly row_id: FieldRef<"event_log", 'String'>
+    readonly operation: FieldRef<"event_log", 'String'>
+    readonly payload: FieldRef<"event_log", 'Json'>
+    readonly created_at: FieldRef<"event_log", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * event_log findUnique
+   */
+  export type event_logFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the event_log
+     */
+    select?: event_logSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the event_log
+     */
+    omit?: event_logOmit<ExtArgs> | null
+    /**
+     * Filter, which event_log to fetch.
+     */
+    where: event_logWhereUniqueInput
+  }
+
+  /**
+   * event_log findUniqueOrThrow
+   */
+  export type event_logFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the event_log
+     */
+    select?: event_logSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the event_log
+     */
+    omit?: event_logOmit<ExtArgs> | null
+    /**
+     * Filter, which event_log to fetch.
+     */
+    where: event_logWhereUniqueInput
+  }
+
+  /**
+   * event_log findFirst
+   */
+  export type event_logFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the event_log
+     */
+    select?: event_logSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the event_log
+     */
+    omit?: event_logOmit<ExtArgs> | null
+    /**
+     * Filter, which event_log to fetch.
+     */
+    where?: event_logWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of event_logs to fetch.
+     */
+    orderBy?: event_logOrderByWithRelationInput | event_logOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for event_logs.
+     */
+    cursor?: event_logWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` event_logs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` event_logs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of event_logs.
+     */
+    distinct?: Event_logScalarFieldEnum | Event_logScalarFieldEnum[]
+  }
+
+  /**
+   * event_log findFirstOrThrow
+   */
+  export type event_logFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the event_log
+     */
+    select?: event_logSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the event_log
+     */
+    omit?: event_logOmit<ExtArgs> | null
+    /**
+     * Filter, which event_log to fetch.
+     */
+    where?: event_logWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of event_logs to fetch.
+     */
+    orderBy?: event_logOrderByWithRelationInput | event_logOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for event_logs.
+     */
+    cursor?: event_logWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` event_logs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` event_logs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of event_logs.
+     */
+    distinct?: Event_logScalarFieldEnum | Event_logScalarFieldEnum[]
+  }
+
+  /**
+   * event_log findMany
+   */
+  export type event_logFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the event_log
+     */
+    select?: event_logSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the event_log
+     */
+    omit?: event_logOmit<ExtArgs> | null
+    /**
+     * Filter, which event_logs to fetch.
+     */
+    where?: event_logWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of event_logs to fetch.
+     */
+    orderBy?: event_logOrderByWithRelationInput | event_logOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing event_logs.
+     */
+    cursor?: event_logWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` event_logs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` event_logs.
+     */
+    skip?: number
+    distinct?: Event_logScalarFieldEnum | Event_logScalarFieldEnum[]
+  }
+
+  /**
+   * event_log create
+   */
+  export type event_logCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the event_log
+     */
+    select?: event_logSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the event_log
+     */
+    omit?: event_logOmit<ExtArgs> | null
+    /**
+     * The data needed to create a event_log.
+     */
+    data: XOR<event_logCreateInput, event_logUncheckedCreateInput>
+  }
+
+  /**
+   * event_log createMany
+   */
+  export type event_logCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many event_logs.
+     */
+    data: event_logCreateManyInput | event_logCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * event_log createManyAndReturn
+   */
+  export type event_logCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the event_log
+     */
+    select?: event_logSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the event_log
+     */
+    omit?: event_logOmit<ExtArgs> | null
+    /**
+     * The data used to create many event_logs.
+     */
+    data: event_logCreateManyInput | event_logCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * event_log update
+   */
+  export type event_logUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the event_log
+     */
+    select?: event_logSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the event_log
+     */
+    omit?: event_logOmit<ExtArgs> | null
+    /**
+     * The data needed to update a event_log.
+     */
+    data: XOR<event_logUpdateInput, event_logUncheckedUpdateInput>
+    /**
+     * Choose, which event_log to update.
+     */
+    where: event_logWhereUniqueInput
+  }
+
+  /**
+   * event_log updateMany
+   */
+  export type event_logUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update event_logs.
+     */
+    data: XOR<event_logUpdateManyMutationInput, event_logUncheckedUpdateManyInput>
+    /**
+     * Filter which event_logs to update
+     */
+    where?: event_logWhereInput
+    /**
+     * Limit how many event_logs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * event_log updateManyAndReturn
+   */
+  export type event_logUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the event_log
+     */
+    select?: event_logSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the event_log
+     */
+    omit?: event_logOmit<ExtArgs> | null
+    /**
+     * The data used to update event_logs.
+     */
+    data: XOR<event_logUpdateManyMutationInput, event_logUncheckedUpdateManyInput>
+    /**
+     * Filter which event_logs to update
+     */
+    where?: event_logWhereInput
+    /**
+     * Limit how many event_logs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * event_log upsert
+   */
+  export type event_logUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the event_log
+     */
+    select?: event_logSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the event_log
+     */
+    omit?: event_logOmit<ExtArgs> | null
+    /**
+     * The filter to search for the event_log to update in case it exists.
+     */
+    where: event_logWhereUniqueInput
+    /**
+     * In case the event_log found by the `where` argument doesn't exist, create a new event_log with this data.
+     */
+    create: XOR<event_logCreateInput, event_logUncheckedCreateInput>
+    /**
+     * In case the event_log was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<event_logUpdateInput, event_logUncheckedUpdateInput>
+  }
+
+  /**
+   * event_log delete
+   */
+  export type event_logDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the event_log
+     */
+    select?: event_logSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the event_log
+     */
+    omit?: event_logOmit<ExtArgs> | null
+    /**
+     * Filter which event_log to delete.
+     */
+    where: event_logWhereUniqueInput
+  }
+
+  /**
+   * event_log deleteMany
+   */
+  export type event_logDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which event_logs to delete
+     */
+    where?: event_logWhereInput
+    /**
+     * Limit how many event_logs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * event_log without action
+   */
+  export type event_logDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the event_log
+     */
+    select?: event_logSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the event_log
+     */
+    omit?: event_logOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -40467,16 +41680,16 @@ export namespace Prisma {
     isVerified: 'isVerified',
     active: 'active',
     lastLogin: 'lastLogin',
-    lastDailySpin: 'lastDailySpin',
     verificationToken: 'verificationToken',
     avatar: 'avatar',
     activeProfileId: 'activeProfileId',
-    vipInfoId: 'vipInfoId',
     gender: 'gender',
     status: 'status',
     cashtag: 'cashtag',
     phpId: 'phpId',
-    accessToken: 'accessToken'
+    accessToken: 'accessToken',
+    vipInfoId: 'vipInfoId',
+    lastDailySpin: 'lastDailySpin'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -40508,6 +41721,7 @@ export namespace Prisma {
     isActive: 'isActive',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
+    acceptedPayments: 'acceptedPayments',
     ownerId: 'ownerId',
     balance: 'balance'
   };
@@ -40587,10 +41801,10 @@ export namespace Prisma {
     providerId: 'providerId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    category: 'category',
     jackpotGroupId: 'jackpotGroupId',
     active: 'active',
-    password: 'password'
+    password: 'password',
+    category: 'category'
   };
 
   export type GameScalarFieldEnum = (typeof GameScalarFieldEnum)[keyof typeof GameScalarFieldEnum]
@@ -40829,6 +42043,13 @@ export namespace Prisma {
     id: 'id',
     type: 'type',
     amount: 'amount',
+    amountCredits: 'amountCredits',
+    buyerCashtag: 'buyerCashtag',
+    buyerUserId: 'buyerUserId',
+    username: 'username',
+    cashiername: 'cashiername',
+    cashierAvatar: 'cashierAvatar',
+    cashierId: 'cashierId',
     reference: 'reference',
     status: 'status',
     metadata: 'metadata',
@@ -40838,7 +42059,9 @@ export namespace Prisma {
     createdAt: 'createdAt',
     processedAt: 'processedAt',
     gameSessionId: 'gameSessionId',
-    profileId: 'profileId'
+    profileId: 'profileId',
+    cashtag: 'cashtag',
+    productid: 'productid'
   };
 
   export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
@@ -40950,6 +42173,18 @@ export namespace Prisma {
   };
 
   export type VipInfoScalarFieldEnum = (typeof VipInfoScalarFieldEnum)[keyof typeof VipInfoScalarFieldEnum]
+
+
+  export const Event_logScalarFieldEnum: {
+    id: 'id',
+    table_name: 'table_name',
+    row_id: 'row_id',
+    operation: 'operation',
+    payload: 'payload',
+    created_at: 'created_at'
+  };
+
+  export type Event_logScalarFieldEnum = (typeof Event_logScalarFieldEnum)[keyof typeof Event_logScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -41185,6 +42420,20 @@ export namespace Prisma {
    */
   export type ListEnumTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionStatus[]'>
     
+
+
+  /**
+   * Reference to a field of type 'BigInt'
+   */
+  export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
+    
+
+
+  /**
+   * Reference to a field of type 'BigInt[]'
+   */
+  export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
+    
   /**
    * Deep Input Types
    */
@@ -41285,34 +42534,34 @@ export namespace Prisma {
     isVerified?: BoolFilter<"User"> | boolean
     active?: BoolFilter<"User"> | boolean
     lastLogin?: DateTimeNullableFilter<"User"> | Date | string | null
-    lastDailySpin?: DateTimeNullableFilter<"User"> | Date | string | null
     verificationToken?: StringNullableFilter<"User"> | string | null
     avatar?: StringNullableFilter<"User"> | string | null
     activeProfileId?: StringNullableFilter<"User"> | string | null
-    vipInfoId?: StringNullableFilter<"User"> | string | null
     gender?: EnumGenderNullableFilter<"User"> | $Enums.Gender | null
     status?: EnumUserStatusNullableFilter<"User"> | $Enums.UserStatus | null
     cashtag?: StringNullableFilter<"User"> | string | null
     phpId?: IntNullableFilter<"User"> | number | null
     accessToken?: StringNullableFilter<"User"> | string | null
-    sessions?: SessionListRelationFilter
-    accounts?: AccountListRelationFilter
-    members?: MemberListRelationFilter
-    invitations?: InvitationListRelationFilter
-    twofactors?: TwoFactorListRelationFilter
+    vipInfoId?: StringNullableFilter<"User"> | string | null
+    lastDailySpin?: DateTimeNullableFilter<"User"> | Date | string | null
+    operator?: OperatorListRelationFilter
+    activeProfile?: ProfileListRelationFilter
     RainBet?: RainBetListRelationFilter
     RainHistory?: RainHistoryListRelationFilter
     RainTip?: RainTipListRelationFilter
     RainWinner?: RainWinnerListRelationFilter
+    sessions?: SessionListRelationFilter
+    accounts?: AccountListRelationFilter
     chatmessage?: ChatmessageListRelationFilter
     friendship_friendship_friendIdTouser?: FriendshipListRelationFilter
     friendship_friendship_userIdTouser?: FriendshipListRelationFilter
+    invitations?: InvitationListRelationFilter
+    members?: MemberListRelationFilter
     notification?: NotificationListRelationFilter
-    operator?: OperatorListRelationFilter
-    activeProfile?: ProfileListRelationFilter
     tournamententry?: TournamententryListRelationFilter
+    twofactors?: TwoFactorListRelationFilter
     userachievement?: UserachievementListRelationFilter
-    vipInfo?: VipInfoListRelationFilter
+    vipInfo?: XOR<VipInfoNullableScalarRelationFilter, VipInfoWhereInput> | null
   }
 
   export type UserOrderByWithRelationInput = {
@@ -41335,42 +42584,40 @@ export namespace Prisma {
     isVerified?: SortOrder
     active?: SortOrder
     lastLogin?: SortOrderInput | SortOrder
-    lastDailySpin?: SortOrderInput | SortOrder
     verificationToken?: SortOrderInput | SortOrder
     avatar?: SortOrderInput | SortOrder
     activeProfileId?: SortOrderInput | SortOrder
-    vipInfoId?: SortOrderInput | SortOrder
     gender?: SortOrderInput | SortOrder
     status?: SortOrderInput | SortOrder
     cashtag?: SortOrderInput | SortOrder
     phpId?: SortOrderInput | SortOrder
     accessToken?: SortOrderInput | SortOrder
-    sessions?: SessionOrderByRelationAggregateInput
-    accounts?: AccountOrderByRelationAggregateInput
-    members?: MemberOrderByRelationAggregateInput
-    invitations?: InvitationOrderByRelationAggregateInput
-    twofactors?: TwoFactorOrderByRelationAggregateInput
+    vipInfoId?: SortOrderInput | SortOrder
+    lastDailySpin?: SortOrderInput | SortOrder
+    operator?: OperatorOrderByRelationAggregateInput
+    activeProfile?: ProfileOrderByRelationAggregateInput
     RainBet?: RainBetOrderByRelationAggregateInput
     RainHistory?: RainHistoryOrderByRelationAggregateInput
     RainTip?: RainTipOrderByRelationAggregateInput
     RainWinner?: RainWinnerOrderByRelationAggregateInput
+    sessions?: SessionOrderByRelationAggregateInput
+    accounts?: AccountOrderByRelationAggregateInput
     chatmessage?: chatmessageOrderByRelationAggregateInput
     friendship_friendship_friendIdTouser?: friendshipOrderByRelationAggregateInput
     friendship_friendship_userIdTouser?: friendshipOrderByRelationAggregateInput
+    invitations?: InvitationOrderByRelationAggregateInput
+    members?: MemberOrderByRelationAggregateInput
     notification?: notificationOrderByRelationAggregateInput
-    operator?: OperatorOrderByRelationAggregateInput
-    activeProfile?: ProfileOrderByRelationAggregateInput
     tournamententry?: tournamententryOrderByRelationAggregateInput
+    twofactors?: TwoFactorOrderByRelationAggregateInput
     userachievement?: userachievementOrderByRelationAggregateInput
-    vipInfo?: VipInfoOrderByRelationAggregateInput
+    vipInfo?: VipInfoOrderByWithRelationInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     username?: string
     activeProfileId?: string
-    vipInfoId?: string
-    vipInfoId_id?: UserVipInfoIdIdCompoundUniqueInput
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
@@ -41391,7 +42638,6 @@ export namespace Prisma {
     isVerified?: BoolFilter<"User"> | boolean
     active?: BoolFilter<"User"> | boolean
     lastLogin?: DateTimeNullableFilter<"User"> | Date | string | null
-    lastDailySpin?: DateTimeNullableFilter<"User"> | Date | string | null
     verificationToken?: StringNullableFilter<"User"> | string | null
     avatar?: StringNullableFilter<"User"> | string | null
     gender?: EnumGenderNullableFilter<"User"> | $Enums.Gender | null
@@ -41399,25 +42645,27 @@ export namespace Prisma {
     cashtag?: StringNullableFilter<"User"> | string | null
     phpId?: IntNullableFilter<"User"> | number | null
     accessToken?: StringNullableFilter<"User"> | string | null
-    sessions?: SessionListRelationFilter
-    accounts?: AccountListRelationFilter
-    members?: MemberListRelationFilter
-    invitations?: InvitationListRelationFilter
-    twofactors?: TwoFactorListRelationFilter
+    vipInfoId?: StringNullableFilter<"User"> | string | null
+    lastDailySpin?: DateTimeNullableFilter<"User"> | Date | string | null
+    operator?: OperatorListRelationFilter
+    activeProfile?: ProfileListRelationFilter
     RainBet?: RainBetListRelationFilter
     RainHistory?: RainHistoryListRelationFilter
     RainTip?: RainTipListRelationFilter
     RainWinner?: RainWinnerListRelationFilter
+    sessions?: SessionListRelationFilter
+    accounts?: AccountListRelationFilter
     chatmessage?: ChatmessageListRelationFilter
     friendship_friendship_friendIdTouser?: FriendshipListRelationFilter
     friendship_friendship_userIdTouser?: FriendshipListRelationFilter
+    invitations?: InvitationListRelationFilter
+    members?: MemberListRelationFilter
     notification?: NotificationListRelationFilter
-    operator?: OperatorListRelationFilter
-    activeProfile?: ProfileListRelationFilter
     tournamententry?: TournamententryListRelationFilter
+    twofactors?: TwoFactorListRelationFilter
     userachievement?: UserachievementListRelationFilter
-    vipInfo?: VipInfoListRelationFilter
-  }, "id" | "username" | "activeProfileId" | "vipInfoId" | "vipInfoId_id">
+    vipInfo?: XOR<VipInfoNullableScalarRelationFilter, VipInfoWhereInput> | null
+  }, "id" | "username" | "activeProfileId">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
@@ -41439,16 +42687,16 @@ export namespace Prisma {
     isVerified?: SortOrder
     active?: SortOrder
     lastLogin?: SortOrderInput | SortOrder
-    lastDailySpin?: SortOrderInput | SortOrder
     verificationToken?: SortOrderInput | SortOrder
     avatar?: SortOrderInput | SortOrder
     activeProfileId?: SortOrderInput | SortOrder
-    vipInfoId?: SortOrderInput | SortOrder
     gender?: SortOrderInput | SortOrder
     status?: SortOrderInput | SortOrder
     cashtag?: SortOrderInput | SortOrder
     phpId?: SortOrderInput | SortOrder
     accessToken?: SortOrderInput | SortOrder
+    vipInfoId?: SortOrderInput | SortOrder
+    lastDailySpin?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -41479,16 +42727,16 @@ export namespace Prisma {
     isVerified?: BoolWithAggregatesFilter<"User"> | boolean
     active?: BoolWithAggregatesFilter<"User"> | boolean
     lastLogin?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
-    lastDailySpin?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     verificationToken?: StringNullableWithAggregatesFilter<"User"> | string | null
     avatar?: StringNullableWithAggregatesFilter<"User"> | string | null
     activeProfileId?: StringNullableWithAggregatesFilter<"User"> | string | null
-    vipInfoId?: StringNullableWithAggregatesFilter<"User"> | string | null
     gender?: EnumGenderNullableWithAggregatesFilter<"User"> | $Enums.Gender | null
     status?: EnumUserStatusNullableWithAggregatesFilter<"User"> | $Enums.UserStatus | null
     cashtag?: StringNullableWithAggregatesFilter<"User"> | string | null
     phpId?: IntNullableWithAggregatesFilter<"User"> | number | null
     accessToken?: StringNullableWithAggregatesFilter<"User"> | string | null
+    vipInfoId?: StringNullableWithAggregatesFilter<"User"> | string | null
+    lastDailySpin?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   }
 
   export type SessionWhereInput = {
@@ -41588,13 +42836,14 @@ export namespace Prisma {
     isActive?: BoolFilter<"Operator"> | boolean
     createdAt?: DateTimeFilter<"Operator"> | Date | string
     updatedAt?: DateTimeNullableFilter<"Operator"> | Date | string | null
+    acceptedPayments?: StringNullableListFilter<"Operator">
     ownerId?: StringFilter<"Operator"> | string
     balance?: IntFilter<"Operator"> | number
     owner?: XOR<UserScalarRelationFilter, UserWhereInput>
-    games?: GameListRelationFilter
     profiles?: ProfileListRelationFilter
+    games?: GameListRelationFilter
+    products?: ProductListRelationFilter
     tournaments?: TournamentListRelationFilter
-    Product?: ProductListRelationFilter
   }
 
   export type OperatorOrderByWithRelationInput = {
@@ -41606,13 +42855,14 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrderInput | SortOrder
+    acceptedPayments?: SortOrder
     ownerId?: SortOrder
     balance?: SortOrder
     owner?: UserOrderByWithRelationInput
-    games?: GameOrderByRelationAggregateInput
     profiles?: ProfileOrderByRelationAggregateInput
+    games?: GameOrderByRelationAggregateInput
+    products?: ProductOrderByRelationAggregateInput
     tournaments?: tournamentOrderByRelationAggregateInput
-    Product?: ProductOrderByRelationAggregateInput
   }
 
   export type OperatorWhereUniqueInput = Prisma.AtLeast<{
@@ -41627,13 +42877,14 @@ export namespace Prisma {
     isActive?: BoolFilter<"Operator"> | boolean
     createdAt?: DateTimeFilter<"Operator"> | Date | string
     updatedAt?: DateTimeNullableFilter<"Operator"> | Date | string | null
+    acceptedPayments?: StringNullableListFilter<"Operator">
     ownerId?: StringFilter<"Operator"> | string
     balance?: IntFilter<"Operator"> | number
     owner?: XOR<UserScalarRelationFilter, UserWhereInput>
-    games?: GameListRelationFilter
     profiles?: ProfileListRelationFilter
+    games?: GameListRelationFilter
+    products?: ProductListRelationFilter
     tournaments?: TournamentListRelationFilter
-    Product?: ProductListRelationFilter
   }, "id" | "slug">
 
   export type OperatorOrderByWithAggregationInput = {
@@ -41645,6 +42896,7 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrderInput | SortOrder
+    acceptedPayments?: SortOrder
     ownerId?: SortOrder
     balance?: SortOrder
     _count?: OperatorCountOrderByAggregateInput
@@ -41666,6 +42918,7 @@ export namespace Prisma {
     isActive?: BoolWithAggregatesFilter<"Operator"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Operator"> | Date | string
     updatedAt?: DateTimeNullableWithAggregatesFilter<"Operator"> | Date | string | null
+    acceptedPayments?: StringNullableListFilter<"Operator">
     ownerId?: StringWithAggregatesFilter<"Operator"> | string
     balance?: IntWithAggregatesFilter<"Operator"> | number
   }
@@ -41737,9 +42990,9 @@ export namespace Prisma {
     userId?: StringFilter<"Profile"> | string
     currency?: StringFilter<"Profile"> | string
     shopId?: StringFilter<"Profile"> | string
-    gamesession?: GamesessionListRelationFilter
     operator?: XOR<OperatorScalarRelationFilter, OperatorWhereInput>
     user_profile_userIdTouser?: XOR<UserScalarRelationFilter, UserWhereInput>
+    gamesession?: GamesessionListRelationFilter
     tournamententry?: TournamententryListRelationFilter
     transactions?: TransactionListRelationFilter
   }
@@ -41756,9 +43009,9 @@ export namespace Prisma {
     userId?: SortOrder
     currency?: SortOrder
     shopId?: SortOrder
-    gamesession?: gamesessionOrderByRelationAggregateInput
     operator?: OperatorOrderByWithRelationInput
     user_profile_userIdTouser?: UserOrderByWithRelationInput
+    gamesession?: gamesessionOrderByRelationAggregateInput
     tournamententry?: tournamententryOrderByRelationAggregateInput
     transactions?: TransactionOrderByRelationAggregateInput
   }
@@ -41779,9 +43032,9 @@ export namespace Prisma {
     userId?: StringFilter<"Profile"> | string
     currency?: StringFilter<"Profile"> | string
     shopId?: StringFilter<"Profile"> | string
-    gamesession?: GamesessionListRelationFilter
     operator?: XOR<OperatorScalarRelationFilter, OperatorWhereInput>
     user_profile_userIdTouser?: XOR<UserScalarRelationFilter, UserWhereInput>
+    gamesession?: GamesessionListRelationFilter
     tournamententry?: TournamententryListRelationFilter
     transactions?: TransactionListRelationFilter
   }, "id" | "phpId" | "userId_shopId">
@@ -41869,10 +43122,10 @@ export namespace Prisma {
     providerId?: StringNullableFilter<"Game"> | string | null
     createdAt?: DateTimeFilter<"Game"> | Date | string
     updatedAt?: DateTimeFilter<"Game"> | Date | string
-    category?: EnumGameCategoryFilter<"Game"> | $Enums.GameCategory
     jackpotGroupId?: StringNullableFilter<"Game"> | string | null
     active?: BoolFilter<"Game"> | boolean
     password?: StringNullableFilter<"Game"> | string | null
+    category?: EnumGameCategoryFilter<"Game"> | $Enums.GameCategory
     operator?: XOR<OperatorNullableScalarRelationFilter, OperatorWhereInput> | null
     gamesession?: GamesessionListRelationFilter
     tournamentgame?: TournamentgameListRelationFilter
@@ -41922,10 +43175,10 @@ export namespace Prisma {
     providerId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    category?: SortOrder
     jackpotGroupId?: SortOrderInput | SortOrder
     active?: SortOrder
     password?: SortOrderInput | SortOrder
+    category?: SortOrder
     operator?: OperatorOrderByWithRelationInput
     gamesession?: gamesessionOrderByRelationAggregateInput
     tournamentgame?: tournamentgameOrderByRelationAggregateInput
@@ -41978,10 +43231,10 @@ export namespace Prisma {
     providerId?: StringNullableFilter<"Game"> | string | null
     createdAt?: DateTimeFilter<"Game"> | Date | string
     updatedAt?: DateTimeFilter<"Game"> | Date | string
-    category?: EnumGameCategoryFilter<"Game"> | $Enums.GameCategory
     jackpotGroupId?: StringNullableFilter<"Game"> | string | null
     active?: BoolFilter<"Game"> | boolean
     password?: StringNullableFilter<"Game"> | string | null
+    category?: EnumGameCategoryFilter<"Game"> | $Enums.GameCategory
     operator?: XOR<OperatorNullableScalarRelationFilter, OperatorWhereInput> | null
     gamesession?: GamesessionListRelationFilter
     tournamentgame?: TournamentgameListRelationFilter
@@ -42031,10 +43284,10 @@ export namespace Prisma {
     providerId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    category?: SortOrder
     jackpotGroupId?: SortOrderInput | SortOrder
     active?: SortOrder
     password?: SortOrderInput | SortOrder
+    category?: SortOrder
     _count?: GameCountOrderByAggregateInput
     _avg?: GameAvgOrderByAggregateInput
     _max?: GameMaxOrderByAggregateInput
@@ -42089,10 +43342,10 @@ export namespace Prisma {
     providerId?: StringNullableWithAggregatesFilter<"Game"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Game"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Game"> | Date | string
-    category?: EnumGameCategoryWithAggregatesFilter<"Game"> | $Enums.GameCategory
     jackpotGroupId?: StringNullableWithAggregatesFilter<"Game"> | string | null
     active?: BoolWithAggregatesFilter<"Game"> | boolean
     password?: StringNullableWithAggregatesFilter<"Game"> | string | null
+    category?: EnumGameCategoryWithAggregatesFilter<"Game"> | $Enums.GameCategory
   }
 
   export type AccountWhereInput = {
@@ -42351,8 +43604,8 @@ export namespace Prisma {
     logo?: StringNullableFilter<"Organization"> | string | null
     createdAt?: DateTimeFilter<"Organization"> | Date | string
     metadata?: StringNullableFilter<"Organization"> | string | null
-    members?: MemberListRelationFilter
     invitations?: InvitationListRelationFilter
+    members?: MemberListRelationFilter
   }
 
   export type OrganizationOrderByWithRelationInput = {
@@ -42362,8 +43615,8 @@ export namespace Prisma {
     logo?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     metadata?: SortOrderInput | SortOrder
-    members?: MemberOrderByRelationAggregateInput
     invitations?: InvitationOrderByRelationAggregateInput
+    members?: MemberOrderByRelationAggregateInput
   }
 
   export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
@@ -42376,8 +43629,8 @@ export namespace Prisma {
     logo?: StringNullableFilter<"Organization"> | string | null
     createdAt?: DateTimeFilter<"Organization"> | Date | string
     metadata?: StringNullableFilter<"Organization"> | string | null
-    members?: MemberListRelationFilter
     invitations?: InvitationListRelationFilter
+    members?: MemberListRelationFilter
   }, "id" | "slug">
 
   export type OrganizationOrderByWithAggregationInput = {
@@ -42473,8 +43726,8 @@ export namespace Prisma {
     status?: StringFilter<"Invitation"> | string
     expiresAt?: DateTimeFilter<"Invitation"> | Date | string
     inviterId?: StringFilter<"Invitation"> | string
-    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
   }
 
   export type InvitationOrderByWithRelationInput = {
@@ -42485,8 +43738,8 @@ export namespace Prisma {
     status?: SortOrder
     expiresAt?: SortOrder
     inviterId?: SortOrder
-    organization?: OrganizationOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
+    organization?: OrganizationOrderByWithRelationInput
   }
 
   export type InvitationWhereUniqueInput = Prisma.AtLeast<{
@@ -42500,8 +43753,8 @@ export namespace Prisma {
     status?: StringFilter<"Invitation"> | string
     expiresAt?: DateTimeFilter<"Invitation"> | Date | string
     inviterId?: StringFilter<"Invitation"> | string
-    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
   }, "id">
 
   export type InvitationOrderByWithAggregationInput = {
@@ -42889,7 +44142,7 @@ export namespace Prisma {
     totalDiscountInCents?: IntFilter<"Product"> | number
     shopId?: StringNullableFilter<"Product"> | string | null
     createdAt?: DateTimeFilter<"Product"> | Date | string
-    updatedAt?: DateTimeFilter<"Product"> | Date | string
+    updatedAt?: DateTimeNullableFilter<"Product"> | Date | string | null
     operator?: XOR<OperatorNullableScalarRelationFilter, OperatorWhereInput> | null
     transactions?: TransactionListRelationFilter
   }
@@ -42911,7 +44164,7 @@ export namespace Prisma {
     totalDiscountInCents?: SortOrder
     shopId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
+    updatedAt?: SortOrderInput | SortOrder
     operator?: OperatorOrderByWithRelationInput
     transactions?: TransactionOrderByRelationAggregateInput
   }
@@ -42936,7 +44189,7 @@ export namespace Prisma {
     totalDiscountInCents?: IntFilter<"Product"> | number
     shopId?: StringNullableFilter<"Product"> | string | null
     createdAt?: DateTimeFilter<"Product"> | Date | string
-    updatedAt?: DateTimeFilter<"Product"> | Date | string
+    updatedAt?: DateTimeNullableFilter<"Product"> | Date | string | null
     operator?: XOR<OperatorNullableScalarRelationFilter, OperatorWhereInput> | null
     transactions?: TransactionListRelationFilter
   }, "id">
@@ -42958,7 +44211,7 @@ export namespace Prisma {
     totalDiscountInCents?: SortOrder
     shopId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
+    updatedAt?: SortOrderInput | SortOrder
     _count?: ProductCountOrderByAggregateInput
     _avg?: ProductAvgOrderByAggregateInput
     _max?: ProductMaxOrderByAggregateInput
@@ -42986,7 +44239,7 @@ export namespace Prisma {
     totalDiscountInCents?: IntWithAggregatesFilter<"Product"> | number
     shopId?: StringNullableWithAggregatesFilter<"Product"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
+    updatedAt?: DateTimeNullableWithAggregatesFilter<"Product"> | Date | string | null
   }
 
   export type notificationWhereInput = {
@@ -43307,6 +44560,13 @@ export namespace Prisma {
     id?: StringFilter<"Transaction"> | string
     type?: EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
     amount?: IntFilter<"Transaction"> | number
+    amountCredits?: IntFilter<"Transaction"> | number
+    buyerCashtag?: StringNullableFilter<"Transaction"> | string | null
+    buyerUserId?: StringNullableFilter<"Transaction"> | string | null
+    username?: StringNullableFilter<"Transaction"> | string | null
+    cashiername?: StringNullableFilter<"Transaction"> | string | null
+    cashierAvatar?: StringNullableFilter<"Transaction"> | string | null
+    cashierId?: StringNullableFilter<"Transaction"> | string | null
     reference?: StringNullableFilter<"Transaction"> | string | null
     status?: EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
     metadata?: JsonNullableFilter<"Transaction">
@@ -43317,15 +44577,24 @@ export namespace Prisma {
     processedAt?: DateTimeNullableFilter<"Transaction"> | Date | string | null
     gameSessionId?: StringNullableFilter<"Transaction"> | string | null
     profileId?: StringFilter<"Transaction"> | string
+    cashtag?: StringNullableFilter<"Transaction"> | string | null
+    productid?: StringNullableFilter<"Transaction"> | string | null
     gamesession?: XOR<GamesessionNullableScalarRelationFilter, gamesessionWhereInput> | null
     profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
-    Product?: ProductListRelationFilter
+    product?: XOR<ProductNullableScalarRelationFilter, ProductWhereInput> | null
   }
 
   export type TransactionOrderByWithRelationInput = {
     id?: SortOrder
     type?: SortOrder
     amount?: SortOrder
+    amountCredits?: SortOrder
+    buyerCashtag?: SortOrderInput | SortOrder
+    buyerUserId?: SortOrderInput | SortOrder
+    username?: SortOrderInput | SortOrder
+    cashiername?: SortOrderInput | SortOrder
+    cashierAvatar?: SortOrderInput | SortOrder
+    cashierId?: SortOrderInput | SortOrder
     reference?: SortOrderInput | SortOrder
     status?: SortOrder
     metadata?: SortOrderInput | SortOrder
@@ -43336,9 +44605,11 @@ export namespace Prisma {
     processedAt?: SortOrderInput | SortOrder
     gameSessionId?: SortOrderInput | SortOrder
     profileId?: SortOrder
+    cashtag?: SortOrderInput | SortOrder
+    productid?: SortOrderInput | SortOrder
     gamesession?: gamesessionOrderByWithRelationInput
     profile?: ProfileOrderByWithRelationInput
-    Product?: ProductOrderByRelationAggregateInput
+    product?: ProductOrderByWithRelationInput
   }
 
   export type TransactionWhereUniqueInput = Prisma.AtLeast<{
@@ -43348,6 +44619,13 @@ export namespace Prisma {
     NOT?: TransactionWhereInput | TransactionWhereInput[]
     type?: EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
     amount?: IntFilter<"Transaction"> | number
+    amountCredits?: IntFilter<"Transaction"> | number
+    buyerCashtag?: StringNullableFilter<"Transaction"> | string | null
+    buyerUserId?: StringNullableFilter<"Transaction"> | string | null
+    username?: StringNullableFilter<"Transaction"> | string | null
+    cashiername?: StringNullableFilter<"Transaction"> | string | null
+    cashierAvatar?: StringNullableFilter<"Transaction"> | string | null
+    cashierId?: StringNullableFilter<"Transaction"> | string | null
     reference?: StringNullableFilter<"Transaction"> | string | null
     status?: EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
     metadata?: JsonNullableFilter<"Transaction">
@@ -43358,15 +44636,24 @@ export namespace Prisma {
     processedAt?: DateTimeNullableFilter<"Transaction"> | Date | string | null
     gameSessionId?: StringNullableFilter<"Transaction"> | string | null
     profileId?: StringFilter<"Transaction"> | string
+    cashtag?: StringNullableFilter<"Transaction"> | string | null
+    productid?: StringNullableFilter<"Transaction"> | string | null
     gamesession?: XOR<GamesessionNullableScalarRelationFilter, gamesessionWhereInput> | null
     profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
-    Product?: ProductListRelationFilter
+    product?: XOR<ProductNullableScalarRelationFilter, ProductWhereInput> | null
   }, "id">
 
   export type TransactionOrderByWithAggregationInput = {
     id?: SortOrder
     type?: SortOrder
     amount?: SortOrder
+    amountCredits?: SortOrder
+    buyerCashtag?: SortOrderInput | SortOrder
+    buyerUserId?: SortOrderInput | SortOrder
+    username?: SortOrderInput | SortOrder
+    cashiername?: SortOrderInput | SortOrder
+    cashierAvatar?: SortOrderInput | SortOrder
+    cashierId?: SortOrderInput | SortOrder
     reference?: SortOrderInput | SortOrder
     status?: SortOrder
     metadata?: SortOrderInput | SortOrder
@@ -43377,6 +44664,8 @@ export namespace Prisma {
     processedAt?: SortOrderInput | SortOrder
     gameSessionId?: SortOrderInput | SortOrder
     profileId?: SortOrder
+    cashtag?: SortOrderInput | SortOrder
+    productid?: SortOrderInput | SortOrder
     _count?: TransactionCountOrderByAggregateInput
     _avg?: TransactionAvgOrderByAggregateInput
     _max?: TransactionMaxOrderByAggregateInput
@@ -43391,6 +44680,13 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Transaction"> | string
     type?: EnumTransactionTypeWithAggregatesFilter<"Transaction"> | $Enums.TransactionType
     amount?: IntWithAggregatesFilter<"Transaction"> | number
+    amountCredits?: IntWithAggregatesFilter<"Transaction"> | number
+    buyerCashtag?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
+    buyerUserId?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
+    username?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
+    cashiername?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
+    cashierAvatar?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
+    cashierId?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     reference?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     status?: EnumTransactionStatusWithAggregatesFilter<"Transaction"> | $Enums.TransactionStatus
     metadata?: JsonNullableWithAggregatesFilter<"Transaction">
@@ -43401,6 +44697,8 @@ export namespace Prisma {
     processedAt?: DateTimeNullableWithAggregatesFilter<"Transaction"> | Date | string | null
     gameSessionId?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     profileId?: StringWithAggregatesFilter<"Transaction"> | string
+    cashtag?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
+    productid?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
   }
 
   export type userachievementWhereInput = {
@@ -43977,6 +45275,65 @@ export namespace Prisma {
     userid?: StringWithAggregatesFilter<"VipInfo"> | string
   }
 
+  export type event_logWhereInput = {
+    AND?: event_logWhereInput | event_logWhereInput[]
+    OR?: event_logWhereInput[]
+    NOT?: event_logWhereInput | event_logWhereInput[]
+    id?: BigIntFilter<"event_log"> | bigint | number
+    table_name?: StringFilter<"event_log"> | string
+    row_id?: StringNullableFilter<"event_log"> | string | null
+    operation?: StringFilter<"event_log"> | string
+    payload?: JsonNullableFilter<"event_log">
+    created_at?: DateTimeNullableFilter<"event_log"> | Date | string | null
+  }
+
+  export type event_logOrderByWithRelationInput = {
+    id?: SortOrder
+    table_name?: SortOrder
+    row_id?: SortOrderInput | SortOrder
+    operation?: SortOrder
+    payload?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+  }
+
+  export type event_logWhereUniqueInput = Prisma.AtLeast<{
+    id?: bigint | number
+    AND?: event_logWhereInput | event_logWhereInput[]
+    OR?: event_logWhereInput[]
+    NOT?: event_logWhereInput | event_logWhereInput[]
+    table_name?: StringFilter<"event_log"> | string
+    row_id?: StringNullableFilter<"event_log"> | string | null
+    operation?: StringFilter<"event_log"> | string
+    payload?: JsonNullableFilter<"event_log">
+    created_at?: DateTimeNullableFilter<"event_log"> | Date | string | null
+  }, "id">
+
+  export type event_logOrderByWithAggregationInput = {
+    id?: SortOrder
+    table_name?: SortOrder
+    row_id?: SortOrderInput | SortOrder
+    operation?: SortOrder
+    payload?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    _count?: event_logCountOrderByAggregateInput
+    _avg?: event_logAvgOrderByAggregateInput
+    _max?: event_logMaxOrderByAggregateInput
+    _min?: event_logMinOrderByAggregateInput
+    _sum?: event_logSumOrderByAggregateInput
+  }
+
+  export type event_logScalarWhereWithAggregatesInput = {
+    AND?: event_logScalarWhereWithAggregatesInput | event_logScalarWhereWithAggregatesInput[]
+    OR?: event_logScalarWhereWithAggregatesInput[]
+    NOT?: event_logScalarWhereWithAggregatesInput | event_logScalarWhereWithAggregatesInput[]
+    id?: BigIntWithAggregatesFilter<"event_log"> | bigint | number
+    table_name?: StringWithAggregatesFilter<"event_log"> | string
+    row_id?: StringNullableWithAggregatesFilter<"event_log"> | string | null
+    operation?: StringWithAggregatesFilter<"event_log"> | string
+    payload?: JsonNullableWithAggregatesFilter<"event_log">
+    created_at?: DateTimeNullableWithAggregatesFilter<"event_log"> | Date | string | null
+  }
+
   export type achievementCreateInput = {
     id?: string
     name: string
@@ -44078,34 +45435,34 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    members?: MemberCreateNestedManyWithoutUserInput
-    invitations?: InvitationCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryCreateNestedManyWithoutUserInput
     RainTip?: RainTipCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationCreateNestedManyWithoutUserInput
+    members?: MemberCreateNestedManyWithoutUserInput
     notification?: notificationCreateNestedManyWithoutUserInput
-    operator?: OperatorCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
     userachievement?: userachievementCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -44128,34 +45485,34 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    members?: MemberUncheckedCreateNestedManyWithoutUserInput
-    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetUncheckedCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryUncheckedCreateNestedManyWithoutUserInput
     RainTip?: RainTipUncheckedCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
+    members?: MemberUncheckedCreateNestedManyWithoutUserInput
     notification?: notificationUncheckedCreateNestedManyWithoutUserInput
-    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryUncheckedCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
     userachievement?: userachievementUncheckedCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoUncheckedCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -44178,34 +45535,34 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    members?: MemberUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUpdateManyWithoutUserNestedInput
+    members?: MemberUpdateManyWithoutUserNestedInput
     notification?: notificationUpdateManyWithoutUserNestedInput
-    operator?: OperatorUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -44228,34 +45585,34 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUncheckedUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUncheckedUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUncheckedUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
+    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
     notification?: notificationUncheckedUpdateManyWithoutUserNestedInput
-    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUncheckedUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUncheckedUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUncheckedUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -44278,16 +45635,16 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -44310,16 +45667,16 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -44342,16 +45699,16 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type SessionCreateInput = {
@@ -44460,12 +45817,13 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string | null
+    acceptedPayments?: OperatorCreateacceptedPaymentsInput | string[]
     balance?: number
     owner: UserCreateNestedOneWithoutOperatorInput
-    games?: GameCreateNestedManyWithoutOperatorInput
     profiles?: ProfileCreateNestedManyWithoutOperatorInput
+    games?: GameCreateNestedManyWithoutOperatorInput
+    products?: ProductCreateNestedManyWithoutOperatorInput
     tournaments?: tournamentCreateNestedManyWithoutOperatorInput
-    Product?: ProductCreateNestedManyWithoutOperatorInput
   }
 
   export type OperatorUncheckedCreateInput = {
@@ -44477,12 +45835,13 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string | null
+    acceptedPayments?: OperatorCreateacceptedPaymentsInput | string[]
     ownerId: string
     balance?: number
-    games?: GameUncheckedCreateNestedManyWithoutOperatorInput
     profiles?: ProfileUncheckedCreateNestedManyWithoutOperatorInput
+    games?: GameUncheckedCreateNestedManyWithoutOperatorInput
+    products?: ProductUncheckedCreateNestedManyWithoutOperatorInput
     tournaments?: tournamentUncheckedCreateNestedManyWithoutOperatorInput
-    Product?: ProductUncheckedCreateNestedManyWithoutOperatorInput
   }
 
   export type OperatorUpdateInput = {
@@ -44494,12 +45853,13 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    acceptedPayments?: OperatorUpdateacceptedPaymentsInput | string[]
     balance?: IntFieldUpdateOperationsInput | number
     owner?: UserUpdateOneRequiredWithoutOperatorNestedInput
-    games?: GameUpdateManyWithoutOperatorNestedInput
     profiles?: ProfileUpdateManyWithoutOperatorNestedInput
+    games?: GameUpdateManyWithoutOperatorNestedInput
+    products?: ProductUpdateManyWithoutOperatorNestedInput
     tournaments?: tournamentUpdateManyWithoutOperatorNestedInput
-    Product?: ProductUpdateManyWithoutOperatorNestedInput
   }
 
   export type OperatorUncheckedUpdateInput = {
@@ -44511,12 +45871,13 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    acceptedPayments?: OperatorUpdateacceptedPaymentsInput | string[]
     ownerId?: StringFieldUpdateOperationsInput | string
     balance?: IntFieldUpdateOperationsInput | number
-    games?: GameUncheckedUpdateManyWithoutOperatorNestedInput
     profiles?: ProfileUncheckedUpdateManyWithoutOperatorNestedInput
+    games?: GameUncheckedUpdateManyWithoutOperatorNestedInput
+    products?: ProductUncheckedUpdateManyWithoutOperatorNestedInput
     tournaments?: tournamentUncheckedUpdateManyWithoutOperatorNestedInput
-    Product?: ProductUncheckedUpdateManyWithoutOperatorNestedInput
   }
 
   export type OperatorCreateManyInput = {
@@ -44528,6 +45889,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string | null
+    acceptedPayments?: OperatorCreateacceptedPaymentsInput | string[]
     ownerId: string
     balance?: number
   }
@@ -44541,6 +45903,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    acceptedPayments?: OperatorUpdateacceptedPaymentsInput | string[]
     balance?: IntFieldUpdateOperationsInput | number
   }
 
@@ -44553,6 +45916,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    acceptedPayments?: OperatorUpdateacceptedPaymentsInput | string[]
     ownerId?: StringFieldUpdateOperationsInput | string
     balance?: IntFieldUpdateOperationsInput | number
   }
@@ -44623,9 +45987,9 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     phpId?: number | null
     currency?: string
-    gamesession?: gamesessionCreateNestedManyWithoutProfileInput
     operator: OperatorCreateNestedOneWithoutProfilesInput
     user_profile_userIdTouser: UserCreateNestedOneWithoutActiveProfileInput
+    gamesession?: gamesessionCreateNestedManyWithoutProfileInput
     tournamententry?: tournamententryCreateNestedManyWithoutProfileInput
     transactions?: TransactionCreateNestedManyWithoutProfileInput
   }
@@ -44657,9 +46021,9 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     currency?: StringFieldUpdateOperationsInput | string
-    gamesession?: gamesessionUpdateManyWithoutProfileNestedInput
     operator?: OperatorUpdateOneRequiredWithoutProfilesNestedInput
     user_profile_userIdTouser?: UserUpdateOneRequiredWithoutActiveProfileNestedInput
+    gamesession?: gamesessionUpdateManyWithoutProfileNestedInput
     tournamententry?: tournamententryUpdateManyWithoutProfileNestedInput
     transactions?: TransactionUpdateManyWithoutProfileNestedInput
   }
@@ -44764,10 +46128,10 @@ export namespace Prisma {
     providerId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    category?: $Enums.GameCategory
     jackpotGroupId?: string | null
     active?: boolean
     password?: string | null
+    category?: $Enums.GameCategory
     operator?: OperatorCreateNestedOneWithoutGamesInput
     gamesession?: gamesessionCreateNestedManyWithoutGameInput
     tournamentgame?: tournamentgameCreateNestedManyWithoutGameInput
@@ -44817,10 +46181,10 @@ export namespace Prisma {
     providerId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    category?: $Enums.GameCategory
     jackpotGroupId?: string | null
     active?: boolean
     password?: string | null
+    category?: $Enums.GameCategory
     gamesession?: gamesessionUncheckedCreateNestedManyWithoutGameInput
     tournamentgame?: tournamentgameUncheckedCreateNestedManyWithoutGameInput
   }
@@ -44868,10 +46232,10 @@ export namespace Prisma {
     providerId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     jackpotGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     operator?: OperatorUpdateOneWithoutGamesNestedInput
     gamesession?: gamesessionUpdateManyWithoutGameNestedInput
     tournamentgame?: tournamentgameUpdateManyWithoutGameNestedInput
@@ -44921,10 +46285,10 @@ export namespace Prisma {
     providerId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     jackpotGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     gamesession?: gamesessionUncheckedUpdateManyWithoutGameNestedInput
     tournamentgame?: tournamentgameUncheckedUpdateManyWithoutGameNestedInput
   }
@@ -44973,10 +46337,10 @@ export namespace Prisma {
     providerId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    category?: $Enums.GameCategory
     jackpotGroupId?: string | null
     active?: boolean
     password?: string | null
+    category?: $Enums.GameCategory
   }
 
   export type GameUpdateManyMutationInput = {
@@ -45022,10 +46386,10 @@ export namespace Prisma {
     providerId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     jackpotGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
   }
 
   export type GameUncheckedUpdateManyInput = {
@@ -45072,10 +46436,10 @@ export namespace Prisma {
     providerId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     jackpotGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
   }
 
   export type AccountCreateInput = {
@@ -45371,8 +46735,8 @@ export namespace Prisma {
     logo?: string | null
     createdAt: Date | string
     metadata?: string | null
-    members?: MemberCreateNestedManyWithoutOrganizationInput
     invitations?: InvitationCreateNestedManyWithoutOrganizationInput
+    members?: MemberCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationUncheckedCreateInput = {
@@ -45382,8 +46746,8 @@ export namespace Prisma {
     logo?: string | null
     createdAt: Date | string
     metadata?: string | null
-    members?: MemberUncheckedCreateNestedManyWithoutOrganizationInput
     invitations?: InvitationUncheckedCreateNestedManyWithoutOrganizationInput
+    members?: MemberUncheckedCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationUpdateInput = {
@@ -45393,8 +46757,8 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
-    members?: MemberUpdateManyWithoutOrganizationNestedInput
     invitations?: InvitationUpdateManyWithoutOrganizationNestedInput
+    members?: MemberUpdateManyWithoutOrganizationNestedInput
   }
 
   export type OrganizationUncheckedUpdateInput = {
@@ -45404,8 +46768,8 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
-    members?: MemberUncheckedUpdateManyWithoutOrganizationNestedInput
     invitations?: InvitationUncheckedUpdateManyWithoutOrganizationNestedInput
+    members?: MemberUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
   export type OrganizationCreateManyInput = {
@@ -45495,8 +46859,8 @@ export namespace Prisma {
     role?: string | null
     status: string
     expiresAt: Date | string
-    organization: OrganizationCreateNestedOneWithoutInvitationsInput
     user: UserCreateNestedOneWithoutInvitationsInput
+    organization: OrganizationCreateNestedOneWithoutInvitationsInput
   }
 
   export type InvitationUncheckedCreateInput = {
@@ -45515,8 +46879,8 @@ export namespace Prisma {
     role?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutInvitationsNestedInput
     user?: UserUpdateOneRequiredWithoutInvitationsNestedInput
+    organization?: OrganizationUpdateOneRequiredWithoutInvitationsNestedInput
   }
 
   export type InvitationUncheckedUpdateInput = {
@@ -45912,8 +47276,8 @@ export namespace Prisma {
     isPromo?: boolean | null
     totalDiscountInCents: number
     createdAt?: Date | string
-    updatedAt?: Date | string
-    operator?: OperatorCreateNestedOneWithoutProductInput
+    updatedAt?: Date | string | null
+    operator?: OperatorCreateNestedOneWithoutProductsInput
     transactions?: TransactionCreateNestedManyWithoutProductInput
   }
 
@@ -45934,7 +47298,7 @@ export namespace Prisma {
     totalDiscountInCents: number
     shopId?: string | null
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt?: Date | string | null
     transactions?: TransactionUncheckedCreateNestedManyWithoutProductInput
   }
 
@@ -45954,8 +47318,8 @@ export namespace Prisma {
     isPromo?: NullableBoolFieldUpdateOperationsInput | boolean | null
     totalDiscountInCents?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    operator?: OperatorUpdateOneWithoutProductNestedInput
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUpdateOneWithoutProductsNestedInput
     transactions?: TransactionUpdateManyWithoutProductNestedInput
   }
 
@@ -45976,7 +47340,7 @@ export namespace Prisma {
     totalDiscountInCents?: IntFieldUpdateOperationsInput | number
     shopId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     transactions?: TransactionUncheckedUpdateManyWithoutProductNestedInput
   }
 
@@ -45997,7 +47361,7 @@ export namespace Prisma {
     totalDiscountInCents: number
     shopId?: string | null
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt?: Date | string | null
   }
 
   export type ProductUpdateManyMutationInput = {
@@ -46016,7 +47380,7 @@ export namespace Prisma {
     isPromo?: NullableBoolFieldUpdateOperationsInput | boolean | null
     totalDiscountInCents?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ProductUncheckedUpdateManyInput = {
@@ -46036,7 +47400,7 @@ export namespace Prisma {
     totalDiscountInCents?: IntFieldUpdateOperationsInput | number
     shopId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type notificationCreateInput = {
@@ -46362,7 +47726,14 @@ export namespace Prisma {
   export type TransactionCreateInput = {
     id?: string
     type: $Enums.TransactionType
-    amount: number
+    amount?: number
+    amountCredits?: number
+    buyerCashtag?: string | null
+    buyerUserId?: string | null
+    username?: string | null
+    cashiername?: string | null
+    cashierAvatar?: string | null
+    cashierId?: string | null
     reference?: string | null
     status?: $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -46371,15 +47742,23 @@ export namespace Prisma {
     paymentDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     processedAt?: Date | string | null
+    cashtag?: string | null
     gamesession?: gamesessionCreateNestedOneWithoutTransactionInput
     profile: ProfileCreateNestedOneWithoutTransactionsInput
-    Product?: ProductCreateNestedManyWithoutTransactionsInput
+    product?: ProductCreateNestedOneWithoutTransactionsInput
   }
 
   export type TransactionUncheckedCreateInput = {
     id?: string
     type: $Enums.TransactionType
-    amount: number
+    amount?: number
+    amountCredits?: number
+    buyerCashtag?: string | null
+    buyerUserId?: string | null
+    username?: string | null
+    cashiername?: string | null
+    cashierAvatar?: string | null
+    cashierId?: string | null
     reference?: string | null
     status?: $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -46390,13 +47769,21 @@ export namespace Prisma {
     processedAt?: Date | string | null
     gameSessionId?: string | null
     profileId: string
-    Product?: ProductUncheckedCreateNestedManyWithoutTransactionsInput
+    cashtag?: string | null
+    productid?: string | null
   }
 
   export type TransactionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     amount?: IntFieldUpdateOperationsInput | number
+    amountCredits?: IntFieldUpdateOperationsInput | number
+    buyerCashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    cashiername?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierId?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -46405,15 +47792,23 @@ export namespace Prisma {
     paymentDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     gamesession?: gamesessionUpdateOneWithoutTransactionNestedInput
     profile?: ProfileUpdateOneRequiredWithoutTransactionsNestedInput
-    Product?: ProductUpdateManyWithoutTransactionsNestedInput
+    product?: ProductUpdateOneWithoutTransactionsNestedInput
   }
 
   export type TransactionUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     amount?: IntFieldUpdateOperationsInput | number
+    amountCredits?: IntFieldUpdateOperationsInput | number
+    buyerCashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    cashiername?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierId?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -46424,13 +47819,21 @@ export namespace Prisma {
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gameSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     profileId?: StringFieldUpdateOperationsInput | string
-    Product?: ProductUncheckedUpdateManyWithoutTransactionsNestedInput
+    cashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    productid?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TransactionCreateManyInput = {
     id?: string
     type: $Enums.TransactionType
-    amount: number
+    amount?: number
+    amountCredits?: number
+    buyerCashtag?: string | null
+    buyerUserId?: string | null
+    username?: string | null
+    cashiername?: string | null
+    cashierAvatar?: string | null
+    cashierId?: string | null
     reference?: string | null
     status?: $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -46441,12 +47844,21 @@ export namespace Prisma {
     processedAt?: Date | string | null
     gameSessionId?: string | null
     profileId: string
+    cashtag?: string | null
+    productid?: string | null
   }
 
   export type TransactionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     amount?: IntFieldUpdateOperationsInput | number
+    amountCredits?: IntFieldUpdateOperationsInput | number
+    buyerCashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    cashiername?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierId?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -46455,12 +47867,20 @@ export namespace Prisma {
     paymentDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cashtag?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TransactionUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     amount?: IntFieldUpdateOperationsInput | number
+    amountCredits?: IntFieldUpdateOperationsInput | number
+    buyerCashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    cashiername?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierId?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -46471,6 +47891,8 @@ export namespace Prisma {
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gameSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     profileId?: StringFieldUpdateOperationsInput | string
+    cashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    productid?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type userachievementCreateInput = {
@@ -47102,6 +48524,69 @@ export namespace Prisma {
     userid?: StringFieldUpdateOperationsInput | string
   }
 
+  export type event_logCreateInput = {
+    id?: bigint | number
+    table_name: string
+    row_id?: string | null
+    operation: string
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string | null
+  }
+
+  export type event_logUncheckedCreateInput = {
+    id?: bigint | number
+    table_name: string
+    row_id?: string | null
+    operation: string
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string | null
+  }
+
+  export type event_logUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    table_name?: StringFieldUpdateOperationsInput | string
+    row_id?: NullableStringFieldUpdateOperationsInput | string | null
+    operation?: StringFieldUpdateOperationsInput | string
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type event_logUncheckedUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    table_name?: StringFieldUpdateOperationsInput | string
+    row_id?: NullableStringFieldUpdateOperationsInput | string | null
+    operation?: StringFieldUpdateOperationsInput | string
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type event_logCreateManyInput = {
+    id?: bigint | number
+    table_name: string
+    row_id?: string | null
+    operation: string
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string | null
+  }
+
+  export type event_logUpdateManyMutationInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    table_name?: StringFieldUpdateOperationsInput | string
+    row_id?: NullableStringFieldUpdateOperationsInput | string | null
+    operation?: StringFieldUpdateOperationsInput | string
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type event_logUncheckedUpdateManyInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    table_name?: StringFieldUpdateOperationsInput | string
+    row_id?: NullableStringFieldUpdateOperationsInput | string | null
+    operation?: StringFieldUpdateOperationsInput | string
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -47344,34 +48829,16 @@ export namespace Prisma {
     not?: NestedEnumUserStatusNullableFilter<$PrismaModel> | $Enums.UserStatus | null
   }
 
-  export type SessionListRelationFilter = {
-    every?: SessionWhereInput
-    some?: SessionWhereInput
-    none?: SessionWhereInput
+  export type OperatorListRelationFilter = {
+    every?: OperatorWhereInput
+    some?: OperatorWhereInput
+    none?: OperatorWhereInput
   }
 
-  export type AccountListRelationFilter = {
-    every?: AccountWhereInput
-    some?: AccountWhereInput
-    none?: AccountWhereInput
-  }
-
-  export type MemberListRelationFilter = {
-    every?: MemberWhereInput
-    some?: MemberWhereInput
-    none?: MemberWhereInput
-  }
-
-  export type InvitationListRelationFilter = {
-    every?: InvitationWhereInput
-    some?: InvitationWhereInput
-    none?: InvitationWhereInput
-  }
-
-  export type TwoFactorListRelationFilter = {
-    every?: TwoFactorWhereInput
-    some?: TwoFactorWhereInput
-    none?: TwoFactorWhereInput
+  export type ProfileListRelationFilter = {
+    every?: ProfileWhereInput
+    some?: ProfileWhereInput
+    none?: ProfileWhereInput
   }
 
   export type RainBetListRelationFilter = {
@@ -47398,6 +48865,18 @@ export namespace Prisma {
     none?: RainWinnerWhereInput
   }
 
+  export type SessionListRelationFilter = {
+    every?: SessionWhereInput
+    some?: SessionWhereInput
+    none?: SessionWhereInput
+  }
+
+  export type AccountListRelationFilter = {
+    every?: AccountWhereInput
+    some?: AccountWhereInput
+    none?: AccountWhereInput
+  }
+
   export type ChatmessageListRelationFilter = {
     every?: chatmessageWhereInput
     some?: chatmessageWhereInput
@@ -47410,22 +48889,22 @@ export namespace Prisma {
     none?: friendshipWhereInput
   }
 
+  export type InvitationListRelationFilter = {
+    every?: InvitationWhereInput
+    some?: InvitationWhereInput
+    none?: InvitationWhereInput
+  }
+
+  export type MemberListRelationFilter = {
+    every?: MemberWhereInput
+    some?: MemberWhereInput
+    none?: MemberWhereInput
+  }
+
   export type NotificationListRelationFilter = {
     every?: notificationWhereInput
     some?: notificationWhereInput
     none?: notificationWhereInput
-  }
-
-  export type OperatorListRelationFilter = {
-    every?: OperatorWhereInput
-    some?: OperatorWhereInput
-    none?: OperatorWhereInput
-  }
-
-  export type ProfileListRelationFilter = {
-    every?: ProfileWhereInput
-    some?: ProfileWhereInput
-    none?: ProfileWhereInput
   }
 
   export type TournamententryListRelationFilter = {
@@ -47434,29 +48913,22 @@ export namespace Prisma {
     none?: tournamententryWhereInput
   }
 
-  export type VipInfoListRelationFilter = {
-    every?: VipInfoWhereInput
-    some?: VipInfoWhereInput
-    none?: VipInfoWhereInput
+  export type TwoFactorListRelationFilter = {
+    every?: TwoFactorWhereInput
+    some?: TwoFactorWhereInput
+    none?: TwoFactorWhereInput
   }
 
-  export type SessionOrderByRelationAggregateInput = {
+  export type VipInfoNullableScalarRelationFilter = {
+    is?: VipInfoWhereInput | null
+    isNot?: VipInfoWhereInput | null
+  }
+
+  export type OperatorOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type AccountOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type MemberOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type InvitationOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type TwoFactorOrderByRelationAggregateInput = {
+  export type ProfileOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -47476,6 +48948,14 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type SessionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AccountOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type chatmessageOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -47484,15 +48964,15 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type InvitationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MemberOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type notificationOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type OperatorOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type ProfileOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -47500,13 +48980,8 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type VipInfoOrderByRelationAggregateInput = {
+  export type TwoFactorOrderByRelationAggregateInput = {
     _count?: SortOrder
-  }
-
-  export type UserVipInfoIdIdCompoundUniqueInput = {
-    vipInfoId: string
-    id: string
   }
 
   export type UserCountOrderByAggregateInput = {
@@ -47529,16 +49004,16 @@ export namespace Prisma {
     isVerified?: SortOrder
     active?: SortOrder
     lastLogin?: SortOrder
-    lastDailySpin?: SortOrder
     verificationToken?: SortOrder
     avatar?: SortOrder
     activeProfileId?: SortOrder
-    vipInfoId?: SortOrder
     gender?: SortOrder
     status?: SortOrder
     cashtag?: SortOrder
     phpId?: SortOrder
     accessToken?: SortOrder
+    vipInfoId?: SortOrder
+    lastDailySpin?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -47567,16 +49042,16 @@ export namespace Prisma {
     isVerified?: SortOrder
     active?: SortOrder
     lastLogin?: SortOrder
-    lastDailySpin?: SortOrder
     verificationToken?: SortOrder
     avatar?: SortOrder
     activeProfileId?: SortOrder
-    vipInfoId?: SortOrder
     gender?: SortOrder
     status?: SortOrder
     cashtag?: SortOrder
     phpId?: SortOrder
     accessToken?: SortOrder
+    vipInfoId?: SortOrder
+    lastDailySpin?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -47599,16 +49074,16 @@ export namespace Prisma {
     isVerified?: SortOrder
     active?: SortOrder
     lastLogin?: SortOrder
-    lastDailySpin?: SortOrder
     verificationToken?: SortOrder
     avatar?: SortOrder
     activeProfileId?: SortOrder
-    vipInfoId?: SortOrder
     gender?: SortOrder
     status?: SortOrder
     cashtag?: SortOrder
     phpId?: SortOrder
     accessToken?: SortOrder
+    vipInfoId?: SortOrder
+    lastDailySpin?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -47710,16 +49185,18 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type GameListRelationFilter = {
     every?: GameWhereInput
     some?: GameWhereInput
     none?: GameWhereInput
-  }
-
-  export type TournamentListRelationFilter = {
-    every?: tournamentWhereInput
-    some?: tournamentWhereInput
-    none?: tournamentWhereInput
   }
 
   export type ProductListRelationFilter = {
@@ -47728,15 +49205,21 @@ export namespace Prisma {
     none?: ProductWhereInput
   }
 
+  export type TournamentListRelationFilter = {
+    every?: tournamentWhereInput
+    some?: tournamentWhereInput
+    none?: tournamentWhereInput
+  }
+
   export type GameOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type tournamentOrderByRelationAggregateInput = {
+  export type ProductOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type ProductOrderByRelationAggregateInput = {
+  export type tournamentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -47749,6 +49232,7 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    acceptedPayments?: SortOrder
     ownerId?: SortOrder
     balance?: SortOrder
   }
@@ -47811,15 +49295,15 @@ export namespace Prisma {
     authorId?: SortOrder
   }
 
+  export type OperatorScalarRelationFilter = {
+    is?: OperatorWhereInput
+    isNot?: OperatorWhereInput
+  }
+
   export type GamesessionListRelationFilter = {
     every?: gamesessionWhereInput
     some?: gamesessionWhereInput
     none?: gamesessionWhereInput
-  }
-
-  export type OperatorScalarRelationFilter = {
-    is?: OperatorWhereInput
-    isNot?: OperatorWhereInput
   }
 
   export type TransactionListRelationFilter = {
@@ -47972,10 +49456,10 @@ export namespace Prisma {
     providerId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    category?: SortOrder
     jackpotGroupId?: SortOrder
     active?: SortOrder
     password?: SortOrder
+    category?: SortOrder
   }
 
   export type GameAvgOrderByAggregateInput = {
@@ -48048,10 +49532,10 @@ export namespace Prisma {
     providerId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    category?: SortOrder
     jackpotGroupId?: SortOrder
     active?: SortOrder
     password?: SortOrder
+    category?: SortOrder
   }
 
   export type GameMinOrderByAggregateInput = {
@@ -48098,10 +49582,10 @@ export namespace Prisma {
     providerId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    category?: SortOrder
     jackpotGroupId?: SortOrder
     active?: SortOrder
     password?: SortOrder
+    category?: SortOrder
   }
 
   export type GameSumOrderByAggregateInput = {
@@ -48966,10 +50450,22 @@ export namespace Prisma {
     not?: NestedEnumTransactionStatusFilter<$PrismaModel> | $Enums.TransactionStatus
   }
 
+  export type ProductNullableScalarRelationFilter = {
+    is?: ProductWhereInput | null
+    isNot?: ProductWhereInput | null
+  }
+
   export type TransactionCountOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
     amount?: SortOrder
+    amountCredits?: SortOrder
+    buyerCashtag?: SortOrder
+    buyerUserId?: SortOrder
+    username?: SortOrder
+    cashiername?: SortOrder
+    cashierAvatar?: SortOrder
+    cashierId?: SortOrder
     reference?: SortOrder
     status?: SortOrder
     metadata?: SortOrder
@@ -48980,16 +50476,26 @@ export namespace Prisma {
     processedAt?: SortOrder
     gameSessionId?: SortOrder
     profileId?: SortOrder
+    cashtag?: SortOrder
+    productid?: SortOrder
   }
 
   export type TransactionAvgOrderByAggregateInput = {
     amount?: SortOrder
+    amountCredits?: SortOrder
   }
 
   export type TransactionMaxOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
     amount?: SortOrder
+    amountCredits?: SortOrder
+    buyerCashtag?: SortOrder
+    buyerUserId?: SortOrder
+    username?: SortOrder
+    cashiername?: SortOrder
+    cashierAvatar?: SortOrder
+    cashierId?: SortOrder
     reference?: SortOrder
     status?: SortOrder
     isRealMoney?: SortOrder
@@ -48998,12 +50504,21 @@ export namespace Prisma {
     processedAt?: SortOrder
     gameSessionId?: SortOrder
     profileId?: SortOrder
+    cashtag?: SortOrder
+    productid?: SortOrder
   }
 
   export type TransactionMinOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
     amount?: SortOrder
+    amountCredits?: SortOrder
+    buyerCashtag?: SortOrder
+    buyerUserId?: SortOrder
+    username?: SortOrder
+    cashiername?: SortOrder
+    cashierAvatar?: SortOrder
+    cashierId?: SortOrder
     reference?: SortOrder
     status?: SortOrder
     isRealMoney?: SortOrder
@@ -49012,10 +50527,13 @@ export namespace Prisma {
     processedAt?: SortOrder
     gameSessionId?: SortOrder
     profileId?: SortOrder
+    cashtag?: SortOrder
+    productid?: SortOrder
   }
 
   export type TransactionSumOrderByAggregateInput = {
     amount?: SortOrder
+    amountCredits?: SortOrder
   }
 
   export type EnumTransactionTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -49393,6 +50911,66 @@ export namespace Prisma {
     unprotection_switch?: SortOrder
   }
 
+  export type BigIntFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntFilter<$PrismaModel> | bigint | number
+  }
+
+  export type event_logCountOrderByAggregateInput = {
+    id?: SortOrder
+    table_name?: SortOrder
+    row_id?: SortOrder
+    operation?: SortOrder
+    payload?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type event_logAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type event_logMaxOrderByAggregateInput = {
+    id?: SortOrder
+    table_name?: SortOrder
+    row_id?: SortOrder
+    operation?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type event_logMinOrderByAggregateInput = {
+    id?: SortOrder
+    table_name?: SortOrder
+    row_id?: SortOrder
+    operation?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type event_logSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type BigIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedBigIntFilter<$PrismaModel>
+    _min?: NestedBigIntFilter<$PrismaModel>
+    _max?: NestedBigIntFilter<$PrismaModel>
+  }
+
   export type userachievementCreateNestedManyWithoutAchievementInput = {
     create?: XOR<userachievementCreateWithoutAchievementInput, userachievementUncheckedCreateWithoutAchievementInput> | userachievementCreateWithoutAchievementInput[] | userachievementUncheckedCreateWithoutAchievementInput[]
     connectOrCreate?: userachievementCreateOrConnectWithoutAchievementInput | userachievementCreateOrConnectWithoutAchievementInput[]
@@ -49467,39 +51045,18 @@ export namespace Prisma {
     deleteMany?: userachievementScalarWhereInput | userachievementScalarWhereInput[]
   }
 
-  export type SessionCreateNestedManyWithoutUserInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+  export type OperatorCreateNestedManyWithoutOwnerInput = {
+    create?: XOR<OperatorCreateWithoutOwnerInput, OperatorUncheckedCreateWithoutOwnerInput> | OperatorCreateWithoutOwnerInput[] | OperatorUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: OperatorCreateOrConnectWithoutOwnerInput | OperatorCreateOrConnectWithoutOwnerInput[]
+    createMany?: OperatorCreateManyOwnerInputEnvelope
+    connect?: OperatorWhereUniqueInput | OperatorWhereUniqueInput[]
   }
 
-  export type AccountCreateNestedManyWithoutUserInput = {
-    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
-    createMany?: AccountCreateManyUserInputEnvelope
-    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-  }
-
-  export type MemberCreateNestedManyWithoutUserInput = {
-    create?: XOR<MemberCreateWithoutUserInput, MemberUncheckedCreateWithoutUserInput> | MemberCreateWithoutUserInput[] | MemberUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: MemberCreateOrConnectWithoutUserInput | MemberCreateOrConnectWithoutUserInput[]
-    createMany?: MemberCreateManyUserInputEnvelope
-    connect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
-  }
-
-  export type InvitationCreateNestedManyWithoutUserInput = {
-    create?: XOR<InvitationCreateWithoutUserInput, InvitationUncheckedCreateWithoutUserInput> | InvitationCreateWithoutUserInput[] | InvitationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: InvitationCreateOrConnectWithoutUserInput | InvitationCreateOrConnectWithoutUserInput[]
-    createMany?: InvitationCreateManyUserInputEnvelope
-    connect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
-  }
-
-  export type TwoFactorCreateNestedManyWithoutUserInput = {
-    create?: XOR<TwoFactorCreateWithoutUserInput, TwoFactorUncheckedCreateWithoutUserInput> | TwoFactorCreateWithoutUserInput[] | TwoFactorUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TwoFactorCreateOrConnectWithoutUserInput | TwoFactorCreateOrConnectWithoutUserInput[]
-    createMany?: TwoFactorCreateManyUserInputEnvelope
-    connect?: TwoFactorWhereUniqueInput | TwoFactorWhereUniqueInput[]
+  export type ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput = {
+    create?: XOR<ProfileCreateWithoutUser_profile_userIdTouserInput, ProfileUncheckedCreateWithoutUser_profile_userIdTouserInput> | ProfileCreateWithoutUser_profile_userIdTouserInput[] | ProfileUncheckedCreateWithoutUser_profile_userIdTouserInput[]
+    connectOrCreate?: ProfileCreateOrConnectWithoutUser_profile_userIdTouserInput | ProfileCreateOrConnectWithoutUser_profile_userIdTouserInput[]
+    createMany?: ProfileCreateManyUser_profile_userIdTouserInputEnvelope
+    connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
   }
 
   export type RainBetCreateNestedManyWithoutUserInput = {
@@ -49530,6 +51087,20 @@ export namespace Prisma {
     connect?: RainWinnerWhereUniqueInput | RainWinnerWhereUniqueInput[]
   }
 
+  export type SessionCreateNestedManyWithoutUserInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+  }
+
+  export type AccountCreateNestedManyWithoutUserInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+  }
+
   export type chatmessageCreateNestedManyWithoutUserInput = {
     create?: XOR<chatmessageCreateWithoutUserInput, chatmessageUncheckedCreateWithoutUserInput> | chatmessageCreateWithoutUserInput[] | chatmessageUncheckedCreateWithoutUserInput[]
     connectOrCreate?: chatmessageCreateOrConnectWithoutUserInput | chatmessageCreateOrConnectWithoutUserInput[]
@@ -49551,25 +51122,25 @@ export namespace Prisma {
     connect?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
   }
 
+  export type InvitationCreateNestedManyWithoutUserInput = {
+    create?: XOR<InvitationCreateWithoutUserInput, InvitationUncheckedCreateWithoutUserInput> | InvitationCreateWithoutUserInput[] | InvitationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: InvitationCreateOrConnectWithoutUserInput | InvitationCreateOrConnectWithoutUserInput[]
+    createMany?: InvitationCreateManyUserInputEnvelope
+    connect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
+  }
+
+  export type MemberCreateNestedManyWithoutUserInput = {
+    create?: XOR<MemberCreateWithoutUserInput, MemberUncheckedCreateWithoutUserInput> | MemberCreateWithoutUserInput[] | MemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MemberCreateOrConnectWithoutUserInput | MemberCreateOrConnectWithoutUserInput[]
+    createMany?: MemberCreateManyUserInputEnvelope
+    connect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+  }
+
   export type notificationCreateNestedManyWithoutUserInput = {
     create?: XOR<notificationCreateWithoutUserInput, notificationUncheckedCreateWithoutUserInput> | notificationCreateWithoutUserInput[] | notificationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: notificationCreateOrConnectWithoutUserInput | notificationCreateOrConnectWithoutUserInput[]
     createMany?: notificationCreateManyUserInputEnvelope
     connect?: notificationWhereUniqueInput | notificationWhereUniqueInput[]
-  }
-
-  export type OperatorCreateNestedManyWithoutOwnerInput = {
-    create?: XOR<OperatorCreateWithoutOwnerInput, OperatorUncheckedCreateWithoutOwnerInput> | OperatorCreateWithoutOwnerInput[] | OperatorUncheckedCreateWithoutOwnerInput[]
-    connectOrCreate?: OperatorCreateOrConnectWithoutOwnerInput | OperatorCreateOrConnectWithoutOwnerInput[]
-    createMany?: OperatorCreateManyOwnerInputEnvelope
-    connect?: OperatorWhereUniqueInput | OperatorWhereUniqueInput[]
-  }
-
-  export type ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput = {
-    create?: XOR<ProfileCreateWithoutUser_profile_userIdTouserInput, ProfileUncheckedCreateWithoutUser_profile_userIdTouserInput> | ProfileCreateWithoutUser_profile_userIdTouserInput[] | ProfileUncheckedCreateWithoutUser_profile_userIdTouserInput[]
-    connectOrCreate?: ProfileCreateOrConnectWithoutUser_profile_userIdTouserInput | ProfileCreateOrConnectWithoutUser_profile_userIdTouserInput[]
-    createMany?: ProfileCreateManyUser_profile_userIdTouserInputEnvelope
-    connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
   }
 
   export type tournamententryCreateNestedManyWithoutUserInput = {
@@ -49579,6 +51150,13 @@ export namespace Prisma {
     connect?: tournamententryWhereUniqueInput | tournamententryWhereUniqueInput[]
   }
 
+  export type TwoFactorCreateNestedManyWithoutUserInput = {
+    create?: XOR<TwoFactorCreateWithoutUserInput, TwoFactorUncheckedCreateWithoutUserInput> | TwoFactorCreateWithoutUserInput[] | TwoFactorUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TwoFactorCreateOrConnectWithoutUserInput | TwoFactorCreateOrConnectWithoutUserInput[]
+    createMany?: TwoFactorCreateManyUserInputEnvelope
+    connect?: TwoFactorWhereUniqueInput | TwoFactorWhereUniqueInput[]
+  }
+
   export type userachievementCreateNestedManyWithoutUserInput = {
     create?: XOR<userachievementCreateWithoutUserInput, userachievementUncheckedCreateWithoutUserInput> | userachievementCreateWithoutUserInput[] | userachievementUncheckedCreateWithoutUserInput[]
     connectOrCreate?: userachievementCreateOrConnectWithoutUserInput | userachievementCreateOrConnectWithoutUserInput[]
@@ -49586,46 +51164,24 @@ export namespace Prisma {
     connect?: userachievementWhereUniqueInput | userachievementWhereUniqueInput[]
   }
 
-  export type VipInfoCreateNestedManyWithoutUserInput = {
-    create?: XOR<VipInfoCreateWithoutUserInput, VipInfoUncheckedCreateWithoutUserInput> | VipInfoCreateWithoutUserInput[] | VipInfoUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: VipInfoCreateOrConnectWithoutUserInput | VipInfoCreateOrConnectWithoutUserInput[]
-    createMany?: VipInfoCreateManyUserInputEnvelope
-    connect?: VipInfoWhereUniqueInput | VipInfoWhereUniqueInput[]
+  export type VipInfoCreateNestedOneWithoutUserInput = {
+    create?: XOR<VipInfoCreateWithoutUserInput, VipInfoUncheckedCreateWithoutUserInput>
+    connectOrCreate?: VipInfoCreateOrConnectWithoutUserInput
+    connect?: VipInfoWhereUniqueInput
   }
 
-  export type SessionUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+  export type OperatorUncheckedCreateNestedManyWithoutOwnerInput = {
+    create?: XOR<OperatorCreateWithoutOwnerInput, OperatorUncheckedCreateWithoutOwnerInput> | OperatorCreateWithoutOwnerInput[] | OperatorUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: OperatorCreateOrConnectWithoutOwnerInput | OperatorCreateOrConnectWithoutOwnerInput[]
+    createMany?: OperatorCreateManyOwnerInputEnvelope
+    connect?: OperatorWhereUniqueInput | OperatorWhereUniqueInput[]
   }
 
-  export type AccountUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
-    createMany?: AccountCreateManyUserInputEnvelope
-    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-  }
-
-  export type MemberUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<MemberCreateWithoutUserInput, MemberUncheckedCreateWithoutUserInput> | MemberCreateWithoutUserInput[] | MemberUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: MemberCreateOrConnectWithoutUserInput | MemberCreateOrConnectWithoutUserInput[]
-    createMany?: MemberCreateManyUserInputEnvelope
-    connect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
-  }
-
-  export type InvitationUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<InvitationCreateWithoutUserInput, InvitationUncheckedCreateWithoutUserInput> | InvitationCreateWithoutUserInput[] | InvitationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: InvitationCreateOrConnectWithoutUserInput | InvitationCreateOrConnectWithoutUserInput[]
-    createMany?: InvitationCreateManyUserInputEnvelope
-    connect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
-  }
-
-  export type TwoFactorUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<TwoFactorCreateWithoutUserInput, TwoFactorUncheckedCreateWithoutUserInput> | TwoFactorCreateWithoutUserInput[] | TwoFactorUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TwoFactorCreateOrConnectWithoutUserInput | TwoFactorCreateOrConnectWithoutUserInput[]
-    createMany?: TwoFactorCreateManyUserInputEnvelope
-    connect?: TwoFactorWhereUniqueInput | TwoFactorWhereUniqueInput[]
+  export type ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput = {
+    create?: XOR<ProfileCreateWithoutUser_profile_userIdTouserInput, ProfileUncheckedCreateWithoutUser_profile_userIdTouserInput> | ProfileCreateWithoutUser_profile_userIdTouserInput[] | ProfileUncheckedCreateWithoutUser_profile_userIdTouserInput[]
+    connectOrCreate?: ProfileCreateOrConnectWithoutUser_profile_userIdTouserInput | ProfileCreateOrConnectWithoutUser_profile_userIdTouserInput[]
+    createMany?: ProfileCreateManyUser_profile_userIdTouserInputEnvelope
+    connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
   }
 
   export type RainBetUncheckedCreateNestedManyWithoutUserInput = {
@@ -49656,6 +51212,20 @@ export namespace Prisma {
     connect?: RainWinnerWhereUniqueInput | RainWinnerWhereUniqueInput[]
   }
 
+  export type SessionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+  }
+
+  export type AccountUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+  }
+
   export type chatmessageUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<chatmessageCreateWithoutUserInput, chatmessageUncheckedCreateWithoutUserInput> | chatmessageCreateWithoutUserInput[] | chatmessageUncheckedCreateWithoutUserInput[]
     connectOrCreate?: chatmessageCreateOrConnectWithoutUserInput | chatmessageCreateOrConnectWithoutUserInput[]
@@ -49677,25 +51247,25 @@ export namespace Prisma {
     connect?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
   }
 
+  export type InvitationUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<InvitationCreateWithoutUserInput, InvitationUncheckedCreateWithoutUserInput> | InvitationCreateWithoutUserInput[] | InvitationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: InvitationCreateOrConnectWithoutUserInput | InvitationCreateOrConnectWithoutUserInput[]
+    createMany?: InvitationCreateManyUserInputEnvelope
+    connect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
+  }
+
+  export type MemberUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<MemberCreateWithoutUserInput, MemberUncheckedCreateWithoutUserInput> | MemberCreateWithoutUserInput[] | MemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MemberCreateOrConnectWithoutUserInput | MemberCreateOrConnectWithoutUserInput[]
+    createMany?: MemberCreateManyUserInputEnvelope
+    connect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+  }
+
   export type notificationUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<notificationCreateWithoutUserInput, notificationUncheckedCreateWithoutUserInput> | notificationCreateWithoutUserInput[] | notificationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: notificationCreateOrConnectWithoutUserInput | notificationCreateOrConnectWithoutUserInput[]
     createMany?: notificationCreateManyUserInputEnvelope
     connect?: notificationWhereUniqueInput | notificationWhereUniqueInput[]
-  }
-
-  export type OperatorUncheckedCreateNestedManyWithoutOwnerInput = {
-    create?: XOR<OperatorCreateWithoutOwnerInput, OperatorUncheckedCreateWithoutOwnerInput> | OperatorCreateWithoutOwnerInput[] | OperatorUncheckedCreateWithoutOwnerInput[]
-    connectOrCreate?: OperatorCreateOrConnectWithoutOwnerInput | OperatorCreateOrConnectWithoutOwnerInput[]
-    createMany?: OperatorCreateManyOwnerInputEnvelope
-    connect?: OperatorWhereUniqueInput | OperatorWhereUniqueInput[]
-  }
-
-  export type ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput = {
-    create?: XOR<ProfileCreateWithoutUser_profile_userIdTouserInput, ProfileUncheckedCreateWithoutUser_profile_userIdTouserInput> | ProfileCreateWithoutUser_profile_userIdTouserInput[] | ProfileUncheckedCreateWithoutUser_profile_userIdTouserInput[]
-    connectOrCreate?: ProfileCreateOrConnectWithoutUser_profile_userIdTouserInput | ProfileCreateOrConnectWithoutUser_profile_userIdTouserInput[]
-    createMany?: ProfileCreateManyUser_profile_userIdTouserInputEnvelope
-    connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
   }
 
   export type tournamententryUncheckedCreateNestedManyWithoutUserInput = {
@@ -49705,6 +51275,13 @@ export namespace Prisma {
     connect?: tournamententryWhereUniqueInput | tournamententryWhereUniqueInput[]
   }
 
+  export type TwoFactorUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TwoFactorCreateWithoutUserInput, TwoFactorUncheckedCreateWithoutUserInput> | TwoFactorCreateWithoutUserInput[] | TwoFactorUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TwoFactorCreateOrConnectWithoutUserInput | TwoFactorCreateOrConnectWithoutUserInput[]
+    createMany?: TwoFactorCreateManyUserInputEnvelope
+    connect?: TwoFactorWhereUniqueInput | TwoFactorWhereUniqueInput[]
+  }
+
   export type userachievementUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<userachievementCreateWithoutUserInput, userachievementUncheckedCreateWithoutUserInput> | userachievementCreateWithoutUserInput[] | userachievementUncheckedCreateWithoutUserInput[]
     connectOrCreate?: userachievementCreateOrConnectWithoutUserInput | userachievementCreateOrConnectWithoutUserInput[]
@@ -49712,11 +51289,10 @@ export namespace Prisma {
     connect?: userachievementWhereUniqueInput | userachievementWhereUniqueInput[]
   }
 
-  export type VipInfoUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<VipInfoCreateWithoutUserInput, VipInfoUncheckedCreateWithoutUserInput> | VipInfoCreateWithoutUserInput[] | VipInfoUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: VipInfoCreateOrConnectWithoutUserInput | VipInfoCreateOrConnectWithoutUserInput[]
-    createMany?: VipInfoCreateManyUserInputEnvelope
-    connect?: VipInfoWhereUniqueInput | VipInfoWhereUniqueInput[]
+  export type VipInfoUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<VipInfoCreateWithoutUserInput, VipInfoUncheckedCreateWithoutUserInput>
+    connectOrCreate?: VipInfoCreateOrConnectWithoutUserInput
+    connect?: VipInfoWhereUniqueInput
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -49735,74 +51311,32 @@ export namespace Prisma {
     set?: $Enums.UserStatus | null
   }
 
-  export type SessionUpdateManyWithoutUserNestedInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
+  export type OperatorUpdateManyWithoutOwnerNestedInput = {
+    create?: XOR<OperatorCreateWithoutOwnerInput, OperatorUncheckedCreateWithoutOwnerInput> | OperatorCreateWithoutOwnerInput[] | OperatorUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: OperatorCreateOrConnectWithoutOwnerInput | OperatorCreateOrConnectWithoutOwnerInput[]
+    upsert?: OperatorUpsertWithWhereUniqueWithoutOwnerInput | OperatorUpsertWithWhereUniqueWithoutOwnerInput[]
+    createMany?: OperatorCreateManyOwnerInputEnvelope
+    set?: OperatorWhereUniqueInput | OperatorWhereUniqueInput[]
+    disconnect?: OperatorWhereUniqueInput | OperatorWhereUniqueInput[]
+    delete?: OperatorWhereUniqueInput | OperatorWhereUniqueInput[]
+    connect?: OperatorWhereUniqueInput | OperatorWhereUniqueInput[]
+    update?: OperatorUpdateWithWhereUniqueWithoutOwnerInput | OperatorUpdateWithWhereUniqueWithoutOwnerInput[]
+    updateMany?: OperatorUpdateManyWithWhereWithoutOwnerInput | OperatorUpdateManyWithWhereWithoutOwnerInput[]
+    deleteMany?: OperatorScalarWhereInput | OperatorScalarWhereInput[]
   }
 
-  export type AccountUpdateManyWithoutUserNestedInput = {
-    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
-    upsert?: AccountUpsertWithWhereUniqueWithoutUserInput | AccountUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: AccountCreateManyUserInputEnvelope
-    set?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    disconnect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    delete?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
-  }
-
-  export type MemberUpdateManyWithoutUserNestedInput = {
-    create?: XOR<MemberCreateWithoutUserInput, MemberUncheckedCreateWithoutUserInput> | MemberCreateWithoutUserInput[] | MemberUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: MemberCreateOrConnectWithoutUserInput | MemberCreateOrConnectWithoutUserInput[]
-    upsert?: MemberUpsertWithWhereUniqueWithoutUserInput | MemberUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: MemberCreateManyUserInputEnvelope
-    set?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
-    disconnect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
-    delete?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
-    connect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
-    update?: MemberUpdateWithWhereUniqueWithoutUserInput | MemberUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: MemberUpdateManyWithWhereWithoutUserInput | MemberUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: MemberScalarWhereInput | MemberScalarWhereInput[]
-  }
-
-  export type InvitationUpdateManyWithoutUserNestedInput = {
-    create?: XOR<InvitationCreateWithoutUserInput, InvitationUncheckedCreateWithoutUserInput> | InvitationCreateWithoutUserInput[] | InvitationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: InvitationCreateOrConnectWithoutUserInput | InvitationCreateOrConnectWithoutUserInput[]
-    upsert?: InvitationUpsertWithWhereUniqueWithoutUserInput | InvitationUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: InvitationCreateManyUserInputEnvelope
-    set?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
-    disconnect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
-    delete?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
-    connect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
-    update?: InvitationUpdateWithWhereUniqueWithoutUserInput | InvitationUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: InvitationUpdateManyWithWhereWithoutUserInput | InvitationUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: InvitationScalarWhereInput | InvitationScalarWhereInput[]
-  }
-
-  export type TwoFactorUpdateManyWithoutUserNestedInput = {
-    create?: XOR<TwoFactorCreateWithoutUserInput, TwoFactorUncheckedCreateWithoutUserInput> | TwoFactorCreateWithoutUserInput[] | TwoFactorUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TwoFactorCreateOrConnectWithoutUserInput | TwoFactorCreateOrConnectWithoutUserInput[]
-    upsert?: TwoFactorUpsertWithWhereUniqueWithoutUserInput | TwoFactorUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: TwoFactorCreateManyUserInputEnvelope
-    set?: TwoFactorWhereUniqueInput | TwoFactorWhereUniqueInput[]
-    disconnect?: TwoFactorWhereUniqueInput | TwoFactorWhereUniqueInput[]
-    delete?: TwoFactorWhereUniqueInput | TwoFactorWhereUniqueInput[]
-    connect?: TwoFactorWhereUniqueInput | TwoFactorWhereUniqueInput[]
-    update?: TwoFactorUpdateWithWhereUniqueWithoutUserInput | TwoFactorUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: TwoFactorUpdateManyWithWhereWithoutUserInput | TwoFactorUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: TwoFactorScalarWhereInput | TwoFactorScalarWhereInput[]
+  export type ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput = {
+    create?: XOR<ProfileCreateWithoutUser_profile_userIdTouserInput, ProfileUncheckedCreateWithoutUser_profile_userIdTouserInput> | ProfileCreateWithoutUser_profile_userIdTouserInput[] | ProfileUncheckedCreateWithoutUser_profile_userIdTouserInput[]
+    connectOrCreate?: ProfileCreateOrConnectWithoutUser_profile_userIdTouserInput | ProfileCreateOrConnectWithoutUser_profile_userIdTouserInput[]
+    upsert?: ProfileUpsertWithWhereUniqueWithoutUser_profile_userIdTouserInput | ProfileUpsertWithWhereUniqueWithoutUser_profile_userIdTouserInput[]
+    createMany?: ProfileCreateManyUser_profile_userIdTouserInputEnvelope
+    set?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
+    disconnect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
+    delete?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
+    connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
+    update?: ProfileUpdateWithWhereUniqueWithoutUser_profile_userIdTouserInput | ProfileUpdateWithWhereUniqueWithoutUser_profile_userIdTouserInput[]
+    updateMany?: ProfileUpdateManyWithWhereWithoutUser_profile_userIdTouserInput | ProfileUpdateManyWithWhereWithoutUser_profile_userIdTouserInput[]
+    deleteMany?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
   }
 
   export type RainBetUpdateManyWithoutUserNestedInput = {
@@ -49861,6 +51395,34 @@ export namespace Prisma {
     deleteMany?: RainWinnerScalarWhereInput | RainWinnerScalarWhereInput[]
   }
 
+  export type SessionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
+  }
+
+  export type AccountUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    upsert?: AccountUpsertWithWhereUniqueWithoutUserInput | AccountUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    set?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    disconnect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    delete?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
+  }
+
   export type chatmessageUpdateManyWithoutUserNestedInput = {
     create?: XOR<chatmessageCreateWithoutUserInput, chatmessageUncheckedCreateWithoutUserInput> | chatmessageCreateWithoutUserInput[] | chatmessageUncheckedCreateWithoutUserInput[]
     connectOrCreate?: chatmessageCreateOrConnectWithoutUserInput | chatmessageCreateOrConnectWithoutUserInput[]
@@ -49903,6 +51465,34 @@ export namespace Prisma {
     deleteMany?: friendshipScalarWhereInput | friendshipScalarWhereInput[]
   }
 
+  export type InvitationUpdateManyWithoutUserNestedInput = {
+    create?: XOR<InvitationCreateWithoutUserInput, InvitationUncheckedCreateWithoutUserInput> | InvitationCreateWithoutUserInput[] | InvitationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: InvitationCreateOrConnectWithoutUserInput | InvitationCreateOrConnectWithoutUserInput[]
+    upsert?: InvitationUpsertWithWhereUniqueWithoutUserInput | InvitationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: InvitationCreateManyUserInputEnvelope
+    set?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
+    disconnect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
+    delete?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
+    connect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
+    update?: InvitationUpdateWithWhereUniqueWithoutUserInput | InvitationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: InvitationUpdateManyWithWhereWithoutUserInput | InvitationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: InvitationScalarWhereInput | InvitationScalarWhereInput[]
+  }
+
+  export type MemberUpdateManyWithoutUserNestedInput = {
+    create?: XOR<MemberCreateWithoutUserInput, MemberUncheckedCreateWithoutUserInput> | MemberCreateWithoutUserInput[] | MemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MemberCreateOrConnectWithoutUserInput | MemberCreateOrConnectWithoutUserInput[]
+    upsert?: MemberUpsertWithWhereUniqueWithoutUserInput | MemberUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: MemberCreateManyUserInputEnvelope
+    set?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+    disconnect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+    delete?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+    connect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+    update?: MemberUpdateWithWhereUniqueWithoutUserInput | MemberUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: MemberUpdateManyWithWhereWithoutUserInput | MemberUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: MemberScalarWhereInput | MemberScalarWhereInput[]
+  }
+
   export type notificationUpdateManyWithoutUserNestedInput = {
     create?: XOR<notificationCreateWithoutUserInput, notificationUncheckedCreateWithoutUserInput> | notificationCreateWithoutUserInput[] | notificationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: notificationCreateOrConnectWithoutUserInput | notificationCreateOrConnectWithoutUserInput[]
@@ -49915,34 +51505,6 @@ export namespace Prisma {
     update?: notificationUpdateWithWhereUniqueWithoutUserInput | notificationUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: notificationUpdateManyWithWhereWithoutUserInput | notificationUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: notificationScalarWhereInput | notificationScalarWhereInput[]
-  }
-
-  export type OperatorUpdateManyWithoutOwnerNestedInput = {
-    create?: XOR<OperatorCreateWithoutOwnerInput, OperatorUncheckedCreateWithoutOwnerInput> | OperatorCreateWithoutOwnerInput[] | OperatorUncheckedCreateWithoutOwnerInput[]
-    connectOrCreate?: OperatorCreateOrConnectWithoutOwnerInput | OperatorCreateOrConnectWithoutOwnerInput[]
-    upsert?: OperatorUpsertWithWhereUniqueWithoutOwnerInput | OperatorUpsertWithWhereUniqueWithoutOwnerInput[]
-    createMany?: OperatorCreateManyOwnerInputEnvelope
-    set?: OperatorWhereUniqueInput | OperatorWhereUniqueInput[]
-    disconnect?: OperatorWhereUniqueInput | OperatorWhereUniqueInput[]
-    delete?: OperatorWhereUniqueInput | OperatorWhereUniqueInput[]
-    connect?: OperatorWhereUniqueInput | OperatorWhereUniqueInput[]
-    update?: OperatorUpdateWithWhereUniqueWithoutOwnerInput | OperatorUpdateWithWhereUniqueWithoutOwnerInput[]
-    updateMany?: OperatorUpdateManyWithWhereWithoutOwnerInput | OperatorUpdateManyWithWhereWithoutOwnerInput[]
-    deleteMany?: OperatorScalarWhereInput | OperatorScalarWhereInput[]
-  }
-
-  export type ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput = {
-    create?: XOR<ProfileCreateWithoutUser_profile_userIdTouserInput, ProfileUncheckedCreateWithoutUser_profile_userIdTouserInput> | ProfileCreateWithoutUser_profile_userIdTouserInput[] | ProfileUncheckedCreateWithoutUser_profile_userIdTouserInput[]
-    connectOrCreate?: ProfileCreateOrConnectWithoutUser_profile_userIdTouserInput | ProfileCreateOrConnectWithoutUser_profile_userIdTouserInput[]
-    upsert?: ProfileUpsertWithWhereUniqueWithoutUser_profile_userIdTouserInput | ProfileUpsertWithWhereUniqueWithoutUser_profile_userIdTouserInput[]
-    createMany?: ProfileCreateManyUser_profile_userIdTouserInputEnvelope
-    set?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    disconnect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    delete?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    update?: ProfileUpdateWithWhereUniqueWithoutUser_profile_userIdTouserInput | ProfileUpdateWithWhereUniqueWithoutUser_profile_userIdTouserInput[]
-    updateMany?: ProfileUpdateManyWithWhereWithoutUser_profile_userIdTouserInput | ProfileUpdateManyWithWhereWithoutUser_profile_userIdTouserInput[]
-    deleteMany?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
   }
 
   export type tournamententryUpdateManyWithoutUserNestedInput = {
@@ -49959,6 +51521,20 @@ export namespace Prisma {
     deleteMany?: tournamententryScalarWhereInput | tournamententryScalarWhereInput[]
   }
 
+  export type TwoFactorUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TwoFactorCreateWithoutUserInput, TwoFactorUncheckedCreateWithoutUserInput> | TwoFactorCreateWithoutUserInput[] | TwoFactorUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TwoFactorCreateOrConnectWithoutUserInput | TwoFactorCreateOrConnectWithoutUserInput[]
+    upsert?: TwoFactorUpsertWithWhereUniqueWithoutUserInput | TwoFactorUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TwoFactorCreateManyUserInputEnvelope
+    set?: TwoFactorWhereUniqueInput | TwoFactorWhereUniqueInput[]
+    disconnect?: TwoFactorWhereUniqueInput | TwoFactorWhereUniqueInput[]
+    delete?: TwoFactorWhereUniqueInput | TwoFactorWhereUniqueInput[]
+    connect?: TwoFactorWhereUniqueInput | TwoFactorWhereUniqueInput[]
+    update?: TwoFactorUpdateWithWhereUniqueWithoutUserInput | TwoFactorUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TwoFactorUpdateManyWithWhereWithoutUserInput | TwoFactorUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TwoFactorScalarWhereInput | TwoFactorScalarWhereInput[]
+  }
+
   export type userachievementUpdateManyWithoutUserNestedInput = {
     create?: XOR<userachievementCreateWithoutUserInput, userachievementUncheckedCreateWithoutUserInput> | userachievementCreateWithoutUserInput[] | userachievementUncheckedCreateWithoutUserInput[]
     connectOrCreate?: userachievementCreateOrConnectWithoutUserInput | userachievementCreateOrConnectWithoutUserInput[]
@@ -49973,88 +51549,42 @@ export namespace Prisma {
     deleteMany?: userachievementScalarWhereInput | userachievementScalarWhereInput[]
   }
 
-  export type VipInfoUpdateManyWithoutUserNestedInput = {
-    create?: XOR<VipInfoCreateWithoutUserInput, VipInfoUncheckedCreateWithoutUserInput> | VipInfoCreateWithoutUserInput[] | VipInfoUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: VipInfoCreateOrConnectWithoutUserInput | VipInfoCreateOrConnectWithoutUserInput[]
-    upsert?: VipInfoUpsertWithWhereUniqueWithoutUserInput | VipInfoUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: VipInfoCreateManyUserInputEnvelope
-    set?: VipInfoWhereUniqueInput | VipInfoWhereUniqueInput[]
-    disconnect?: VipInfoWhereUniqueInput | VipInfoWhereUniqueInput[]
-    delete?: VipInfoWhereUniqueInput | VipInfoWhereUniqueInput[]
-    connect?: VipInfoWhereUniqueInput | VipInfoWhereUniqueInput[]
-    update?: VipInfoUpdateWithWhereUniqueWithoutUserInput | VipInfoUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: VipInfoUpdateManyWithWhereWithoutUserInput | VipInfoUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: VipInfoScalarWhereInput | VipInfoScalarWhereInput[]
+  export type VipInfoUpdateOneWithoutUserNestedInput = {
+    create?: XOR<VipInfoCreateWithoutUserInput, VipInfoUncheckedCreateWithoutUserInput>
+    connectOrCreate?: VipInfoCreateOrConnectWithoutUserInput
+    upsert?: VipInfoUpsertWithoutUserInput
+    disconnect?: VipInfoWhereInput | boolean
+    delete?: VipInfoWhereInput | boolean
+    connect?: VipInfoWhereUniqueInput
+    update?: XOR<XOR<VipInfoUpdateToOneWithWhereWithoutUserInput, VipInfoUpdateWithoutUserInput>, VipInfoUncheckedUpdateWithoutUserInput>
   }
 
-  export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
+  export type OperatorUncheckedUpdateManyWithoutOwnerNestedInput = {
+    create?: XOR<OperatorCreateWithoutOwnerInput, OperatorUncheckedCreateWithoutOwnerInput> | OperatorCreateWithoutOwnerInput[] | OperatorUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: OperatorCreateOrConnectWithoutOwnerInput | OperatorCreateOrConnectWithoutOwnerInput[]
+    upsert?: OperatorUpsertWithWhereUniqueWithoutOwnerInput | OperatorUpsertWithWhereUniqueWithoutOwnerInput[]
+    createMany?: OperatorCreateManyOwnerInputEnvelope
+    set?: OperatorWhereUniqueInput | OperatorWhereUniqueInput[]
+    disconnect?: OperatorWhereUniqueInput | OperatorWhereUniqueInput[]
+    delete?: OperatorWhereUniqueInput | OperatorWhereUniqueInput[]
+    connect?: OperatorWhereUniqueInput | OperatorWhereUniqueInput[]
+    update?: OperatorUpdateWithWhereUniqueWithoutOwnerInput | OperatorUpdateWithWhereUniqueWithoutOwnerInput[]
+    updateMany?: OperatorUpdateManyWithWhereWithoutOwnerInput | OperatorUpdateManyWithWhereWithoutOwnerInput[]
+    deleteMany?: OperatorScalarWhereInput | OperatorScalarWhereInput[]
   }
 
-  export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
-    upsert?: AccountUpsertWithWhereUniqueWithoutUserInput | AccountUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: AccountCreateManyUserInputEnvelope
-    set?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    disconnect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    delete?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
-  }
-
-  export type MemberUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<MemberCreateWithoutUserInput, MemberUncheckedCreateWithoutUserInput> | MemberCreateWithoutUserInput[] | MemberUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: MemberCreateOrConnectWithoutUserInput | MemberCreateOrConnectWithoutUserInput[]
-    upsert?: MemberUpsertWithWhereUniqueWithoutUserInput | MemberUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: MemberCreateManyUserInputEnvelope
-    set?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
-    disconnect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
-    delete?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
-    connect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
-    update?: MemberUpdateWithWhereUniqueWithoutUserInput | MemberUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: MemberUpdateManyWithWhereWithoutUserInput | MemberUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: MemberScalarWhereInput | MemberScalarWhereInput[]
-  }
-
-  export type InvitationUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<InvitationCreateWithoutUserInput, InvitationUncheckedCreateWithoutUserInput> | InvitationCreateWithoutUserInput[] | InvitationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: InvitationCreateOrConnectWithoutUserInput | InvitationCreateOrConnectWithoutUserInput[]
-    upsert?: InvitationUpsertWithWhereUniqueWithoutUserInput | InvitationUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: InvitationCreateManyUserInputEnvelope
-    set?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
-    disconnect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
-    delete?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
-    connect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
-    update?: InvitationUpdateWithWhereUniqueWithoutUserInput | InvitationUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: InvitationUpdateManyWithWhereWithoutUserInput | InvitationUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: InvitationScalarWhereInput | InvitationScalarWhereInput[]
-  }
-
-  export type TwoFactorUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<TwoFactorCreateWithoutUserInput, TwoFactorUncheckedCreateWithoutUserInput> | TwoFactorCreateWithoutUserInput[] | TwoFactorUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TwoFactorCreateOrConnectWithoutUserInput | TwoFactorCreateOrConnectWithoutUserInput[]
-    upsert?: TwoFactorUpsertWithWhereUniqueWithoutUserInput | TwoFactorUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: TwoFactorCreateManyUserInputEnvelope
-    set?: TwoFactorWhereUniqueInput | TwoFactorWhereUniqueInput[]
-    disconnect?: TwoFactorWhereUniqueInput | TwoFactorWhereUniqueInput[]
-    delete?: TwoFactorWhereUniqueInput | TwoFactorWhereUniqueInput[]
-    connect?: TwoFactorWhereUniqueInput | TwoFactorWhereUniqueInput[]
-    update?: TwoFactorUpdateWithWhereUniqueWithoutUserInput | TwoFactorUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: TwoFactorUpdateManyWithWhereWithoutUserInput | TwoFactorUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: TwoFactorScalarWhereInput | TwoFactorScalarWhereInput[]
+  export type ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput = {
+    create?: XOR<ProfileCreateWithoutUser_profile_userIdTouserInput, ProfileUncheckedCreateWithoutUser_profile_userIdTouserInput> | ProfileCreateWithoutUser_profile_userIdTouserInput[] | ProfileUncheckedCreateWithoutUser_profile_userIdTouserInput[]
+    connectOrCreate?: ProfileCreateOrConnectWithoutUser_profile_userIdTouserInput | ProfileCreateOrConnectWithoutUser_profile_userIdTouserInput[]
+    upsert?: ProfileUpsertWithWhereUniqueWithoutUser_profile_userIdTouserInput | ProfileUpsertWithWhereUniqueWithoutUser_profile_userIdTouserInput[]
+    createMany?: ProfileCreateManyUser_profile_userIdTouserInputEnvelope
+    set?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
+    disconnect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
+    delete?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
+    connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
+    update?: ProfileUpdateWithWhereUniqueWithoutUser_profile_userIdTouserInput | ProfileUpdateWithWhereUniqueWithoutUser_profile_userIdTouserInput[]
+    updateMany?: ProfileUpdateManyWithWhereWithoutUser_profile_userIdTouserInput | ProfileUpdateManyWithWhereWithoutUser_profile_userIdTouserInput[]
+    deleteMany?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
   }
 
   export type RainBetUncheckedUpdateManyWithoutUserNestedInput = {
@@ -50113,6 +51643,34 @@ export namespace Prisma {
     deleteMany?: RainWinnerScalarWhereInput | RainWinnerScalarWhereInput[]
   }
 
+  export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
+  }
+
+  export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    upsert?: AccountUpsertWithWhereUniqueWithoutUserInput | AccountUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    set?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    disconnect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    delete?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
+  }
+
   export type chatmessageUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<chatmessageCreateWithoutUserInput, chatmessageUncheckedCreateWithoutUserInput> | chatmessageCreateWithoutUserInput[] | chatmessageUncheckedCreateWithoutUserInput[]
     connectOrCreate?: chatmessageCreateOrConnectWithoutUserInput | chatmessageCreateOrConnectWithoutUserInput[]
@@ -50155,6 +51713,34 @@ export namespace Prisma {
     deleteMany?: friendshipScalarWhereInput | friendshipScalarWhereInput[]
   }
 
+  export type InvitationUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<InvitationCreateWithoutUserInput, InvitationUncheckedCreateWithoutUserInput> | InvitationCreateWithoutUserInput[] | InvitationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: InvitationCreateOrConnectWithoutUserInput | InvitationCreateOrConnectWithoutUserInput[]
+    upsert?: InvitationUpsertWithWhereUniqueWithoutUserInput | InvitationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: InvitationCreateManyUserInputEnvelope
+    set?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
+    disconnect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
+    delete?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
+    connect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
+    update?: InvitationUpdateWithWhereUniqueWithoutUserInput | InvitationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: InvitationUpdateManyWithWhereWithoutUserInput | InvitationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: InvitationScalarWhereInput | InvitationScalarWhereInput[]
+  }
+
+  export type MemberUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<MemberCreateWithoutUserInput, MemberUncheckedCreateWithoutUserInput> | MemberCreateWithoutUserInput[] | MemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MemberCreateOrConnectWithoutUserInput | MemberCreateOrConnectWithoutUserInput[]
+    upsert?: MemberUpsertWithWhereUniqueWithoutUserInput | MemberUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: MemberCreateManyUserInputEnvelope
+    set?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+    disconnect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+    delete?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+    connect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+    update?: MemberUpdateWithWhereUniqueWithoutUserInput | MemberUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: MemberUpdateManyWithWhereWithoutUserInput | MemberUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: MemberScalarWhereInput | MemberScalarWhereInput[]
+  }
+
   export type notificationUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<notificationCreateWithoutUserInput, notificationUncheckedCreateWithoutUserInput> | notificationCreateWithoutUserInput[] | notificationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: notificationCreateOrConnectWithoutUserInput | notificationCreateOrConnectWithoutUserInput[]
@@ -50167,34 +51753,6 @@ export namespace Prisma {
     update?: notificationUpdateWithWhereUniqueWithoutUserInput | notificationUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: notificationUpdateManyWithWhereWithoutUserInput | notificationUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: notificationScalarWhereInput | notificationScalarWhereInput[]
-  }
-
-  export type OperatorUncheckedUpdateManyWithoutOwnerNestedInput = {
-    create?: XOR<OperatorCreateWithoutOwnerInput, OperatorUncheckedCreateWithoutOwnerInput> | OperatorCreateWithoutOwnerInput[] | OperatorUncheckedCreateWithoutOwnerInput[]
-    connectOrCreate?: OperatorCreateOrConnectWithoutOwnerInput | OperatorCreateOrConnectWithoutOwnerInput[]
-    upsert?: OperatorUpsertWithWhereUniqueWithoutOwnerInput | OperatorUpsertWithWhereUniqueWithoutOwnerInput[]
-    createMany?: OperatorCreateManyOwnerInputEnvelope
-    set?: OperatorWhereUniqueInput | OperatorWhereUniqueInput[]
-    disconnect?: OperatorWhereUniqueInput | OperatorWhereUniqueInput[]
-    delete?: OperatorWhereUniqueInput | OperatorWhereUniqueInput[]
-    connect?: OperatorWhereUniqueInput | OperatorWhereUniqueInput[]
-    update?: OperatorUpdateWithWhereUniqueWithoutOwnerInput | OperatorUpdateWithWhereUniqueWithoutOwnerInput[]
-    updateMany?: OperatorUpdateManyWithWhereWithoutOwnerInput | OperatorUpdateManyWithWhereWithoutOwnerInput[]
-    deleteMany?: OperatorScalarWhereInput | OperatorScalarWhereInput[]
-  }
-
-  export type ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput = {
-    create?: XOR<ProfileCreateWithoutUser_profile_userIdTouserInput, ProfileUncheckedCreateWithoutUser_profile_userIdTouserInput> | ProfileCreateWithoutUser_profile_userIdTouserInput[] | ProfileUncheckedCreateWithoutUser_profile_userIdTouserInput[]
-    connectOrCreate?: ProfileCreateOrConnectWithoutUser_profile_userIdTouserInput | ProfileCreateOrConnectWithoutUser_profile_userIdTouserInput[]
-    upsert?: ProfileUpsertWithWhereUniqueWithoutUser_profile_userIdTouserInput | ProfileUpsertWithWhereUniqueWithoutUser_profile_userIdTouserInput[]
-    createMany?: ProfileCreateManyUser_profile_userIdTouserInputEnvelope
-    set?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    disconnect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    delete?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    update?: ProfileUpdateWithWhereUniqueWithoutUser_profile_userIdTouserInput | ProfileUpdateWithWhereUniqueWithoutUser_profile_userIdTouserInput[]
-    updateMany?: ProfileUpdateManyWithWhereWithoutUser_profile_userIdTouserInput | ProfileUpdateManyWithWhereWithoutUser_profile_userIdTouserInput[]
-    deleteMany?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
   }
 
   export type tournamententryUncheckedUpdateManyWithoutUserNestedInput = {
@@ -50211,6 +51769,20 @@ export namespace Prisma {
     deleteMany?: tournamententryScalarWhereInput | tournamententryScalarWhereInput[]
   }
 
+  export type TwoFactorUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TwoFactorCreateWithoutUserInput, TwoFactorUncheckedCreateWithoutUserInput> | TwoFactorCreateWithoutUserInput[] | TwoFactorUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TwoFactorCreateOrConnectWithoutUserInput | TwoFactorCreateOrConnectWithoutUserInput[]
+    upsert?: TwoFactorUpsertWithWhereUniqueWithoutUserInput | TwoFactorUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TwoFactorCreateManyUserInputEnvelope
+    set?: TwoFactorWhereUniqueInput | TwoFactorWhereUniqueInput[]
+    disconnect?: TwoFactorWhereUniqueInput | TwoFactorWhereUniqueInput[]
+    delete?: TwoFactorWhereUniqueInput | TwoFactorWhereUniqueInput[]
+    connect?: TwoFactorWhereUniqueInput | TwoFactorWhereUniqueInput[]
+    update?: TwoFactorUpdateWithWhereUniqueWithoutUserInput | TwoFactorUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TwoFactorUpdateManyWithWhereWithoutUserInput | TwoFactorUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TwoFactorScalarWhereInput | TwoFactorScalarWhereInput[]
+  }
+
   export type userachievementUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<userachievementCreateWithoutUserInput, userachievementUncheckedCreateWithoutUserInput> | userachievementCreateWithoutUserInput[] | userachievementUncheckedCreateWithoutUserInput[]
     connectOrCreate?: userachievementCreateOrConnectWithoutUserInput | userachievementCreateOrConnectWithoutUserInput[]
@@ -50225,18 +51797,14 @@ export namespace Prisma {
     deleteMany?: userachievementScalarWhereInput | userachievementScalarWhereInput[]
   }
 
-  export type VipInfoUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<VipInfoCreateWithoutUserInput, VipInfoUncheckedCreateWithoutUserInput> | VipInfoCreateWithoutUserInput[] | VipInfoUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: VipInfoCreateOrConnectWithoutUserInput | VipInfoCreateOrConnectWithoutUserInput[]
-    upsert?: VipInfoUpsertWithWhereUniqueWithoutUserInput | VipInfoUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: VipInfoCreateManyUserInputEnvelope
-    set?: VipInfoWhereUniqueInput | VipInfoWhereUniqueInput[]
-    disconnect?: VipInfoWhereUniqueInput | VipInfoWhereUniqueInput[]
-    delete?: VipInfoWhereUniqueInput | VipInfoWhereUniqueInput[]
-    connect?: VipInfoWhereUniqueInput | VipInfoWhereUniqueInput[]
-    update?: VipInfoUpdateWithWhereUniqueWithoutUserInput | VipInfoUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: VipInfoUpdateManyWithWhereWithoutUserInput | VipInfoUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: VipInfoScalarWhereInput | VipInfoScalarWhereInput[]
+  export type VipInfoUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<VipInfoCreateWithoutUserInput, VipInfoUncheckedCreateWithoutUserInput>
+    connectOrCreate?: VipInfoCreateOrConnectWithoutUserInput
+    upsert?: VipInfoUpsertWithoutUserInput
+    disconnect?: VipInfoWhereInput | boolean
+    delete?: VipInfoWhereInput | boolean
+    connect?: VipInfoWhereUniqueInput
+    update?: XOR<XOR<VipInfoUpdateToOneWithWhereWithoutUserInput, VipInfoUpdateWithoutUserInput>, VipInfoUncheckedUpdateWithoutUserInput>
   }
 
   export type UserCreateNestedOneWithoutSessionsInput = {
@@ -50253,17 +51821,14 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSessionsInput, UserUpdateWithoutSessionsInput>, UserUncheckedUpdateWithoutSessionsInput>
   }
 
+  export type OperatorCreateacceptedPaymentsInput = {
+    set: string[]
+  }
+
   export type UserCreateNestedOneWithoutOperatorInput = {
     create?: XOR<UserCreateWithoutOperatorInput, UserUncheckedCreateWithoutOperatorInput>
     connectOrCreate?: UserCreateOrConnectWithoutOperatorInput
     connect?: UserWhereUniqueInput
-  }
-
-  export type GameCreateNestedManyWithoutOperatorInput = {
-    create?: XOR<GameCreateWithoutOperatorInput, GameUncheckedCreateWithoutOperatorInput> | GameCreateWithoutOperatorInput[] | GameUncheckedCreateWithoutOperatorInput[]
-    connectOrCreate?: GameCreateOrConnectWithoutOperatorInput | GameCreateOrConnectWithoutOperatorInput[]
-    createMany?: GameCreateManyOperatorInputEnvelope
-    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
   }
 
   export type ProfileCreateNestedManyWithoutOperatorInput = {
@@ -50273,11 +51838,11 @@ export namespace Prisma {
     connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
   }
 
-  export type tournamentCreateNestedManyWithoutOperatorInput = {
-    create?: XOR<tournamentCreateWithoutOperatorInput, tournamentUncheckedCreateWithoutOperatorInput> | tournamentCreateWithoutOperatorInput[] | tournamentUncheckedCreateWithoutOperatorInput[]
-    connectOrCreate?: tournamentCreateOrConnectWithoutOperatorInput | tournamentCreateOrConnectWithoutOperatorInput[]
-    createMany?: tournamentCreateManyOperatorInputEnvelope
-    connect?: tournamentWhereUniqueInput | tournamentWhereUniqueInput[]
+  export type GameCreateNestedManyWithoutOperatorInput = {
+    create?: XOR<GameCreateWithoutOperatorInput, GameUncheckedCreateWithoutOperatorInput> | GameCreateWithoutOperatorInput[] | GameUncheckedCreateWithoutOperatorInput[]
+    connectOrCreate?: GameCreateOrConnectWithoutOperatorInput | GameCreateOrConnectWithoutOperatorInput[]
+    createMany?: GameCreateManyOperatorInputEnvelope
+    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
   }
 
   export type ProductCreateNestedManyWithoutOperatorInput = {
@@ -50287,11 +51852,11 @@ export namespace Prisma {
     connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
   }
 
-  export type GameUncheckedCreateNestedManyWithoutOperatorInput = {
-    create?: XOR<GameCreateWithoutOperatorInput, GameUncheckedCreateWithoutOperatorInput> | GameCreateWithoutOperatorInput[] | GameUncheckedCreateWithoutOperatorInput[]
-    connectOrCreate?: GameCreateOrConnectWithoutOperatorInput | GameCreateOrConnectWithoutOperatorInput[]
-    createMany?: GameCreateManyOperatorInputEnvelope
-    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
+  export type tournamentCreateNestedManyWithoutOperatorInput = {
+    create?: XOR<tournamentCreateWithoutOperatorInput, tournamentUncheckedCreateWithoutOperatorInput> | tournamentCreateWithoutOperatorInput[] | tournamentUncheckedCreateWithoutOperatorInput[]
+    connectOrCreate?: tournamentCreateOrConnectWithoutOperatorInput | tournamentCreateOrConnectWithoutOperatorInput[]
+    createMany?: tournamentCreateManyOperatorInputEnvelope
+    connect?: tournamentWhereUniqueInput | tournamentWhereUniqueInput[]
   }
 
   export type ProfileUncheckedCreateNestedManyWithoutOperatorInput = {
@@ -50301,11 +51866,11 @@ export namespace Prisma {
     connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
   }
 
-  export type tournamentUncheckedCreateNestedManyWithoutOperatorInput = {
-    create?: XOR<tournamentCreateWithoutOperatorInput, tournamentUncheckedCreateWithoutOperatorInput> | tournamentCreateWithoutOperatorInput[] | tournamentUncheckedCreateWithoutOperatorInput[]
-    connectOrCreate?: tournamentCreateOrConnectWithoutOperatorInput | tournamentCreateOrConnectWithoutOperatorInput[]
-    createMany?: tournamentCreateManyOperatorInputEnvelope
-    connect?: tournamentWhereUniqueInput | tournamentWhereUniqueInput[]
+  export type GameUncheckedCreateNestedManyWithoutOperatorInput = {
+    create?: XOR<GameCreateWithoutOperatorInput, GameUncheckedCreateWithoutOperatorInput> | GameCreateWithoutOperatorInput[] | GameUncheckedCreateWithoutOperatorInput[]
+    connectOrCreate?: GameCreateOrConnectWithoutOperatorInput | GameCreateOrConnectWithoutOperatorInput[]
+    createMany?: GameCreateManyOperatorInputEnvelope
+    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
   }
 
   export type ProductUncheckedCreateNestedManyWithoutOperatorInput = {
@@ -50315,26 +51880,24 @@ export namespace Prisma {
     connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
   }
 
+  export type tournamentUncheckedCreateNestedManyWithoutOperatorInput = {
+    create?: XOR<tournamentCreateWithoutOperatorInput, tournamentUncheckedCreateWithoutOperatorInput> | tournamentCreateWithoutOperatorInput[] | tournamentUncheckedCreateWithoutOperatorInput[]
+    connectOrCreate?: tournamentCreateOrConnectWithoutOperatorInput | tournamentCreateOrConnectWithoutOperatorInput[]
+    createMany?: tournamentCreateManyOperatorInputEnvelope
+    connect?: tournamentWhereUniqueInput | tournamentWhereUniqueInput[]
+  }
+
+  export type OperatorUpdateacceptedPaymentsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
   export type UserUpdateOneRequiredWithoutOperatorNestedInput = {
     create?: XOR<UserCreateWithoutOperatorInput, UserUncheckedCreateWithoutOperatorInput>
     connectOrCreate?: UserCreateOrConnectWithoutOperatorInput
     upsert?: UserUpsertWithoutOperatorInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOperatorInput, UserUpdateWithoutOperatorInput>, UserUncheckedUpdateWithoutOperatorInput>
-  }
-
-  export type GameUpdateManyWithoutOperatorNestedInput = {
-    create?: XOR<GameCreateWithoutOperatorInput, GameUncheckedCreateWithoutOperatorInput> | GameCreateWithoutOperatorInput[] | GameUncheckedCreateWithoutOperatorInput[]
-    connectOrCreate?: GameCreateOrConnectWithoutOperatorInput | GameCreateOrConnectWithoutOperatorInput[]
-    upsert?: GameUpsertWithWhereUniqueWithoutOperatorInput | GameUpsertWithWhereUniqueWithoutOperatorInput[]
-    createMany?: GameCreateManyOperatorInputEnvelope
-    set?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    disconnect?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    delete?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    update?: GameUpdateWithWhereUniqueWithoutOperatorInput | GameUpdateWithWhereUniqueWithoutOperatorInput[]
-    updateMany?: GameUpdateManyWithWhereWithoutOperatorInput | GameUpdateManyWithWhereWithoutOperatorInput[]
-    deleteMany?: GameScalarWhereInput | GameScalarWhereInput[]
   }
 
   export type ProfileUpdateManyWithoutOperatorNestedInput = {
@@ -50351,18 +51914,18 @@ export namespace Prisma {
     deleteMany?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
   }
 
-  export type tournamentUpdateManyWithoutOperatorNestedInput = {
-    create?: XOR<tournamentCreateWithoutOperatorInput, tournamentUncheckedCreateWithoutOperatorInput> | tournamentCreateWithoutOperatorInput[] | tournamentUncheckedCreateWithoutOperatorInput[]
-    connectOrCreate?: tournamentCreateOrConnectWithoutOperatorInput | tournamentCreateOrConnectWithoutOperatorInput[]
-    upsert?: tournamentUpsertWithWhereUniqueWithoutOperatorInput | tournamentUpsertWithWhereUniqueWithoutOperatorInput[]
-    createMany?: tournamentCreateManyOperatorInputEnvelope
-    set?: tournamentWhereUniqueInput | tournamentWhereUniqueInput[]
-    disconnect?: tournamentWhereUniqueInput | tournamentWhereUniqueInput[]
-    delete?: tournamentWhereUniqueInput | tournamentWhereUniqueInput[]
-    connect?: tournamentWhereUniqueInput | tournamentWhereUniqueInput[]
-    update?: tournamentUpdateWithWhereUniqueWithoutOperatorInput | tournamentUpdateWithWhereUniqueWithoutOperatorInput[]
-    updateMany?: tournamentUpdateManyWithWhereWithoutOperatorInput | tournamentUpdateManyWithWhereWithoutOperatorInput[]
-    deleteMany?: tournamentScalarWhereInput | tournamentScalarWhereInput[]
+  export type GameUpdateManyWithoutOperatorNestedInput = {
+    create?: XOR<GameCreateWithoutOperatorInput, GameUncheckedCreateWithoutOperatorInput> | GameCreateWithoutOperatorInput[] | GameUncheckedCreateWithoutOperatorInput[]
+    connectOrCreate?: GameCreateOrConnectWithoutOperatorInput | GameCreateOrConnectWithoutOperatorInput[]
+    upsert?: GameUpsertWithWhereUniqueWithoutOperatorInput | GameUpsertWithWhereUniqueWithoutOperatorInput[]
+    createMany?: GameCreateManyOperatorInputEnvelope
+    set?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    disconnect?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    delete?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    update?: GameUpdateWithWhereUniqueWithoutOperatorInput | GameUpdateWithWhereUniqueWithoutOperatorInput[]
+    updateMany?: GameUpdateManyWithWhereWithoutOperatorInput | GameUpdateManyWithWhereWithoutOperatorInput[]
+    deleteMany?: GameScalarWhereInput | GameScalarWhereInput[]
   }
 
   export type ProductUpdateManyWithoutOperatorNestedInput = {
@@ -50379,18 +51942,18 @@ export namespace Prisma {
     deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
   }
 
-  export type GameUncheckedUpdateManyWithoutOperatorNestedInput = {
-    create?: XOR<GameCreateWithoutOperatorInput, GameUncheckedCreateWithoutOperatorInput> | GameCreateWithoutOperatorInput[] | GameUncheckedCreateWithoutOperatorInput[]
-    connectOrCreate?: GameCreateOrConnectWithoutOperatorInput | GameCreateOrConnectWithoutOperatorInput[]
-    upsert?: GameUpsertWithWhereUniqueWithoutOperatorInput | GameUpsertWithWhereUniqueWithoutOperatorInput[]
-    createMany?: GameCreateManyOperatorInputEnvelope
-    set?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    disconnect?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    delete?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
-    update?: GameUpdateWithWhereUniqueWithoutOperatorInput | GameUpdateWithWhereUniqueWithoutOperatorInput[]
-    updateMany?: GameUpdateManyWithWhereWithoutOperatorInput | GameUpdateManyWithWhereWithoutOperatorInput[]
-    deleteMany?: GameScalarWhereInput | GameScalarWhereInput[]
+  export type tournamentUpdateManyWithoutOperatorNestedInput = {
+    create?: XOR<tournamentCreateWithoutOperatorInput, tournamentUncheckedCreateWithoutOperatorInput> | tournamentCreateWithoutOperatorInput[] | tournamentUncheckedCreateWithoutOperatorInput[]
+    connectOrCreate?: tournamentCreateOrConnectWithoutOperatorInput | tournamentCreateOrConnectWithoutOperatorInput[]
+    upsert?: tournamentUpsertWithWhereUniqueWithoutOperatorInput | tournamentUpsertWithWhereUniqueWithoutOperatorInput[]
+    createMany?: tournamentCreateManyOperatorInputEnvelope
+    set?: tournamentWhereUniqueInput | tournamentWhereUniqueInput[]
+    disconnect?: tournamentWhereUniqueInput | tournamentWhereUniqueInput[]
+    delete?: tournamentWhereUniqueInput | tournamentWhereUniqueInput[]
+    connect?: tournamentWhereUniqueInput | tournamentWhereUniqueInput[]
+    update?: tournamentUpdateWithWhereUniqueWithoutOperatorInput | tournamentUpdateWithWhereUniqueWithoutOperatorInput[]
+    updateMany?: tournamentUpdateManyWithWhereWithoutOperatorInput | tournamentUpdateManyWithWhereWithoutOperatorInput[]
+    deleteMany?: tournamentScalarWhereInput | tournamentScalarWhereInput[]
   }
 
   export type ProfileUncheckedUpdateManyWithoutOperatorNestedInput = {
@@ -50407,18 +51970,18 @@ export namespace Prisma {
     deleteMany?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
   }
 
-  export type tournamentUncheckedUpdateManyWithoutOperatorNestedInput = {
-    create?: XOR<tournamentCreateWithoutOperatorInput, tournamentUncheckedCreateWithoutOperatorInput> | tournamentCreateWithoutOperatorInput[] | tournamentUncheckedCreateWithoutOperatorInput[]
-    connectOrCreate?: tournamentCreateOrConnectWithoutOperatorInput | tournamentCreateOrConnectWithoutOperatorInput[]
-    upsert?: tournamentUpsertWithWhereUniqueWithoutOperatorInput | tournamentUpsertWithWhereUniqueWithoutOperatorInput[]
-    createMany?: tournamentCreateManyOperatorInputEnvelope
-    set?: tournamentWhereUniqueInput | tournamentWhereUniqueInput[]
-    disconnect?: tournamentWhereUniqueInput | tournamentWhereUniqueInput[]
-    delete?: tournamentWhereUniqueInput | tournamentWhereUniqueInput[]
-    connect?: tournamentWhereUniqueInput | tournamentWhereUniqueInput[]
-    update?: tournamentUpdateWithWhereUniqueWithoutOperatorInput | tournamentUpdateWithWhereUniqueWithoutOperatorInput[]
-    updateMany?: tournamentUpdateManyWithWhereWithoutOperatorInput | tournamentUpdateManyWithWhereWithoutOperatorInput[]
-    deleteMany?: tournamentScalarWhereInput | tournamentScalarWhereInput[]
+  export type GameUncheckedUpdateManyWithoutOperatorNestedInput = {
+    create?: XOR<GameCreateWithoutOperatorInput, GameUncheckedCreateWithoutOperatorInput> | GameCreateWithoutOperatorInput[] | GameUncheckedCreateWithoutOperatorInput[]
+    connectOrCreate?: GameCreateOrConnectWithoutOperatorInput | GameCreateOrConnectWithoutOperatorInput[]
+    upsert?: GameUpsertWithWhereUniqueWithoutOperatorInput | GameUpsertWithWhereUniqueWithoutOperatorInput[]
+    createMany?: GameCreateManyOperatorInputEnvelope
+    set?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    disconnect?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    delete?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    update?: GameUpdateWithWhereUniqueWithoutOperatorInput | GameUpdateWithWhereUniqueWithoutOperatorInput[]
+    updateMany?: GameUpdateManyWithWhereWithoutOperatorInput | GameUpdateManyWithWhereWithoutOperatorInput[]
+    deleteMany?: GameScalarWhereInput | GameScalarWhereInput[]
   }
 
   export type ProductUncheckedUpdateManyWithoutOperatorNestedInput = {
@@ -50435,11 +51998,18 @@ export namespace Prisma {
     deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
   }
 
-  export type gamesessionCreateNestedManyWithoutProfileInput = {
-    create?: XOR<gamesessionCreateWithoutProfileInput, gamesessionUncheckedCreateWithoutProfileInput> | gamesessionCreateWithoutProfileInput[] | gamesessionUncheckedCreateWithoutProfileInput[]
-    connectOrCreate?: gamesessionCreateOrConnectWithoutProfileInput | gamesessionCreateOrConnectWithoutProfileInput[]
-    createMany?: gamesessionCreateManyProfileInputEnvelope
-    connect?: gamesessionWhereUniqueInput | gamesessionWhereUniqueInput[]
+  export type tournamentUncheckedUpdateManyWithoutOperatorNestedInput = {
+    create?: XOR<tournamentCreateWithoutOperatorInput, tournamentUncheckedCreateWithoutOperatorInput> | tournamentCreateWithoutOperatorInput[] | tournamentUncheckedCreateWithoutOperatorInput[]
+    connectOrCreate?: tournamentCreateOrConnectWithoutOperatorInput | tournamentCreateOrConnectWithoutOperatorInput[]
+    upsert?: tournamentUpsertWithWhereUniqueWithoutOperatorInput | tournamentUpsertWithWhereUniqueWithoutOperatorInput[]
+    createMany?: tournamentCreateManyOperatorInputEnvelope
+    set?: tournamentWhereUniqueInput | tournamentWhereUniqueInput[]
+    disconnect?: tournamentWhereUniqueInput | tournamentWhereUniqueInput[]
+    delete?: tournamentWhereUniqueInput | tournamentWhereUniqueInput[]
+    connect?: tournamentWhereUniqueInput | tournamentWhereUniqueInput[]
+    update?: tournamentUpdateWithWhereUniqueWithoutOperatorInput | tournamentUpdateWithWhereUniqueWithoutOperatorInput[]
+    updateMany?: tournamentUpdateManyWithWhereWithoutOperatorInput | tournamentUpdateManyWithWhereWithoutOperatorInput[]
+    deleteMany?: tournamentScalarWhereInput | tournamentScalarWhereInput[]
   }
 
   export type OperatorCreateNestedOneWithoutProfilesInput = {
@@ -50452,6 +52022,13 @@ export namespace Prisma {
     create?: XOR<UserCreateWithoutActiveProfileInput, UserUncheckedCreateWithoutActiveProfileInput>
     connectOrCreate?: UserCreateOrConnectWithoutActiveProfileInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type gamesessionCreateNestedManyWithoutProfileInput = {
+    create?: XOR<gamesessionCreateWithoutProfileInput, gamesessionUncheckedCreateWithoutProfileInput> | gamesessionCreateWithoutProfileInput[] | gamesessionUncheckedCreateWithoutProfileInput[]
+    connectOrCreate?: gamesessionCreateOrConnectWithoutProfileInput | gamesessionCreateOrConnectWithoutProfileInput[]
+    createMany?: gamesessionCreateManyProfileInputEnvelope
+    connect?: gamesessionWhereUniqueInput | gamesessionWhereUniqueInput[]
   }
 
   export type tournamententryCreateNestedManyWithoutProfileInput = {
@@ -50489,20 +52066,6 @@ export namespace Prisma {
     connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
   }
 
-  export type gamesessionUpdateManyWithoutProfileNestedInput = {
-    create?: XOR<gamesessionCreateWithoutProfileInput, gamesessionUncheckedCreateWithoutProfileInput> | gamesessionCreateWithoutProfileInput[] | gamesessionUncheckedCreateWithoutProfileInput[]
-    connectOrCreate?: gamesessionCreateOrConnectWithoutProfileInput | gamesessionCreateOrConnectWithoutProfileInput[]
-    upsert?: gamesessionUpsertWithWhereUniqueWithoutProfileInput | gamesessionUpsertWithWhereUniqueWithoutProfileInput[]
-    createMany?: gamesessionCreateManyProfileInputEnvelope
-    set?: gamesessionWhereUniqueInput | gamesessionWhereUniqueInput[]
-    disconnect?: gamesessionWhereUniqueInput | gamesessionWhereUniqueInput[]
-    delete?: gamesessionWhereUniqueInput | gamesessionWhereUniqueInput[]
-    connect?: gamesessionWhereUniqueInput | gamesessionWhereUniqueInput[]
-    update?: gamesessionUpdateWithWhereUniqueWithoutProfileInput | gamesessionUpdateWithWhereUniqueWithoutProfileInput[]
-    updateMany?: gamesessionUpdateManyWithWhereWithoutProfileInput | gamesessionUpdateManyWithWhereWithoutProfileInput[]
-    deleteMany?: gamesessionScalarWhereInput | gamesessionScalarWhereInput[]
-  }
-
   export type OperatorUpdateOneRequiredWithoutProfilesNestedInput = {
     create?: XOR<OperatorCreateWithoutProfilesInput, OperatorUncheckedCreateWithoutProfilesInput>
     connectOrCreate?: OperatorCreateOrConnectWithoutProfilesInput
@@ -50517,6 +52080,20 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutActiveProfileInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutActiveProfileInput, UserUpdateWithoutActiveProfileInput>, UserUncheckedUpdateWithoutActiveProfileInput>
+  }
+
+  export type gamesessionUpdateManyWithoutProfileNestedInput = {
+    create?: XOR<gamesessionCreateWithoutProfileInput, gamesessionUncheckedCreateWithoutProfileInput> | gamesessionCreateWithoutProfileInput[] | gamesessionUncheckedCreateWithoutProfileInput[]
+    connectOrCreate?: gamesessionCreateOrConnectWithoutProfileInput | gamesessionCreateOrConnectWithoutProfileInput[]
+    upsert?: gamesessionUpsertWithWhereUniqueWithoutProfileInput | gamesessionUpsertWithWhereUniqueWithoutProfileInput[]
+    createMany?: gamesessionCreateManyProfileInputEnvelope
+    set?: gamesessionWhereUniqueInput | gamesessionWhereUniqueInput[]
+    disconnect?: gamesessionWhereUniqueInput | gamesessionWhereUniqueInput[]
+    delete?: gamesessionWhereUniqueInput | gamesessionWhereUniqueInput[]
+    connect?: gamesessionWhereUniqueInput | gamesessionWhereUniqueInput[]
+    update?: gamesessionUpdateWithWhereUniqueWithoutProfileInput | gamesessionUpdateWithWhereUniqueWithoutProfileInput[]
+    updateMany?: gamesessionUpdateManyWithWhereWithoutProfileInput | gamesessionUpdateManyWithWhereWithoutProfileInput[]
+    deleteMany?: gamesessionScalarWhereInput | gamesessionScalarWhereInput[]
   }
 
   export type tournamententryUpdateManyWithoutProfileNestedInput = {
@@ -50723,13 +52300,6 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type MemberCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<MemberCreateWithoutOrganizationInput, MemberUncheckedCreateWithoutOrganizationInput> | MemberCreateWithoutOrganizationInput[] | MemberUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: MemberCreateOrConnectWithoutOrganizationInput | MemberCreateOrConnectWithoutOrganizationInput[]
-    createMany?: MemberCreateManyOrganizationInputEnvelope
-    connect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
-  }
-
   export type InvitationCreateNestedManyWithoutOrganizationInput = {
     create?: XOR<InvitationCreateWithoutOrganizationInput, InvitationUncheckedCreateWithoutOrganizationInput> | InvitationCreateWithoutOrganizationInput[] | InvitationUncheckedCreateWithoutOrganizationInput[]
     connectOrCreate?: InvitationCreateOrConnectWithoutOrganizationInput | InvitationCreateOrConnectWithoutOrganizationInput[]
@@ -50737,7 +52307,7 @@ export namespace Prisma {
     connect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
   }
 
-  export type MemberUncheckedCreateNestedManyWithoutOrganizationInput = {
+  export type MemberCreateNestedManyWithoutOrganizationInput = {
     create?: XOR<MemberCreateWithoutOrganizationInput, MemberUncheckedCreateWithoutOrganizationInput> | MemberCreateWithoutOrganizationInput[] | MemberUncheckedCreateWithoutOrganizationInput[]
     connectOrCreate?: MemberCreateOrConnectWithoutOrganizationInput | MemberCreateOrConnectWithoutOrganizationInput[]
     createMany?: MemberCreateManyOrganizationInputEnvelope
@@ -50751,18 +52321,11 @@ export namespace Prisma {
     connect?: InvitationWhereUniqueInput | InvitationWhereUniqueInput[]
   }
 
-  export type MemberUpdateManyWithoutOrganizationNestedInput = {
+  export type MemberUncheckedCreateNestedManyWithoutOrganizationInput = {
     create?: XOR<MemberCreateWithoutOrganizationInput, MemberUncheckedCreateWithoutOrganizationInput> | MemberCreateWithoutOrganizationInput[] | MemberUncheckedCreateWithoutOrganizationInput[]
     connectOrCreate?: MemberCreateOrConnectWithoutOrganizationInput | MemberCreateOrConnectWithoutOrganizationInput[]
-    upsert?: MemberUpsertWithWhereUniqueWithoutOrganizationInput | MemberUpsertWithWhereUniqueWithoutOrganizationInput[]
     createMany?: MemberCreateManyOrganizationInputEnvelope
-    set?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
-    disconnect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
-    delete?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
     connect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
-    update?: MemberUpdateWithWhereUniqueWithoutOrganizationInput | MemberUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: MemberUpdateManyWithWhereWithoutOrganizationInput | MemberUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: MemberScalarWhereInput | MemberScalarWhereInput[]
   }
 
   export type InvitationUpdateManyWithoutOrganizationNestedInput = {
@@ -50779,7 +52342,7 @@ export namespace Prisma {
     deleteMany?: InvitationScalarWhereInput | InvitationScalarWhereInput[]
   }
 
-  export type MemberUncheckedUpdateManyWithoutOrganizationNestedInput = {
+  export type MemberUpdateManyWithoutOrganizationNestedInput = {
     create?: XOR<MemberCreateWithoutOrganizationInput, MemberUncheckedCreateWithoutOrganizationInput> | MemberCreateWithoutOrganizationInput[] | MemberUncheckedCreateWithoutOrganizationInput[]
     connectOrCreate?: MemberCreateOrConnectWithoutOrganizationInput | MemberCreateOrConnectWithoutOrganizationInput[]
     upsert?: MemberUpsertWithWhereUniqueWithoutOrganizationInput | MemberUpsertWithWhereUniqueWithoutOrganizationInput[]
@@ -50805,6 +52368,20 @@ export namespace Prisma {
     update?: InvitationUpdateWithWhereUniqueWithoutOrganizationInput | InvitationUpdateWithWhereUniqueWithoutOrganizationInput[]
     updateMany?: InvitationUpdateManyWithWhereWithoutOrganizationInput | InvitationUpdateManyWithWhereWithoutOrganizationInput[]
     deleteMany?: InvitationScalarWhereInput | InvitationScalarWhereInput[]
+  }
+
+  export type MemberUncheckedUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<MemberCreateWithoutOrganizationInput, MemberUncheckedCreateWithoutOrganizationInput> | MemberCreateWithoutOrganizationInput[] | MemberUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: MemberCreateOrConnectWithoutOrganizationInput | MemberCreateOrConnectWithoutOrganizationInput[]
+    upsert?: MemberUpsertWithWhereUniqueWithoutOrganizationInput | MemberUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: MemberCreateManyOrganizationInputEnvelope
+    set?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+    disconnect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+    delete?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+    connect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+    update?: MemberUpdateWithWhereUniqueWithoutOrganizationInput | MemberUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: MemberUpdateManyWithWhereWithoutOrganizationInput | MemberUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: MemberScalarWhereInput | MemberScalarWhereInput[]
   }
 
   export type OrganizationCreateNestedOneWithoutMembersInput = {
@@ -50835,24 +52412,16 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMembersInput, UserUpdateWithoutMembersInput>, UserUncheckedUpdateWithoutMembersInput>
   }
 
-  export type OrganizationCreateNestedOneWithoutInvitationsInput = {
-    create?: XOR<OrganizationCreateWithoutInvitationsInput, OrganizationUncheckedCreateWithoutInvitationsInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutInvitationsInput
-    connect?: OrganizationWhereUniqueInput
-  }
-
   export type UserCreateNestedOneWithoutInvitationsInput = {
     create?: XOR<UserCreateWithoutInvitationsInput, UserUncheckedCreateWithoutInvitationsInput>
     connectOrCreate?: UserCreateOrConnectWithoutInvitationsInput
     connect?: UserWhereUniqueInput
   }
 
-  export type OrganizationUpdateOneRequiredWithoutInvitationsNestedInput = {
+  export type OrganizationCreateNestedOneWithoutInvitationsInput = {
     create?: XOR<OrganizationCreateWithoutInvitationsInput, OrganizationUncheckedCreateWithoutInvitationsInput>
     connectOrCreate?: OrganizationCreateOrConnectWithoutInvitationsInput
-    upsert?: OrganizationUpsertWithoutInvitationsInput
     connect?: OrganizationWhereUniqueInput
-    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutInvitationsInput, OrganizationUpdateWithoutInvitationsInput>, OrganizationUncheckedUpdateWithoutInvitationsInput>
   }
 
   export type UserUpdateOneRequiredWithoutInvitationsNestedInput = {
@@ -50861,6 +52430,14 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutInvitationsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutInvitationsInput, UserUpdateWithoutInvitationsInput>, UserUncheckedUpdateWithoutInvitationsInput>
+  }
+
+  export type OrganizationUpdateOneRequiredWithoutInvitationsNestedInput = {
+    create?: XOR<OrganizationCreateWithoutInvitationsInput, OrganizationUncheckedCreateWithoutInvitationsInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutInvitationsInput
+    upsert?: OrganizationUpsertWithoutInvitationsInput
+    connect?: OrganizationWhereUniqueInput
+    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutInvitationsInput, OrganizationUpdateWithoutInvitationsInput>, OrganizationUncheckedUpdateWithoutInvitationsInput>
   }
 
   export type UserCreateNestedOneWithoutTwofactorsInput = {
@@ -51129,38 +52706,41 @@ export namespace Prisma {
     deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
   }
 
-  export type OperatorCreateNestedOneWithoutProductInput = {
-    create?: XOR<OperatorCreateWithoutProductInput, OperatorUncheckedCreateWithoutProductInput>
-    connectOrCreate?: OperatorCreateOrConnectWithoutProductInput
+  export type OperatorCreateNestedOneWithoutProductsInput = {
+    create?: XOR<OperatorCreateWithoutProductsInput, OperatorUncheckedCreateWithoutProductsInput>
+    connectOrCreate?: OperatorCreateOrConnectWithoutProductsInput
     connect?: OperatorWhereUniqueInput
   }
 
   export type TransactionCreateNestedManyWithoutProductInput = {
     create?: XOR<TransactionCreateWithoutProductInput, TransactionUncheckedCreateWithoutProductInput> | TransactionCreateWithoutProductInput[] | TransactionUncheckedCreateWithoutProductInput[]
     connectOrCreate?: TransactionCreateOrConnectWithoutProductInput | TransactionCreateOrConnectWithoutProductInput[]
+    createMany?: TransactionCreateManyProductInputEnvelope
     connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
   }
 
   export type TransactionUncheckedCreateNestedManyWithoutProductInput = {
     create?: XOR<TransactionCreateWithoutProductInput, TransactionUncheckedCreateWithoutProductInput> | TransactionCreateWithoutProductInput[] | TransactionUncheckedCreateWithoutProductInput[]
     connectOrCreate?: TransactionCreateOrConnectWithoutProductInput | TransactionCreateOrConnectWithoutProductInput[]
+    createMany?: TransactionCreateManyProductInputEnvelope
     connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
   }
 
-  export type OperatorUpdateOneWithoutProductNestedInput = {
-    create?: XOR<OperatorCreateWithoutProductInput, OperatorUncheckedCreateWithoutProductInput>
-    connectOrCreate?: OperatorCreateOrConnectWithoutProductInput
-    upsert?: OperatorUpsertWithoutProductInput
+  export type OperatorUpdateOneWithoutProductsNestedInput = {
+    create?: XOR<OperatorCreateWithoutProductsInput, OperatorUncheckedCreateWithoutProductsInput>
+    connectOrCreate?: OperatorCreateOrConnectWithoutProductsInput
+    upsert?: OperatorUpsertWithoutProductsInput
     disconnect?: OperatorWhereInput | boolean
     delete?: OperatorWhereInput | boolean
     connect?: OperatorWhereUniqueInput
-    update?: XOR<XOR<OperatorUpdateToOneWithWhereWithoutProductInput, OperatorUpdateWithoutProductInput>, OperatorUncheckedUpdateWithoutProductInput>
+    update?: XOR<XOR<OperatorUpdateToOneWithWhereWithoutProductsInput, OperatorUpdateWithoutProductsInput>, OperatorUncheckedUpdateWithoutProductsInput>
   }
 
   export type TransactionUpdateManyWithoutProductNestedInput = {
     create?: XOR<TransactionCreateWithoutProductInput, TransactionUncheckedCreateWithoutProductInput> | TransactionCreateWithoutProductInput[] | TransactionUncheckedCreateWithoutProductInput[]
     connectOrCreate?: TransactionCreateOrConnectWithoutProductInput | TransactionCreateOrConnectWithoutProductInput[]
     upsert?: TransactionUpsertWithWhereUniqueWithoutProductInput | TransactionUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: TransactionCreateManyProductInputEnvelope
     set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
     disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
     delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
@@ -51174,6 +52754,7 @@ export namespace Prisma {
     create?: XOR<TransactionCreateWithoutProductInput, TransactionUncheckedCreateWithoutProductInput> | TransactionCreateWithoutProductInput[] | TransactionUncheckedCreateWithoutProductInput[]
     connectOrCreate?: TransactionCreateOrConnectWithoutProductInput | TransactionCreateOrConnectWithoutProductInput[]
     upsert?: TransactionUpsertWithWhereUniqueWithoutProductInput | TransactionUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: TransactionCreateManyProductInputEnvelope
     set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
     disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
     delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
@@ -51423,16 +53004,10 @@ export namespace Prisma {
     connect?: ProfileWhereUniqueInput
   }
 
-  export type ProductCreateNestedManyWithoutTransactionsInput = {
-    create?: XOR<ProductCreateWithoutTransactionsInput, ProductUncheckedCreateWithoutTransactionsInput> | ProductCreateWithoutTransactionsInput[] | ProductUncheckedCreateWithoutTransactionsInput[]
-    connectOrCreate?: ProductCreateOrConnectWithoutTransactionsInput | ProductCreateOrConnectWithoutTransactionsInput[]
-    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-  }
-
-  export type ProductUncheckedCreateNestedManyWithoutTransactionsInput = {
-    create?: XOR<ProductCreateWithoutTransactionsInput, ProductUncheckedCreateWithoutTransactionsInput> | ProductCreateWithoutTransactionsInput[] | ProductUncheckedCreateWithoutTransactionsInput[]
-    connectOrCreate?: ProductCreateOrConnectWithoutTransactionsInput | ProductCreateOrConnectWithoutTransactionsInput[]
-    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+  export type ProductCreateNestedOneWithoutTransactionsInput = {
+    create?: XOR<ProductCreateWithoutTransactionsInput, ProductUncheckedCreateWithoutTransactionsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutTransactionsInput
+    connect?: ProductWhereUniqueInput
   }
 
   export type EnumTransactionTypeFieldUpdateOperationsInput = {
@@ -51461,30 +53036,14 @@ export namespace Prisma {
     update?: XOR<XOR<ProfileUpdateToOneWithWhereWithoutTransactionsInput, ProfileUpdateWithoutTransactionsInput>, ProfileUncheckedUpdateWithoutTransactionsInput>
   }
 
-  export type ProductUpdateManyWithoutTransactionsNestedInput = {
-    create?: XOR<ProductCreateWithoutTransactionsInput, ProductUncheckedCreateWithoutTransactionsInput> | ProductCreateWithoutTransactionsInput[] | ProductUncheckedCreateWithoutTransactionsInput[]
-    connectOrCreate?: ProductCreateOrConnectWithoutTransactionsInput | ProductCreateOrConnectWithoutTransactionsInput[]
-    upsert?: ProductUpsertWithWhereUniqueWithoutTransactionsInput | ProductUpsertWithWhereUniqueWithoutTransactionsInput[]
-    set?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-    disconnect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-    delete?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-    update?: ProductUpdateWithWhereUniqueWithoutTransactionsInput | ProductUpdateWithWhereUniqueWithoutTransactionsInput[]
-    updateMany?: ProductUpdateManyWithWhereWithoutTransactionsInput | ProductUpdateManyWithWhereWithoutTransactionsInput[]
-    deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
-  }
-
-  export type ProductUncheckedUpdateManyWithoutTransactionsNestedInput = {
-    create?: XOR<ProductCreateWithoutTransactionsInput, ProductUncheckedCreateWithoutTransactionsInput> | ProductCreateWithoutTransactionsInput[] | ProductUncheckedCreateWithoutTransactionsInput[]
-    connectOrCreate?: ProductCreateOrConnectWithoutTransactionsInput | ProductCreateOrConnectWithoutTransactionsInput[]
-    upsert?: ProductUpsertWithWhereUniqueWithoutTransactionsInput | ProductUpsertWithWhereUniqueWithoutTransactionsInput[]
-    set?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-    disconnect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-    delete?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-    update?: ProductUpdateWithWhereUniqueWithoutTransactionsInput | ProductUpdateWithWhereUniqueWithoutTransactionsInput[]
-    updateMany?: ProductUpdateManyWithWhereWithoutTransactionsInput | ProductUpdateManyWithWhereWithoutTransactionsInput[]
-    deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
+  export type ProductUpdateOneWithoutTransactionsNestedInput = {
+    create?: XOR<ProductCreateWithoutTransactionsInput, ProductUncheckedCreateWithoutTransactionsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutTransactionsInput
+    upsert?: ProductUpsertWithoutTransactionsInput
+    disconnect?: ProductWhereInput | boolean
+    delete?: ProductWhereInput | boolean
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutTransactionsInput, ProductUpdateWithoutTransactionsInput>, ProductUncheckedUpdateWithoutTransactionsInput>
   }
 
   export type achievementCreateNestedOneWithoutUserachievementInput = {
@@ -51751,6 +53310,14 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutVipInfoInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutVipInfoInput, UserUpdateWithoutVipInfoInput>, UserUncheckedUpdateWithoutVipInfoInput>
+  }
+
+  export type BigIntFieldUpdateOperationsInput = {
+    set?: bigint | number
+    increment?: bigint | number
+    decrement?: bigint | number
+    multiply?: bigint | number
+    divide?: bigint | number
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -52158,6 +53725,33 @@ export namespace Prisma {
     _max?: NestedEnumTransactionStatusFilter<$PrismaModel>
   }
 
+  export type NestedBigIntFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntFilter<$PrismaModel> | bigint | number
+  }
+
+  export type NestedBigIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedBigIntFilter<$PrismaModel>
+    _min?: NestedBigIntFilter<$PrismaModel>
+    _max?: NestedBigIntFilter<$PrismaModel>
+  }
+
   export type userachievementCreateWithoutAchievementInput = {
     id?: string
     progress?: number
@@ -52218,153 +53812,89 @@ export namespace Prisma {
     achievementId?: StringFilter<"userachievement"> | string
   }
 
-  export type SessionCreateWithoutUserInput = {
+  export type OperatorCreateWithoutOwnerInput = {
     id?: string
-    activeGameId?: string | null
-    ipAddress?: string | null
-    userAgent?: string | null
-    expiresAt: Date | string
+    name: string
+    slug: string
+    logo?: string | null
+    description?: string | null
+    isActive?: boolean
     createdAt?: Date | string
-    refreshToken?: string | null
-    active?: boolean
-    token: string
     updatedAt?: Date | string | null
+    acceptedPayments?: OperatorCreateacceptedPaymentsInput | string[]
+    balance?: number
+    profiles?: ProfileCreateNestedManyWithoutOperatorInput
+    games?: GameCreateNestedManyWithoutOperatorInput
+    products?: ProductCreateNestedManyWithoutOperatorInput
+    tournaments?: tournamentCreateNestedManyWithoutOperatorInput
   }
 
-  export type SessionUncheckedCreateWithoutUserInput = {
+  export type OperatorUncheckedCreateWithoutOwnerInput = {
     id?: string
-    activeGameId?: string | null
-    ipAddress?: string | null
-    userAgent?: string | null
-    expiresAt: Date | string
+    name: string
+    slug: string
+    logo?: string | null
+    description?: string | null
+    isActive?: boolean
     createdAt?: Date | string
-    refreshToken?: string | null
-    active?: boolean
-    token: string
     updatedAt?: Date | string | null
+    acceptedPayments?: OperatorCreateacceptedPaymentsInput | string[]
+    balance?: number
+    profiles?: ProfileUncheckedCreateNestedManyWithoutOperatorInput
+    games?: GameUncheckedCreateNestedManyWithoutOperatorInput
+    products?: ProductUncheckedCreateNestedManyWithoutOperatorInput
+    tournaments?: tournamentUncheckedCreateNestedManyWithoutOperatorInput
   }
 
-  export type SessionCreateOrConnectWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
+  export type OperatorCreateOrConnectWithoutOwnerInput = {
+    where: OperatorWhereUniqueInput
+    create: XOR<OperatorCreateWithoutOwnerInput, OperatorUncheckedCreateWithoutOwnerInput>
   }
 
-  export type SessionCreateManyUserInputEnvelope = {
-    data: SessionCreateManyUserInput | SessionCreateManyUserInput[]
+  export type OperatorCreateManyOwnerInputEnvelope = {
+    data: OperatorCreateManyOwnerInput | OperatorCreateManyOwnerInput[]
     skipDuplicates?: boolean
   }
 
-  export type AccountCreateWithoutUserInput = {
+  export type ProfileCreateWithoutUser_profile_userIdTouserInput = {
     id?: string
-    accountId: string
-    providerId: string
-    accessToken?: string | null
-    refreshToken?: string | null
-    idToken?: string | null
-    accessTokenExpiresAt?: Date | string | null
-    refreshTokenExpiresAt?: Date | string | null
-    scope?: string | null
-    password?: string | null
-    createdAt: Date | string
+    balance?: number
+    xpEarned?: number
+    isActive?: boolean
+    lastPlayed?: Date | string | null
+    createdAt?: Date | string
     updatedAt?: Date | string | null
+    phpId?: number | null
+    currency?: string
+    operator: OperatorCreateNestedOneWithoutProfilesInput
+    gamesession?: gamesessionCreateNestedManyWithoutProfileInput
+    tournamententry?: tournamententryCreateNestedManyWithoutProfileInput
+    transactions?: TransactionCreateNestedManyWithoutProfileInput
   }
 
-  export type AccountUncheckedCreateWithoutUserInput = {
+  export type ProfileUncheckedCreateWithoutUser_profile_userIdTouserInput = {
     id?: string
-    accountId: string
-    providerId: string
-    accessToken?: string | null
-    refreshToken?: string | null
-    idToken?: string | null
-    accessTokenExpiresAt?: Date | string | null
-    refreshTokenExpiresAt?: Date | string | null
-    scope?: string | null
-    password?: string | null
-    createdAt: Date | string
+    balance?: number
+    xpEarned?: number
+    isActive?: boolean
+    lastPlayed?: Date | string | null
+    createdAt?: Date | string
     updatedAt?: Date | string | null
+    phpId?: number | null
+    currency?: string
+    shopId: string
+    gamesession?: gamesessionUncheckedCreateNestedManyWithoutProfileInput
+    tournamententry?: tournamententryUncheckedCreateNestedManyWithoutProfileInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutProfileInput
   }
 
-  export type AccountCreateOrConnectWithoutUserInput = {
-    where: AccountWhereUniqueInput
-    create: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput>
+  export type ProfileCreateOrConnectWithoutUser_profile_userIdTouserInput = {
+    where: ProfileWhereUniqueInput
+    create: XOR<ProfileCreateWithoutUser_profile_userIdTouserInput, ProfileUncheckedCreateWithoutUser_profile_userIdTouserInput>
   }
 
-  export type AccountCreateManyUserInputEnvelope = {
-    data: AccountCreateManyUserInput | AccountCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type MemberCreateWithoutUserInput = {
-    id?: string
-    role: string
-    createdAt: Date | string
-    organization: OrganizationCreateNestedOneWithoutMembersInput
-  }
-
-  export type MemberUncheckedCreateWithoutUserInput = {
-    id?: string
-    organizationId: string
-    role: string
-    createdAt: Date | string
-  }
-
-  export type MemberCreateOrConnectWithoutUserInput = {
-    where: MemberWhereUniqueInput
-    create: XOR<MemberCreateWithoutUserInput, MemberUncheckedCreateWithoutUserInput>
-  }
-
-  export type MemberCreateManyUserInputEnvelope = {
-    data: MemberCreateManyUserInput | MemberCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type InvitationCreateWithoutUserInput = {
-    id?: string
-    email: string
-    role?: string | null
-    status: string
-    expiresAt: Date | string
-    organization: OrganizationCreateNestedOneWithoutInvitationsInput
-  }
-
-  export type InvitationUncheckedCreateWithoutUserInput = {
-    id?: string
-    organizationId: string
-    email: string
-    role?: string | null
-    status: string
-    expiresAt: Date | string
-  }
-
-  export type InvitationCreateOrConnectWithoutUserInput = {
-    where: InvitationWhereUniqueInput
-    create: XOR<InvitationCreateWithoutUserInput, InvitationUncheckedCreateWithoutUserInput>
-  }
-
-  export type InvitationCreateManyUserInputEnvelope = {
-    data: InvitationCreateManyUserInput | InvitationCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type TwoFactorCreateWithoutUserInput = {
-    id?: string
-    secret: string
-    backupCodes: string
-  }
-
-  export type TwoFactorUncheckedCreateWithoutUserInput = {
-    id?: string
-    secret: string
-    backupCodes: string
-  }
-
-  export type TwoFactorCreateOrConnectWithoutUserInput = {
-    where: TwoFactorWhereUniqueInput
-    create: XOR<TwoFactorCreateWithoutUserInput, TwoFactorUncheckedCreateWithoutUserInput>
-  }
-
-  export type TwoFactorCreateManyUserInputEnvelope = {
-    data: TwoFactorCreateManyUserInput | TwoFactorCreateManyUserInput[]
+  export type ProfileCreateManyUser_profile_userIdTouserInputEnvelope = {
+    data: ProfileCreateManyUser_profile_userIdTouserInput | ProfileCreateManyUser_profile_userIdTouserInput[]
     skipDuplicates?: boolean
   }
 
@@ -52474,6 +54004,82 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type SessionCreateWithoutUserInput = {
+    id?: string
+    activeGameId?: string | null
+    ipAddress?: string | null
+    userAgent?: string | null
+    expiresAt: Date | string
+    createdAt?: Date | string
+    refreshToken?: string | null
+    active?: boolean
+    token: string
+    updatedAt?: Date | string | null
+  }
+
+  export type SessionUncheckedCreateWithoutUserInput = {
+    id?: string
+    activeGameId?: string | null
+    ipAddress?: string | null
+    userAgent?: string | null
+    expiresAt: Date | string
+    createdAt?: Date | string
+    refreshToken?: string | null
+    active?: boolean
+    token: string
+    updatedAt?: Date | string | null
+  }
+
+  export type SessionCreateOrConnectWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type SessionCreateManyUserInputEnvelope = {
+    data: SessionCreateManyUserInput | SessionCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AccountCreateWithoutUserInput = {
+    id?: string
+    accountId: string
+    providerId: string
+    accessToken?: string | null
+    refreshToken?: string | null
+    idToken?: string | null
+    accessTokenExpiresAt?: Date | string | null
+    refreshTokenExpiresAt?: Date | string | null
+    scope?: string | null
+    password?: string | null
+    createdAt: Date | string
+    updatedAt?: Date | string | null
+  }
+
+  export type AccountUncheckedCreateWithoutUserInput = {
+    id?: string
+    accountId: string
+    providerId: string
+    accessToken?: string | null
+    refreshToken?: string | null
+    idToken?: string | null
+    accessTokenExpiresAt?: Date | string | null
+    refreshTokenExpiresAt?: Date | string | null
+    scope?: string | null
+    password?: string | null
+    createdAt: Date | string
+    updatedAt?: Date | string | null
+  }
+
+  export type AccountCreateOrConnectWithoutUserInput = {
+    where: AccountWhereUniqueInput
+    create: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput>
+  }
+
+  export type AccountCreateManyUserInputEnvelope = {
+    data: AccountCreateManyUserInput | AccountCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type chatmessageCreateWithoutUserInput = {
     id?: string
     content: string
@@ -52554,6 +54160,58 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type InvitationCreateWithoutUserInput = {
+    id?: string
+    email: string
+    role?: string | null
+    status: string
+    expiresAt: Date | string
+    organization: OrganizationCreateNestedOneWithoutInvitationsInput
+  }
+
+  export type InvitationUncheckedCreateWithoutUserInput = {
+    id?: string
+    organizationId: string
+    email: string
+    role?: string | null
+    status: string
+    expiresAt: Date | string
+  }
+
+  export type InvitationCreateOrConnectWithoutUserInput = {
+    where: InvitationWhereUniqueInput
+    create: XOR<InvitationCreateWithoutUserInput, InvitationUncheckedCreateWithoutUserInput>
+  }
+
+  export type InvitationCreateManyUserInputEnvelope = {
+    data: InvitationCreateManyUserInput | InvitationCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MemberCreateWithoutUserInput = {
+    id?: string
+    role: string
+    createdAt: Date | string
+    organization: OrganizationCreateNestedOneWithoutMembersInput
+  }
+
+  export type MemberUncheckedCreateWithoutUserInput = {
+    id?: string
+    organizationId: string
+    role: string
+    createdAt: Date | string
+  }
+
+  export type MemberCreateOrConnectWithoutUserInput = {
+    where: MemberWhereUniqueInput
+    create: XOR<MemberCreateWithoutUserInput, MemberUncheckedCreateWithoutUserInput>
+  }
+
+  export type MemberCreateManyUserInputEnvelope = {
+    data: MemberCreateManyUserInput | MemberCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type notificationCreateWithoutUserInput = {
     id?: string
     type: $Enums.NotificationType
@@ -52586,90 +54244,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type OperatorCreateWithoutOwnerInput = {
-    id?: string
-    name: string
-    slug: string
-    logo?: string | null
-    description?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string | null
-    balance?: number
-    games?: GameCreateNestedManyWithoutOperatorInput
-    profiles?: ProfileCreateNestedManyWithoutOperatorInput
-    tournaments?: tournamentCreateNestedManyWithoutOperatorInput
-    Product?: ProductCreateNestedManyWithoutOperatorInput
-  }
-
-  export type OperatorUncheckedCreateWithoutOwnerInput = {
-    id?: string
-    name: string
-    slug: string
-    logo?: string | null
-    description?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string | null
-    balance?: number
-    games?: GameUncheckedCreateNestedManyWithoutOperatorInput
-    profiles?: ProfileUncheckedCreateNestedManyWithoutOperatorInput
-    tournaments?: tournamentUncheckedCreateNestedManyWithoutOperatorInput
-    Product?: ProductUncheckedCreateNestedManyWithoutOperatorInput
-  }
-
-  export type OperatorCreateOrConnectWithoutOwnerInput = {
-    where: OperatorWhereUniqueInput
-    create: XOR<OperatorCreateWithoutOwnerInput, OperatorUncheckedCreateWithoutOwnerInput>
-  }
-
-  export type OperatorCreateManyOwnerInputEnvelope = {
-    data: OperatorCreateManyOwnerInput | OperatorCreateManyOwnerInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ProfileCreateWithoutUser_profile_userIdTouserInput = {
-    id?: string
-    balance?: number
-    xpEarned?: number
-    isActive?: boolean
-    lastPlayed?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string | null
-    phpId?: number | null
-    currency?: string
-    gamesession?: gamesessionCreateNestedManyWithoutProfileInput
-    operator: OperatorCreateNestedOneWithoutProfilesInput
-    tournamententry?: tournamententryCreateNestedManyWithoutProfileInput
-    transactions?: TransactionCreateNestedManyWithoutProfileInput
-  }
-
-  export type ProfileUncheckedCreateWithoutUser_profile_userIdTouserInput = {
-    id?: string
-    balance?: number
-    xpEarned?: number
-    isActive?: boolean
-    lastPlayed?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string | null
-    phpId?: number | null
-    currency?: string
-    shopId: string
-    gamesession?: gamesessionUncheckedCreateNestedManyWithoutProfileInput
-    tournamententry?: tournamententryUncheckedCreateNestedManyWithoutProfileInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutProfileInput
-  }
-
-  export type ProfileCreateOrConnectWithoutUser_profile_userIdTouserInput = {
-    where: ProfileWhereUniqueInput
-    create: XOR<ProfileCreateWithoutUser_profile_userIdTouserInput, ProfileUncheckedCreateWithoutUser_profile_userIdTouserInput>
-  }
-
-  export type ProfileCreateManyUser_profile_userIdTouserInputEnvelope = {
-    data: ProfileCreateManyUser_profile_userIdTouserInput | ProfileCreateManyUser_profile_userIdTouserInput[]
-    skipDuplicates?: boolean
-  }
-
   export type tournamententryCreateWithoutUserInput = {
     id?: string
     score?: number
@@ -52697,6 +54271,28 @@ export namespace Prisma {
 
   export type tournamententryCreateManyUserInputEnvelope = {
     data: tournamententryCreateManyUserInput | tournamententryCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TwoFactorCreateWithoutUserInput = {
+    id?: string
+    secret: string
+    backupCodes: string
+  }
+
+  export type TwoFactorUncheckedCreateWithoutUserInput = {
+    id?: string
+    secret: string
+    backupCodes: string
+  }
+
+  export type TwoFactorCreateOrConnectWithoutUserInput = {
+    where: TwoFactorWhereUniqueInput
+    create: XOR<TwoFactorCreateWithoutUserInput, TwoFactorUncheckedCreateWithoutUserInput>
+  }
+
+  export type TwoFactorCreateManyUserInputEnvelope = {
+    data: TwoFactorCreateManyUserInput | TwoFactorCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -52822,159 +54418,70 @@ export namespace Prisma {
     create: XOR<VipInfoCreateWithoutUserInput, VipInfoUncheckedCreateWithoutUserInput>
   }
 
-  export type VipInfoCreateManyUserInputEnvelope = {
-    data: VipInfoCreateManyUserInput | VipInfoCreateManyUserInput[]
-    skipDuplicates?: boolean
+  export type OperatorUpsertWithWhereUniqueWithoutOwnerInput = {
+    where: OperatorWhereUniqueInput
+    update: XOR<OperatorUpdateWithoutOwnerInput, OperatorUncheckedUpdateWithoutOwnerInput>
+    create: XOR<OperatorCreateWithoutOwnerInput, OperatorUncheckedCreateWithoutOwnerInput>
   }
 
-  export type SessionUpsertWithWhereUniqueWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
-    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
+  export type OperatorUpdateWithWhereUniqueWithoutOwnerInput = {
+    where: OperatorWhereUniqueInput
+    data: XOR<OperatorUpdateWithoutOwnerInput, OperatorUncheckedUpdateWithoutOwnerInput>
   }
 
-  export type SessionUpdateWithWhereUniqueWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    data: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
+  export type OperatorUpdateManyWithWhereWithoutOwnerInput = {
+    where: OperatorScalarWhereInput
+    data: XOR<OperatorUpdateManyMutationInput, OperatorUncheckedUpdateManyWithoutOwnerInput>
   }
 
-  export type SessionUpdateManyWithWhereWithoutUserInput = {
-    where: SessionScalarWhereInput
-    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutUserInput>
+  export type OperatorScalarWhereInput = {
+    AND?: OperatorScalarWhereInput | OperatorScalarWhereInput[]
+    OR?: OperatorScalarWhereInput[]
+    NOT?: OperatorScalarWhereInput | OperatorScalarWhereInput[]
+    id?: StringFilter<"Operator"> | string
+    name?: StringFilter<"Operator"> | string
+    slug?: StringFilter<"Operator"> | string
+    logo?: StringNullableFilter<"Operator"> | string | null
+    description?: StringNullableFilter<"Operator"> | string | null
+    isActive?: BoolFilter<"Operator"> | boolean
+    createdAt?: DateTimeFilter<"Operator"> | Date | string
+    updatedAt?: DateTimeNullableFilter<"Operator"> | Date | string | null
+    acceptedPayments?: StringNullableListFilter<"Operator">
+    ownerId?: StringFilter<"Operator"> | string
+    balance?: IntFilter<"Operator"> | number
   }
 
-  export type SessionScalarWhereInput = {
-    AND?: SessionScalarWhereInput | SessionScalarWhereInput[]
-    OR?: SessionScalarWhereInput[]
-    NOT?: SessionScalarWhereInput | SessionScalarWhereInput[]
-    id?: StringFilter<"Session"> | string
-    userId?: StringFilter<"Session"> | string
-    activeGameId?: StringNullableFilter<"Session"> | string | null
-    ipAddress?: StringNullableFilter<"Session"> | string | null
-    userAgent?: StringNullableFilter<"Session"> | string | null
-    expiresAt?: DateTimeFilter<"Session"> | Date | string
-    createdAt?: DateTimeFilter<"Session"> | Date | string
-    refreshToken?: StringNullableFilter<"Session"> | string | null
-    active?: BoolFilter<"Session"> | boolean
-    token?: StringFilter<"Session"> | string
-    updatedAt?: DateTimeNullableFilter<"Session"> | Date | string | null
+  export type ProfileUpsertWithWhereUniqueWithoutUser_profile_userIdTouserInput = {
+    where: ProfileWhereUniqueInput
+    update: XOR<ProfileUpdateWithoutUser_profile_userIdTouserInput, ProfileUncheckedUpdateWithoutUser_profile_userIdTouserInput>
+    create: XOR<ProfileCreateWithoutUser_profile_userIdTouserInput, ProfileUncheckedCreateWithoutUser_profile_userIdTouserInput>
   }
 
-  export type AccountUpsertWithWhereUniqueWithoutUserInput = {
-    where: AccountWhereUniqueInput
-    update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
-    create: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput>
+  export type ProfileUpdateWithWhereUniqueWithoutUser_profile_userIdTouserInput = {
+    where: ProfileWhereUniqueInput
+    data: XOR<ProfileUpdateWithoutUser_profile_userIdTouserInput, ProfileUncheckedUpdateWithoutUser_profile_userIdTouserInput>
   }
 
-  export type AccountUpdateWithWhereUniqueWithoutUserInput = {
-    where: AccountWhereUniqueInput
-    data: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
+  export type ProfileUpdateManyWithWhereWithoutUser_profile_userIdTouserInput = {
+    where: ProfileScalarWhereInput
+    data: XOR<ProfileUpdateManyMutationInput, ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserInput>
   }
 
-  export type AccountUpdateManyWithWhereWithoutUserInput = {
-    where: AccountScalarWhereInput
-    data: XOR<AccountUpdateManyMutationInput, AccountUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type AccountScalarWhereInput = {
-    AND?: AccountScalarWhereInput | AccountScalarWhereInput[]
-    OR?: AccountScalarWhereInput[]
-    NOT?: AccountScalarWhereInput | AccountScalarWhereInput[]
-    id?: StringFilter<"Account"> | string
-    accountId?: StringFilter<"Account"> | string
-    providerId?: StringFilter<"Account"> | string
-    userId?: StringFilter<"Account"> | string
-    accessToken?: StringNullableFilter<"Account"> | string | null
-    refreshToken?: StringNullableFilter<"Account"> | string | null
-    idToken?: StringNullableFilter<"Account"> | string | null
-    accessTokenExpiresAt?: DateTimeNullableFilter<"Account"> | Date | string | null
-    refreshTokenExpiresAt?: DateTimeNullableFilter<"Account"> | Date | string | null
-    scope?: StringNullableFilter<"Account"> | string | null
-    password?: StringNullableFilter<"Account"> | string | null
-    createdAt?: DateTimeFilter<"Account"> | Date | string
-    updatedAt?: DateTimeNullableFilter<"Account"> | Date | string | null
-  }
-
-  export type MemberUpsertWithWhereUniqueWithoutUserInput = {
-    where: MemberWhereUniqueInput
-    update: XOR<MemberUpdateWithoutUserInput, MemberUncheckedUpdateWithoutUserInput>
-    create: XOR<MemberCreateWithoutUserInput, MemberUncheckedCreateWithoutUserInput>
-  }
-
-  export type MemberUpdateWithWhereUniqueWithoutUserInput = {
-    where: MemberWhereUniqueInput
-    data: XOR<MemberUpdateWithoutUserInput, MemberUncheckedUpdateWithoutUserInput>
-  }
-
-  export type MemberUpdateManyWithWhereWithoutUserInput = {
-    where: MemberScalarWhereInput
-    data: XOR<MemberUpdateManyMutationInput, MemberUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type MemberScalarWhereInput = {
-    AND?: MemberScalarWhereInput | MemberScalarWhereInput[]
-    OR?: MemberScalarWhereInput[]
-    NOT?: MemberScalarWhereInput | MemberScalarWhereInput[]
-    id?: StringFilter<"Member"> | string
-    organizationId?: StringFilter<"Member"> | string
-    userId?: StringFilter<"Member"> | string
-    role?: StringFilter<"Member"> | string
-    createdAt?: DateTimeFilter<"Member"> | Date | string
-  }
-
-  export type InvitationUpsertWithWhereUniqueWithoutUserInput = {
-    where: InvitationWhereUniqueInput
-    update: XOR<InvitationUpdateWithoutUserInput, InvitationUncheckedUpdateWithoutUserInput>
-    create: XOR<InvitationCreateWithoutUserInput, InvitationUncheckedCreateWithoutUserInput>
-  }
-
-  export type InvitationUpdateWithWhereUniqueWithoutUserInput = {
-    where: InvitationWhereUniqueInput
-    data: XOR<InvitationUpdateWithoutUserInput, InvitationUncheckedUpdateWithoutUserInput>
-  }
-
-  export type InvitationUpdateManyWithWhereWithoutUserInput = {
-    where: InvitationScalarWhereInput
-    data: XOR<InvitationUpdateManyMutationInput, InvitationUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type InvitationScalarWhereInput = {
-    AND?: InvitationScalarWhereInput | InvitationScalarWhereInput[]
-    OR?: InvitationScalarWhereInput[]
-    NOT?: InvitationScalarWhereInput | InvitationScalarWhereInput[]
-    id?: StringFilter<"Invitation"> | string
-    organizationId?: StringFilter<"Invitation"> | string
-    email?: StringFilter<"Invitation"> | string
-    role?: StringNullableFilter<"Invitation"> | string | null
-    status?: StringFilter<"Invitation"> | string
-    expiresAt?: DateTimeFilter<"Invitation"> | Date | string
-    inviterId?: StringFilter<"Invitation"> | string
-  }
-
-  export type TwoFactorUpsertWithWhereUniqueWithoutUserInput = {
-    where: TwoFactorWhereUniqueInput
-    update: XOR<TwoFactorUpdateWithoutUserInput, TwoFactorUncheckedUpdateWithoutUserInput>
-    create: XOR<TwoFactorCreateWithoutUserInput, TwoFactorUncheckedCreateWithoutUserInput>
-  }
-
-  export type TwoFactorUpdateWithWhereUniqueWithoutUserInput = {
-    where: TwoFactorWhereUniqueInput
-    data: XOR<TwoFactorUpdateWithoutUserInput, TwoFactorUncheckedUpdateWithoutUserInput>
-  }
-
-  export type TwoFactorUpdateManyWithWhereWithoutUserInput = {
-    where: TwoFactorScalarWhereInput
-    data: XOR<TwoFactorUpdateManyMutationInput, TwoFactorUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type TwoFactorScalarWhereInput = {
-    AND?: TwoFactorScalarWhereInput | TwoFactorScalarWhereInput[]
-    OR?: TwoFactorScalarWhereInput[]
-    NOT?: TwoFactorScalarWhereInput | TwoFactorScalarWhereInput[]
-    id?: StringFilter<"TwoFactor"> | string
-    secret?: StringFilter<"TwoFactor"> | string
-    backupCodes?: StringFilter<"TwoFactor"> | string
-    userId?: StringFilter<"TwoFactor"> | string
+  export type ProfileScalarWhereInput = {
+    AND?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
+    OR?: ProfileScalarWhereInput[]
+    NOT?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
+    id?: StringFilter<"Profile"> | string
+    balance?: IntFilter<"Profile"> | number
+    xpEarned?: IntFilter<"Profile"> | number
+    isActive?: BoolFilter<"Profile"> | boolean
+    lastPlayed?: DateTimeNullableFilter<"Profile"> | Date | string | null
+    createdAt?: DateTimeFilter<"Profile"> | Date | string
+    updatedAt?: DateTimeNullableFilter<"Profile"> | Date | string | null
+    phpId?: IntNullableFilter<"Profile"> | number | null
+    userId?: StringFilter<"Profile"> | string
+    currency?: StringFilter<"Profile"> | string
+    shopId?: StringFilter<"Profile"> | string
   }
 
   export type RainBetUpsertWithWhereUniqueWithoutUserInput = {
@@ -53087,6 +54594,74 @@ export namespace Prisma {
     wonAt?: DateTimeFilter<"RainWinner"> | Date | string
   }
 
+  export type SessionUpsertWithWhereUniqueWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
+    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type SessionUpdateWithWhereUniqueWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    data: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SessionUpdateManyWithWhereWithoutUserInput = {
+    where: SessionScalarWhereInput
+    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SessionScalarWhereInput = {
+    AND?: SessionScalarWhereInput | SessionScalarWhereInput[]
+    OR?: SessionScalarWhereInput[]
+    NOT?: SessionScalarWhereInput | SessionScalarWhereInput[]
+    id?: StringFilter<"Session"> | string
+    userId?: StringFilter<"Session"> | string
+    activeGameId?: StringNullableFilter<"Session"> | string | null
+    ipAddress?: StringNullableFilter<"Session"> | string | null
+    userAgent?: StringNullableFilter<"Session"> | string | null
+    expiresAt?: DateTimeFilter<"Session"> | Date | string
+    createdAt?: DateTimeFilter<"Session"> | Date | string
+    refreshToken?: StringNullableFilter<"Session"> | string | null
+    active?: BoolFilter<"Session"> | boolean
+    token?: StringFilter<"Session"> | string
+    updatedAt?: DateTimeNullableFilter<"Session"> | Date | string | null
+  }
+
+  export type AccountUpsertWithWhereUniqueWithoutUserInput = {
+    where: AccountWhereUniqueInput
+    update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
+    create: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput>
+  }
+
+  export type AccountUpdateWithWhereUniqueWithoutUserInput = {
+    where: AccountWhereUniqueInput
+    data: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AccountUpdateManyWithWhereWithoutUserInput = {
+    where: AccountScalarWhereInput
+    data: XOR<AccountUpdateManyMutationInput, AccountUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AccountScalarWhereInput = {
+    AND?: AccountScalarWhereInput | AccountScalarWhereInput[]
+    OR?: AccountScalarWhereInput[]
+    NOT?: AccountScalarWhereInput | AccountScalarWhereInput[]
+    id?: StringFilter<"Account"> | string
+    accountId?: StringFilter<"Account"> | string
+    providerId?: StringFilter<"Account"> | string
+    userId?: StringFilter<"Account"> | string
+    accessToken?: StringNullableFilter<"Account"> | string | null
+    refreshToken?: StringNullableFilter<"Account"> | string | null
+    idToken?: StringNullableFilter<"Account"> | string | null
+    accessTokenExpiresAt?: DateTimeNullableFilter<"Account"> | Date | string | null
+    refreshTokenExpiresAt?: DateTimeNullableFilter<"Account"> | Date | string | null
+    scope?: StringNullableFilter<"Account"> | string | null
+    password?: StringNullableFilter<"Account"> | string | null
+    createdAt?: DateTimeFilter<"Account"> | Date | string
+    updatedAt?: DateTimeNullableFilter<"Account"> | Date | string | null
+  }
+
   export type chatmessageUpsertWithWhereUniqueWithoutUserInput = {
     where: chatmessageWhereUniqueInput
     update: XOR<chatmessageUpdateWithoutUserInput, chatmessageUncheckedUpdateWithoutUserInput>
@@ -53160,6 +54735,62 @@ export namespace Prisma {
     data: XOR<friendshipUpdateManyMutationInput, friendshipUncheckedUpdateManyWithoutUser_friendship_userIdTouserInput>
   }
 
+  export type InvitationUpsertWithWhereUniqueWithoutUserInput = {
+    where: InvitationWhereUniqueInput
+    update: XOR<InvitationUpdateWithoutUserInput, InvitationUncheckedUpdateWithoutUserInput>
+    create: XOR<InvitationCreateWithoutUserInput, InvitationUncheckedCreateWithoutUserInput>
+  }
+
+  export type InvitationUpdateWithWhereUniqueWithoutUserInput = {
+    where: InvitationWhereUniqueInput
+    data: XOR<InvitationUpdateWithoutUserInput, InvitationUncheckedUpdateWithoutUserInput>
+  }
+
+  export type InvitationUpdateManyWithWhereWithoutUserInput = {
+    where: InvitationScalarWhereInput
+    data: XOR<InvitationUpdateManyMutationInput, InvitationUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type InvitationScalarWhereInput = {
+    AND?: InvitationScalarWhereInput | InvitationScalarWhereInput[]
+    OR?: InvitationScalarWhereInput[]
+    NOT?: InvitationScalarWhereInput | InvitationScalarWhereInput[]
+    id?: StringFilter<"Invitation"> | string
+    organizationId?: StringFilter<"Invitation"> | string
+    email?: StringFilter<"Invitation"> | string
+    role?: StringNullableFilter<"Invitation"> | string | null
+    status?: StringFilter<"Invitation"> | string
+    expiresAt?: DateTimeFilter<"Invitation"> | Date | string
+    inviterId?: StringFilter<"Invitation"> | string
+  }
+
+  export type MemberUpsertWithWhereUniqueWithoutUserInput = {
+    where: MemberWhereUniqueInput
+    update: XOR<MemberUpdateWithoutUserInput, MemberUncheckedUpdateWithoutUserInput>
+    create: XOR<MemberCreateWithoutUserInput, MemberUncheckedCreateWithoutUserInput>
+  }
+
+  export type MemberUpdateWithWhereUniqueWithoutUserInput = {
+    where: MemberWhereUniqueInput
+    data: XOR<MemberUpdateWithoutUserInput, MemberUncheckedUpdateWithoutUserInput>
+  }
+
+  export type MemberUpdateManyWithWhereWithoutUserInput = {
+    where: MemberScalarWhereInput
+    data: XOR<MemberUpdateManyMutationInput, MemberUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type MemberScalarWhereInput = {
+    AND?: MemberScalarWhereInput | MemberScalarWhereInput[]
+    OR?: MemberScalarWhereInput[]
+    NOT?: MemberScalarWhereInput | MemberScalarWhereInput[]
+    id?: StringFilter<"Member"> | string
+    organizationId?: StringFilter<"Member"> | string
+    userId?: StringFilter<"Member"> | string
+    role?: StringFilter<"Member"> | string
+    createdAt?: DateTimeFilter<"Member"> | Date | string
+  }
+
   export type notificationUpsertWithWhereUniqueWithoutUserInput = {
     where: notificationWhereUniqueInput
     update: XOR<notificationUpdateWithoutUserInput, notificationUncheckedUpdateWithoutUserInput>
@@ -53189,71 +54820,6 @@ export namespace Prisma {
     metadata?: JsonNullableFilter<"notification">
     createdAt?: DateTimeFilter<"notification"> | Date | string
     userId?: StringFilter<"notification"> | string
-  }
-
-  export type OperatorUpsertWithWhereUniqueWithoutOwnerInput = {
-    where: OperatorWhereUniqueInput
-    update: XOR<OperatorUpdateWithoutOwnerInput, OperatorUncheckedUpdateWithoutOwnerInput>
-    create: XOR<OperatorCreateWithoutOwnerInput, OperatorUncheckedCreateWithoutOwnerInput>
-  }
-
-  export type OperatorUpdateWithWhereUniqueWithoutOwnerInput = {
-    where: OperatorWhereUniqueInput
-    data: XOR<OperatorUpdateWithoutOwnerInput, OperatorUncheckedUpdateWithoutOwnerInput>
-  }
-
-  export type OperatorUpdateManyWithWhereWithoutOwnerInput = {
-    where: OperatorScalarWhereInput
-    data: XOR<OperatorUpdateManyMutationInput, OperatorUncheckedUpdateManyWithoutOwnerInput>
-  }
-
-  export type OperatorScalarWhereInput = {
-    AND?: OperatorScalarWhereInput | OperatorScalarWhereInput[]
-    OR?: OperatorScalarWhereInput[]
-    NOT?: OperatorScalarWhereInput | OperatorScalarWhereInput[]
-    id?: StringFilter<"Operator"> | string
-    name?: StringFilter<"Operator"> | string
-    slug?: StringFilter<"Operator"> | string
-    logo?: StringNullableFilter<"Operator"> | string | null
-    description?: StringNullableFilter<"Operator"> | string | null
-    isActive?: BoolFilter<"Operator"> | boolean
-    createdAt?: DateTimeFilter<"Operator"> | Date | string
-    updatedAt?: DateTimeNullableFilter<"Operator"> | Date | string | null
-    ownerId?: StringFilter<"Operator"> | string
-    balance?: IntFilter<"Operator"> | number
-  }
-
-  export type ProfileUpsertWithWhereUniqueWithoutUser_profile_userIdTouserInput = {
-    where: ProfileWhereUniqueInput
-    update: XOR<ProfileUpdateWithoutUser_profile_userIdTouserInput, ProfileUncheckedUpdateWithoutUser_profile_userIdTouserInput>
-    create: XOR<ProfileCreateWithoutUser_profile_userIdTouserInput, ProfileUncheckedCreateWithoutUser_profile_userIdTouserInput>
-  }
-
-  export type ProfileUpdateWithWhereUniqueWithoutUser_profile_userIdTouserInput = {
-    where: ProfileWhereUniqueInput
-    data: XOR<ProfileUpdateWithoutUser_profile_userIdTouserInput, ProfileUncheckedUpdateWithoutUser_profile_userIdTouserInput>
-  }
-
-  export type ProfileUpdateManyWithWhereWithoutUser_profile_userIdTouserInput = {
-    where: ProfileScalarWhereInput
-    data: XOR<ProfileUpdateManyMutationInput, ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserInput>
-  }
-
-  export type ProfileScalarWhereInput = {
-    AND?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
-    OR?: ProfileScalarWhereInput[]
-    NOT?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
-    id?: StringFilter<"Profile"> | string
-    balance?: IntFilter<"Profile"> | number
-    xpEarned?: IntFilter<"Profile"> | number
-    isActive?: BoolFilter<"Profile"> | boolean
-    lastPlayed?: DateTimeNullableFilter<"Profile"> | Date | string | null
-    createdAt?: DateTimeFilter<"Profile"> | Date | string
-    updatedAt?: DateTimeNullableFilter<"Profile"> | Date | string | null
-    phpId?: IntNullableFilter<"Profile"> | number | null
-    userId?: StringFilter<"Profile"> | string
-    currency?: StringFilter<"Profile"> | string
-    shopId?: StringFilter<"Profile"> | string
   }
 
   export type tournamententryUpsertWithWhereUniqueWithoutUserInput = {
@@ -53286,6 +54852,32 @@ export namespace Prisma {
     profileId?: StringFilter<"tournamententry"> | string
   }
 
+  export type TwoFactorUpsertWithWhereUniqueWithoutUserInput = {
+    where: TwoFactorWhereUniqueInput
+    update: XOR<TwoFactorUpdateWithoutUserInput, TwoFactorUncheckedUpdateWithoutUserInput>
+    create: XOR<TwoFactorCreateWithoutUserInput, TwoFactorUncheckedCreateWithoutUserInput>
+  }
+
+  export type TwoFactorUpdateWithWhereUniqueWithoutUserInput = {
+    where: TwoFactorWhereUniqueInput
+    data: XOR<TwoFactorUpdateWithoutUserInput, TwoFactorUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TwoFactorUpdateManyWithWhereWithoutUserInput = {
+    where: TwoFactorScalarWhereInput
+    data: XOR<TwoFactorUpdateManyMutationInput, TwoFactorUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type TwoFactorScalarWhereInput = {
+    AND?: TwoFactorScalarWhereInput | TwoFactorScalarWhereInput[]
+    OR?: TwoFactorScalarWhereInput[]
+    NOT?: TwoFactorScalarWhereInput | TwoFactorScalarWhereInput[]
+    id?: StringFilter<"TwoFactor"> | string
+    secret?: StringFilter<"TwoFactor"> | string
+    backupCodes?: StringFilter<"TwoFactor"> | string
+    userId?: StringFilter<"TwoFactor"> | string
+  }
+
   export type userachievementUpsertWithWhereUniqueWithoutUserInput = {
     where: userachievementWhereUniqueInput
     update: XOR<userachievementUpdateWithoutUserInput, userachievementUncheckedUpdateWithoutUserInput>
@@ -53302,68 +54894,102 @@ export namespace Prisma {
     data: XOR<userachievementUpdateManyMutationInput, userachievementUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type VipInfoUpsertWithWhereUniqueWithoutUserInput = {
-    where: VipInfoWhereUniqueInput
+  export type VipInfoUpsertWithoutUserInput = {
     update: XOR<VipInfoUpdateWithoutUserInput, VipInfoUncheckedUpdateWithoutUserInput>
     create: XOR<VipInfoCreateWithoutUserInput, VipInfoUncheckedCreateWithoutUserInput>
+    where?: VipInfoWhereInput
   }
 
-  export type VipInfoUpdateWithWhereUniqueWithoutUserInput = {
-    where: VipInfoWhereUniqueInput
+  export type VipInfoUpdateToOneWithWhereWithoutUserInput = {
+    where?: VipInfoWhereInput
     data: XOR<VipInfoUpdateWithoutUserInput, VipInfoUncheckedUpdateWithoutUserInput>
   }
 
-  export type VipInfoUpdateManyWithWhereWithoutUserInput = {
-    where: VipInfoScalarWhereInput
-    data: XOR<VipInfoUpdateManyMutationInput, VipInfoUncheckedUpdateManyWithoutUserInput>
+  export type VipInfoUpdateWithoutUserInput = {
+    level?: IntFieldUpdateOperationsInput | number
+    deposit_exp?: IntFieldUpdateOperationsInput | number
+    bet_exp?: IntFieldUpdateOperationsInput | number
+    rank_bet_exp?: IntFieldUpdateOperationsInput | number
+    rank_deposit_exp?: IntFieldUpdateOperationsInput | number
+    rank_name?: StringFieldUpdateOperationsInput | string
+    icon?: StringFieldUpdateOperationsInput | string
+    exp_switch_type?: IntFieldUpdateOperationsInput | number
+    now_deposit_exp?: StringFieldUpdateOperationsInput | string
+    level_deposit_exp?: StringFieldUpdateOperationsInput | string
+    now_bet_exp?: StringFieldUpdateOperationsInput | string
+    level_bet_exp?: StringFieldUpdateOperationsInput | string
+    telegram?: StringFieldUpdateOperationsInput | string
+    is_protection?: BoolFieldUpdateOperationsInput | boolean
+    protection_deposit_exp?: StringFieldUpdateOperationsInput | string
+    protection_deposit_amount?: StringFieldUpdateOperationsInput | string
+    protection_bet_exp?: StringFieldUpdateOperationsInput | string
+    protection_bet_amount?: StringFieldUpdateOperationsInput | string
+    protection_days?: IntFieldUpdateOperationsInput | number
+    protection_switch?: IntFieldUpdateOperationsInput | number
+    cycle_award_switch?: BoolFieldUpdateOperationsInput | boolean
+    level_award_switch?: BoolFieldUpdateOperationsInput | boolean
+    signin_award_switch?: BoolFieldUpdateOperationsInput | boolean
+    bet_award_switch?: BoolFieldUpdateOperationsInput | boolean
+    withdrawal_award_switch?: BoolFieldUpdateOperationsInput | boolean
+    unprotection_deposit_exp?: StringFieldUpdateOperationsInput | string
+    unprotection_deposit_amount?: StringFieldUpdateOperationsInput | string
+    unprotection_bet_exp?: StringFieldUpdateOperationsInput | string
+    unprotection_bet_amount?: StringFieldUpdateOperationsInput | string
+    unprotection_days?: IntFieldUpdateOperationsInput | number
+    unprotection_switch?: IntFieldUpdateOperationsInput | number
+    main_currency?: StringFieldUpdateOperationsInput | string
+    can_receive_level_award?: BoolFieldUpdateOperationsInput | boolean
+    can_receive_rank_award?: BoolFieldUpdateOperationsInput | boolean
+    can_receive_day_award?: BoolFieldUpdateOperationsInput | boolean
+    can_receive_week_award?: BoolFieldUpdateOperationsInput | boolean
+    can_receive_month_award?: BoolFieldUpdateOperationsInput | boolean
+    can_receive_signin_award?: BoolFieldUpdateOperationsInput | boolean
+    can_receive_bet_award?: BoolFieldUpdateOperationsInput | boolean
+    can_receive_withdrawal_award?: BoolFieldUpdateOperationsInput | boolean
   }
 
-  export type VipInfoScalarWhereInput = {
-    AND?: VipInfoScalarWhereInput | VipInfoScalarWhereInput[]
-    OR?: VipInfoScalarWhereInput[]
-    NOT?: VipInfoScalarWhereInput | VipInfoScalarWhereInput[]
-    id?: IntFilter<"VipInfo"> | number
-    level?: IntFilter<"VipInfo"> | number
-    deposit_exp?: IntFilter<"VipInfo"> | number
-    bet_exp?: IntFilter<"VipInfo"> | number
-    rank_bet_exp?: IntFilter<"VipInfo"> | number
-    rank_deposit_exp?: IntFilter<"VipInfo"> | number
-    rank_name?: StringFilter<"VipInfo"> | string
-    icon?: StringFilter<"VipInfo"> | string
-    exp_switch_type?: IntFilter<"VipInfo"> | number
-    now_deposit_exp?: StringFilter<"VipInfo"> | string
-    level_deposit_exp?: StringFilter<"VipInfo"> | string
-    now_bet_exp?: StringFilter<"VipInfo"> | string
-    level_bet_exp?: StringFilter<"VipInfo"> | string
-    telegram?: StringFilter<"VipInfo"> | string
-    is_protection?: BoolFilter<"VipInfo"> | boolean
-    protection_deposit_exp?: StringFilter<"VipInfo"> | string
-    protection_deposit_amount?: StringFilter<"VipInfo"> | string
-    protection_bet_exp?: StringFilter<"VipInfo"> | string
-    protection_bet_amount?: StringFilter<"VipInfo"> | string
-    protection_days?: IntFilter<"VipInfo"> | number
-    protection_switch?: IntFilter<"VipInfo"> | number
-    cycle_award_switch?: BoolFilter<"VipInfo"> | boolean
-    level_award_switch?: BoolFilter<"VipInfo"> | boolean
-    signin_award_switch?: BoolFilter<"VipInfo"> | boolean
-    bet_award_switch?: BoolFilter<"VipInfo"> | boolean
-    withdrawal_award_switch?: BoolFilter<"VipInfo"> | boolean
-    unprotection_deposit_exp?: StringFilter<"VipInfo"> | string
-    unprotection_deposit_amount?: StringFilter<"VipInfo"> | string
-    unprotection_bet_exp?: StringFilter<"VipInfo"> | string
-    unprotection_bet_amount?: StringFilter<"VipInfo"> | string
-    unprotection_days?: IntFilter<"VipInfo"> | number
-    unprotection_switch?: IntFilter<"VipInfo"> | number
-    main_currency?: StringFilter<"VipInfo"> | string
-    can_receive_level_award?: BoolFilter<"VipInfo"> | boolean
-    can_receive_rank_award?: BoolFilter<"VipInfo"> | boolean
-    can_receive_day_award?: BoolFilter<"VipInfo"> | boolean
-    can_receive_week_award?: BoolFilter<"VipInfo"> | boolean
-    can_receive_month_award?: BoolFilter<"VipInfo"> | boolean
-    can_receive_signin_award?: BoolFilter<"VipInfo"> | boolean
-    can_receive_bet_award?: BoolFilter<"VipInfo"> | boolean
-    can_receive_withdrawal_award?: BoolFilter<"VipInfo"> | boolean
-    userid?: StringFilter<"VipInfo"> | string
+  export type VipInfoUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    deposit_exp?: IntFieldUpdateOperationsInput | number
+    bet_exp?: IntFieldUpdateOperationsInput | number
+    rank_bet_exp?: IntFieldUpdateOperationsInput | number
+    rank_deposit_exp?: IntFieldUpdateOperationsInput | number
+    rank_name?: StringFieldUpdateOperationsInput | string
+    icon?: StringFieldUpdateOperationsInput | string
+    exp_switch_type?: IntFieldUpdateOperationsInput | number
+    now_deposit_exp?: StringFieldUpdateOperationsInput | string
+    level_deposit_exp?: StringFieldUpdateOperationsInput | string
+    now_bet_exp?: StringFieldUpdateOperationsInput | string
+    level_bet_exp?: StringFieldUpdateOperationsInput | string
+    telegram?: StringFieldUpdateOperationsInput | string
+    is_protection?: BoolFieldUpdateOperationsInput | boolean
+    protection_deposit_exp?: StringFieldUpdateOperationsInput | string
+    protection_deposit_amount?: StringFieldUpdateOperationsInput | string
+    protection_bet_exp?: StringFieldUpdateOperationsInput | string
+    protection_bet_amount?: StringFieldUpdateOperationsInput | string
+    protection_days?: IntFieldUpdateOperationsInput | number
+    protection_switch?: IntFieldUpdateOperationsInput | number
+    cycle_award_switch?: BoolFieldUpdateOperationsInput | boolean
+    level_award_switch?: BoolFieldUpdateOperationsInput | boolean
+    signin_award_switch?: BoolFieldUpdateOperationsInput | boolean
+    bet_award_switch?: BoolFieldUpdateOperationsInput | boolean
+    withdrawal_award_switch?: BoolFieldUpdateOperationsInput | boolean
+    unprotection_deposit_exp?: StringFieldUpdateOperationsInput | string
+    unprotection_deposit_amount?: StringFieldUpdateOperationsInput | string
+    unprotection_bet_exp?: StringFieldUpdateOperationsInput | string
+    unprotection_bet_amount?: StringFieldUpdateOperationsInput | string
+    unprotection_days?: IntFieldUpdateOperationsInput | number
+    unprotection_switch?: IntFieldUpdateOperationsInput | number
+    main_currency?: StringFieldUpdateOperationsInput | string
+    can_receive_level_award?: BoolFieldUpdateOperationsInput | boolean
+    can_receive_rank_award?: BoolFieldUpdateOperationsInput | boolean
+    can_receive_day_award?: BoolFieldUpdateOperationsInput | boolean
+    can_receive_week_award?: BoolFieldUpdateOperationsInput | boolean
+    can_receive_month_award?: BoolFieldUpdateOperationsInput | boolean
+    can_receive_signin_award?: BoolFieldUpdateOperationsInput | boolean
+    can_receive_bet_award?: BoolFieldUpdateOperationsInput | boolean
+    can_receive_withdrawal_award?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -53386,33 +55012,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    members?: MemberCreateNestedManyWithoutUserInput
-    invitations?: InvitationCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryCreateNestedManyWithoutUserInput
     RainTip?: RainTipCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationCreateNestedManyWithoutUserInput
+    members?: MemberCreateNestedManyWithoutUserInput
     notification?: notificationCreateNestedManyWithoutUserInput
-    operator?: OperatorCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
     userachievement?: userachievementCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -53435,33 +55061,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    members?: MemberUncheckedCreateNestedManyWithoutUserInput
-    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetUncheckedCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryUncheckedCreateNestedManyWithoutUserInput
     RainTip?: RainTipUncheckedCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
+    members?: MemberUncheckedCreateNestedManyWithoutUserInput
     notification?: notificationUncheckedCreateNestedManyWithoutUserInput
-    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryUncheckedCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
     userachievement?: userachievementUncheckedCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoUncheckedCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -53500,33 +55126,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    members?: MemberUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUpdateManyWithoutUserNestedInput
+    members?: MemberUpdateManyWithoutUserNestedInput
     notification?: notificationUpdateManyWithoutUserNestedInput
-    operator?: OperatorUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -53549,33 +55175,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUncheckedUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUncheckedUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUncheckedUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
+    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
     notification?: notificationUncheckedUpdateManyWithoutUserNestedInput
-    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUncheckedUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUncheckedUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUncheckedUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutOperatorInput = {
@@ -53598,33 +55224,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    members?: MemberCreateNestedManyWithoutUserInput
-    invitations?: InvitationCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryCreateNestedManyWithoutUserInput
     RainTip?: RainTipCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationCreateNestedManyWithoutUserInput
+    members?: MemberCreateNestedManyWithoutUserInput
     notification?: notificationCreateNestedManyWithoutUserInput
-    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
     userachievement?: userachievementCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOperatorInput = {
@@ -53647,38 +55273,80 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    members?: MemberUncheckedCreateNestedManyWithoutUserInput
-    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetUncheckedCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryUncheckedCreateNestedManyWithoutUserInput
     RainTip?: RainTipUncheckedCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
+    members?: MemberUncheckedCreateNestedManyWithoutUserInput
     notification?: notificationUncheckedCreateNestedManyWithoutUserInput
-    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryUncheckedCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
     userachievement?: userachievementUncheckedCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoUncheckedCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOperatorInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutOperatorInput, UserUncheckedCreateWithoutOperatorInput>
+  }
+
+  export type ProfileCreateWithoutOperatorInput = {
+    id?: string
+    balance?: number
+    xpEarned?: number
+    isActive?: boolean
+    lastPlayed?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    phpId?: number | null
+    currency?: string
+    user_profile_userIdTouser: UserCreateNestedOneWithoutActiveProfileInput
+    gamesession?: gamesessionCreateNestedManyWithoutProfileInput
+    tournamententry?: tournamententryCreateNestedManyWithoutProfileInput
+    transactions?: TransactionCreateNestedManyWithoutProfileInput
+  }
+
+  export type ProfileUncheckedCreateWithoutOperatorInput = {
+    id?: string
+    balance?: number
+    xpEarned?: number
+    isActive?: boolean
+    lastPlayed?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    phpId?: number | null
+    userId: string
+    currency?: string
+    gamesession?: gamesessionUncheckedCreateNestedManyWithoutProfileInput
+    tournamententry?: tournamententryUncheckedCreateNestedManyWithoutProfileInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutProfileInput
+  }
+
+  export type ProfileCreateOrConnectWithoutOperatorInput = {
+    where: ProfileWhereUniqueInput
+    create: XOR<ProfileCreateWithoutOperatorInput, ProfileUncheckedCreateWithoutOperatorInput>
+  }
+
+  export type ProfileCreateManyOperatorInputEnvelope = {
+    data: ProfileCreateManyOperatorInput | ProfileCreateManyOperatorInput[]
+    skipDuplicates?: boolean
   }
 
   export type GameCreateWithoutOperatorInput = {
@@ -53724,10 +55392,10 @@ export namespace Prisma {
     providerId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    category?: $Enums.GameCategory
     jackpotGroupId?: string | null
     active?: boolean
     password?: string | null
+    category?: $Enums.GameCategory
     gamesession?: gamesessionCreateNestedManyWithoutGameInput
     tournamentgame?: tournamentgameCreateNestedManyWithoutGameInput
   }
@@ -53775,10 +55443,10 @@ export namespace Prisma {
     providerId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    category?: $Enums.GameCategory
     jackpotGroupId?: string | null
     active?: boolean
     password?: string | null
+    category?: $Enums.GameCategory
     gamesession?: gamesessionUncheckedCreateNestedManyWithoutGameInput
     tournamentgame?: tournamentgameUncheckedCreateNestedManyWithoutGameInput
   }
@@ -53793,45 +55461,53 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type ProfileCreateWithoutOperatorInput = {
+  export type ProductCreateWithoutOperatorInput = {
     id?: string
-    balance?: number
-    xpEarned?: number
-    isActive?: boolean
-    lastPlayed?: Date | string | null
+    title: string
+    description: string
+    url: string
+    type: string
+    bonusCode?: string | null
+    bonusTotalInCredits?: number | null
+    priceInCents?: number
+    amountToReceiveInCredits?: number
+    bestValue?: number
+    discountInCents?: number
+    bonusSpins?: number | null
+    isPromo?: boolean | null
+    totalDiscountInCents: number
     createdAt?: Date | string
     updatedAt?: Date | string | null
-    phpId?: number | null
-    currency?: string
-    gamesession?: gamesessionCreateNestedManyWithoutProfileInput
-    user_profile_userIdTouser: UserCreateNestedOneWithoutActiveProfileInput
-    tournamententry?: tournamententryCreateNestedManyWithoutProfileInput
-    transactions?: TransactionCreateNestedManyWithoutProfileInput
+    transactions?: TransactionCreateNestedManyWithoutProductInput
   }
 
-  export type ProfileUncheckedCreateWithoutOperatorInput = {
+  export type ProductUncheckedCreateWithoutOperatorInput = {
     id?: string
-    balance?: number
-    xpEarned?: number
-    isActive?: boolean
-    lastPlayed?: Date | string | null
+    title: string
+    description: string
+    url: string
+    type: string
+    bonusCode?: string | null
+    bonusTotalInCredits?: number | null
+    priceInCents?: number
+    amountToReceiveInCredits?: number
+    bestValue?: number
+    discountInCents?: number
+    bonusSpins?: number | null
+    isPromo?: boolean | null
+    totalDiscountInCents: number
     createdAt?: Date | string
     updatedAt?: Date | string | null
-    phpId?: number | null
-    userId: string
-    currency?: string
-    gamesession?: gamesessionUncheckedCreateNestedManyWithoutProfileInput
-    tournamententry?: tournamententryUncheckedCreateNestedManyWithoutProfileInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutProfileInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutProductInput
   }
 
-  export type ProfileCreateOrConnectWithoutOperatorInput = {
-    where: ProfileWhereUniqueInput
-    create: XOR<ProfileCreateWithoutOperatorInput, ProfileUncheckedCreateWithoutOperatorInput>
+  export type ProductCreateOrConnectWithoutOperatorInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutOperatorInput, ProductUncheckedCreateWithoutOperatorInput>
   }
 
-  export type ProfileCreateManyOperatorInputEnvelope = {
-    data: ProfileCreateManyOperatorInput | ProfileCreateManyOperatorInput[]
+  export type ProductCreateManyOperatorInputEnvelope = {
+    data: ProductCreateManyOperatorInput | ProductCreateManyOperatorInput[]
     skipDuplicates?: boolean
   }
 
@@ -53879,56 +55555,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type ProductCreateWithoutOperatorInput = {
-    id?: string
-    title: string
-    description: string
-    url: string
-    type: string
-    bonusCode?: string | null
-    bonusTotalInCredits?: number | null
-    priceInCents?: number
-    amountToReceiveInCredits?: number
-    bestValue?: number
-    discountInCents?: number
-    bonusSpins?: number | null
-    isPromo?: boolean | null
-    totalDiscountInCents: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    transactions?: TransactionCreateNestedManyWithoutProductInput
-  }
-
-  export type ProductUncheckedCreateWithoutOperatorInput = {
-    id?: string
-    title: string
-    description: string
-    url: string
-    type: string
-    bonusCode?: string | null
-    bonusTotalInCredits?: number | null
-    priceInCents?: number
-    amountToReceiveInCredits?: number
-    bestValue?: number
-    discountInCents?: number
-    bonusSpins?: number | null
-    isPromo?: boolean | null
-    totalDiscountInCents: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    transactions?: TransactionUncheckedCreateNestedManyWithoutProductInput
-  }
-
-  export type ProductCreateOrConnectWithoutOperatorInput = {
-    where: ProductWhereUniqueInput
-    create: XOR<ProductCreateWithoutOperatorInput, ProductUncheckedCreateWithoutOperatorInput>
-  }
-
-  export type ProductCreateManyOperatorInputEnvelope = {
-    data: ProductCreateManyOperatorInput | ProductCreateManyOperatorInput[]
-    skipDuplicates?: boolean
-  }
-
   export type UserUpsertWithoutOperatorInput = {
     update: XOR<UserUpdateWithoutOperatorInput, UserUncheckedUpdateWithoutOperatorInput>
     create: XOR<UserCreateWithoutOperatorInput, UserUncheckedCreateWithoutOperatorInput>
@@ -53960,33 +55586,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    members?: MemberUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUpdateManyWithoutUserNestedInput
+    members?: MemberUpdateManyWithoutUserNestedInput
     notification?: notificationUpdateManyWithoutUserNestedInput
-    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOperatorInput = {
@@ -54009,33 +55635,49 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUncheckedUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUncheckedUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUncheckedUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
+    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
     notification?: notificationUncheckedUpdateManyWithoutUserNestedInput
-    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUncheckedUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUncheckedUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUncheckedUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type ProfileUpsertWithWhereUniqueWithoutOperatorInput = {
+    where: ProfileWhereUniqueInput
+    update: XOR<ProfileUpdateWithoutOperatorInput, ProfileUncheckedUpdateWithoutOperatorInput>
+    create: XOR<ProfileCreateWithoutOperatorInput, ProfileUncheckedCreateWithoutOperatorInput>
+  }
+
+  export type ProfileUpdateWithWhereUniqueWithoutOperatorInput = {
+    where: ProfileWhereUniqueInput
+    data: XOR<ProfileUpdateWithoutOperatorInput, ProfileUncheckedUpdateWithoutOperatorInput>
+  }
+
+  export type ProfileUpdateManyWithWhereWithoutOperatorInput = {
+    where: ProfileScalarWhereInput
+    data: XOR<ProfileUpdateManyMutationInput, ProfileUncheckedUpdateManyWithoutOperatorInput>
   }
 
   export type GameUpsertWithWhereUniqueWithoutOperatorInput = {
@@ -54101,60 +55743,10 @@ export namespace Prisma {
     providerId?: StringNullableFilter<"Game"> | string | null
     createdAt?: DateTimeFilter<"Game"> | Date | string
     updatedAt?: DateTimeFilter<"Game"> | Date | string
-    category?: EnumGameCategoryFilter<"Game"> | $Enums.GameCategory
     jackpotGroupId?: StringNullableFilter<"Game"> | string | null
     active?: BoolFilter<"Game"> | boolean
     password?: StringNullableFilter<"Game"> | string | null
-  }
-
-  export type ProfileUpsertWithWhereUniqueWithoutOperatorInput = {
-    where: ProfileWhereUniqueInput
-    update: XOR<ProfileUpdateWithoutOperatorInput, ProfileUncheckedUpdateWithoutOperatorInput>
-    create: XOR<ProfileCreateWithoutOperatorInput, ProfileUncheckedCreateWithoutOperatorInput>
-  }
-
-  export type ProfileUpdateWithWhereUniqueWithoutOperatorInput = {
-    where: ProfileWhereUniqueInput
-    data: XOR<ProfileUpdateWithoutOperatorInput, ProfileUncheckedUpdateWithoutOperatorInput>
-  }
-
-  export type ProfileUpdateManyWithWhereWithoutOperatorInput = {
-    where: ProfileScalarWhereInput
-    data: XOR<ProfileUpdateManyMutationInput, ProfileUncheckedUpdateManyWithoutOperatorInput>
-  }
-
-  export type tournamentUpsertWithWhereUniqueWithoutOperatorInput = {
-    where: tournamentWhereUniqueInput
-    update: XOR<tournamentUpdateWithoutOperatorInput, tournamentUncheckedUpdateWithoutOperatorInput>
-    create: XOR<tournamentCreateWithoutOperatorInput, tournamentUncheckedCreateWithoutOperatorInput>
-  }
-
-  export type tournamentUpdateWithWhereUniqueWithoutOperatorInput = {
-    where: tournamentWhereUniqueInput
-    data: XOR<tournamentUpdateWithoutOperatorInput, tournamentUncheckedUpdateWithoutOperatorInput>
-  }
-
-  export type tournamentUpdateManyWithWhereWithoutOperatorInput = {
-    where: tournamentScalarWhereInput
-    data: XOR<tournamentUpdateManyMutationInput, tournamentUncheckedUpdateManyWithoutOperatorInput>
-  }
-
-  export type tournamentScalarWhereInput = {
-    AND?: tournamentScalarWhereInput | tournamentScalarWhereInput[]
-    OR?: tournamentScalarWhereInput[]
-    NOT?: tournamentScalarWhereInput | tournamentScalarWhereInput[]
-    id?: StringFilter<"tournament"> | string
-    name?: StringFilter<"tournament"> | string
-    description?: StringNullableFilter<"tournament"> | string | null
-    startTime?: DateTimeFilter<"tournament"> | Date | string
-    endTime?: DateTimeFilter<"tournament"> | Date | string
-    entryFee?: IntNullableFilter<"tournament"> | number | null
-    prizePool?: IntFilter<"tournament"> | number
-    isActive?: BoolFilter<"tournament"> | boolean
-    createdAt?: DateTimeFilter<"tournament"> | Date | string
-    updatedAt?: DateTimeNullableFilter<"tournament"> | Date | string | null
-    operatorId?: StringFilter<"tournament"> | string
-    leaderboard?: JsonNullableFilter<"tournament">
+    category?: EnumGameCategoryFilter<"Game"> | $Enums.GameCategory
   }
 
   export type ProductUpsertWithWhereUniqueWithoutOperatorInput = {
@@ -54193,7 +55785,183 @@ export namespace Prisma {
     totalDiscountInCents?: IntFilter<"Product"> | number
     shopId?: StringNullableFilter<"Product"> | string | null
     createdAt?: DateTimeFilter<"Product"> | Date | string
-    updatedAt?: DateTimeFilter<"Product"> | Date | string
+    updatedAt?: DateTimeNullableFilter<"Product"> | Date | string | null
+  }
+
+  export type tournamentUpsertWithWhereUniqueWithoutOperatorInput = {
+    where: tournamentWhereUniqueInput
+    update: XOR<tournamentUpdateWithoutOperatorInput, tournamentUncheckedUpdateWithoutOperatorInput>
+    create: XOR<tournamentCreateWithoutOperatorInput, tournamentUncheckedCreateWithoutOperatorInput>
+  }
+
+  export type tournamentUpdateWithWhereUniqueWithoutOperatorInput = {
+    where: tournamentWhereUniqueInput
+    data: XOR<tournamentUpdateWithoutOperatorInput, tournamentUncheckedUpdateWithoutOperatorInput>
+  }
+
+  export type tournamentUpdateManyWithWhereWithoutOperatorInput = {
+    where: tournamentScalarWhereInput
+    data: XOR<tournamentUpdateManyMutationInput, tournamentUncheckedUpdateManyWithoutOperatorInput>
+  }
+
+  export type tournamentScalarWhereInput = {
+    AND?: tournamentScalarWhereInput | tournamentScalarWhereInput[]
+    OR?: tournamentScalarWhereInput[]
+    NOT?: tournamentScalarWhereInput | tournamentScalarWhereInput[]
+    id?: StringFilter<"tournament"> | string
+    name?: StringFilter<"tournament"> | string
+    description?: StringNullableFilter<"tournament"> | string | null
+    startTime?: DateTimeFilter<"tournament"> | Date | string
+    endTime?: DateTimeFilter<"tournament"> | Date | string
+    entryFee?: IntNullableFilter<"tournament"> | number | null
+    prizePool?: IntFilter<"tournament"> | number
+    isActive?: BoolFilter<"tournament"> | boolean
+    createdAt?: DateTimeFilter<"tournament"> | Date | string
+    updatedAt?: DateTimeNullableFilter<"tournament"> | Date | string | null
+    operatorId?: StringFilter<"tournament"> | string
+    leaderboard?: JsonNullableFilter<"tournament">
+  }
+
+  export type OperatorCreateWithoutProfilesInput = {
+    id?: string
+    name: string
+    slug: string
+    logo?: string | null
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    acceptedPayments?: OperatorCreateacceptedPaymentsInput | string[]
+    balance?: number
+    owner: UserCreateNestedOneWithoutOperatorInput
+    games?: GameCreateNestedManyWithoutOperatorInput
+    products?: ProductCreateNestedManyWithoutOperatorInput
+    tournaments?: tournamentCreateNestedManyWithoutOperatorInput
+  }
+
+  export type OperatorUncheckedCreateWithoutProfilesInput = {
+    id?: string
+    name: string
+    slug: string
+    logo?: string | null
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    acceptedPayments?: OperatorCreateacceptedPaymentsInput | string[]
+    ownerId: string
+    balance?: number
+    games?: GameUncheckedCreateNestedManyWithoutOperatorInput
+    products?: ProductUncheckedCreateNestedManyWithoutOperatorInput
+    tournaments?: tournamentUncheckedCreateNestedManyWithoutOperatorInput
+  }
+
+  export type OperatorCreateOrConnectWithoutProfilesInput = {
+    where: OperatorWhereUniqueInput
+    create: XOR<OperatorCreateWithoutProfilesInput, OperatorUncheckedCreateWithoutProfilesInput>
+  }
+
+  export type UserCreateWithoutActiveProfileInput = {
+    id?: string
+    name?: string | null
+    email: string
+    emailVerified?: boolean | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    twoFactorEnabled?: boolean | null
+    role?: string | null
+    banned?: boolean | null
+    banReason?: string | null
+    banExpires?: Date | string | null
+    username: string
+    passwordHash?: string | null
+    totalXp?: number
+    balance?: number
+    isVerified?: boolean
+    active?: boolean
+    lastLogin?: Date | string | null
+    verificationToken?: string | null
+    avatar?: string | null
+    activeProfileId?: string | null
+    gender?: $Enums.Gender | null
+    status?: $Enums.UserStatus | null
+    cashtag?: string | null
+    phpId?: number | null
+    accessToken?: string | null
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorCreateNestedManyWithoutOwnerInput
+    RainBet?: RainBetCreateNestedManyWithoutUserInput
+    RainHistory?: RainHistoryCreateNestedManyWithoutUserInput
+    RainTip?: RainTipCreateNestedManyWithoutUserInput
+    RainWinner?: RainWinnerCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    chatmessage?: chatmessageCreateNestedManyWithoutUserInput
+    friendship_friendship_friendIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_friendIdTouserInput
+    friendship_friendship_userIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationCreateNestedManyWithoutUserInput
+    members?: MemberCreateNestedManyWithoutUserInput
+    notification?: notificationCreateNestedManyWithoutUserInput
+    tournamententry?: tournamententryCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
+    userachievement?: userachievementCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutActiveProfileInput = {
+    id?: string
+    name?: string | null
+    email: string
+    emailVerified?: boolean | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    twoFactorEnabled?: boolean | null
+    role?: string | null
+    banned?: boolean | null
+    banReason?: string | null
+    banExpires?: Date | string | null
+    username: string
+    passwordHash?: string | null
+    totalXp?: number
+    balance?: number
+    isVerified?: boolean
+    active?: boolean
+    lastLogin?: Date | string | null
+    verificationToken?: string | null
+    avatar?: string | null
+    activeProfileId?: string | null
+    gender?: $Enums.Gender | null
+    status?: $Enums.UserStatus | null
+    cashtag?: string | null
+    phpId?: number | null
+    accessToken?: string | null
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
+    RainBet?: RainBetUncheckedCreateNestedManyWithoutUserInput
+    RainHistory?: RainHistoryUncheckedCreateNestedManyWithoutUserInput
+    RainTip?: RainTipUncheckedCreateNestedManyWithoutUserInput
+    RainWinner?: RainWinnerUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    chatmessage?: chatmessageUncheckedCreateNestedManyWithoutUserInput
+    friendship_friendship_friendIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_friendIdTouserInput
+    friendship_friendship_userIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
+    members?: MemberUncheckedCreateNestedManyWithoutUserInput
+    notification?: notificationUncheckedCreateNestedManyWithoutUserInput
+    tournamententry?: tournamententryUncheckedCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
+    userachievement?: userachievementUncheckedCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutActiveProfileInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutActiveProfileInput, UserUncheckedCreateWithoutActiveProfileInput>
   }
 
   export type gamesessionCreateWithoutProfileInput = {
@@ -54236,146 +56004,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type OperatorCreateWithoutProfilesInput = {
-    id?: string
-    name: string
-    slug: string
-    logo?: string | null
-    description?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string | null
-    balance?: number
-    owner: UserCreateNestedOneWithoutOperatorInput
-    games?: GameCreateNestedManyWithoutOperatorInput
-    tournaments?: tournamentCreateNestedManyWithoutOperatorInput
-    Product?: ProductCreateNestedManyWithoutOperatorInput
-  }
-
-  export type OperatorUncheckedCreateWithoutProfilesInput = {
-    id?: string
-    name: string
-    slug: string
-    logo?: string | null
-    description?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string | null
-    ownerId: string
-    balance?: number
-    games?: GameUncheckedCreateNestedManyWithoutOperatorInput
-    tournaments?: tournamentUncheckedCreateNestedManyWithoutOperatorInput
-    Product?: ProductUncheckedCreateNestedManyWithoutOperatorInput
-  }
-
-  export type OperatorCreateOrConnectWithoutProfilesInput = {
-    where: OperatorWhereUniqueInput
-    create: XOR<OperatorCreateWithoutProfilesInput, OperatorUncheckedCreateWithoutProfilesInput>
-  }
-
-  export type UserCreateWithoutActiveProfileInput = {
-    id?: string
-    name?: string | null
-    email: string
-    emailVerified?: boolean | null
-    image?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string | null
-    twoFactorEnabled?: boolean | null
-    role?: string | null
-    banned?: boolean | null
-    banReason?: string | null
-    banExpires?: Date | string | null
-    username: string
-    passwordHash?: string | null
-    totalXp?: number
-    balance?: number
-    isVerified?: boolean
-    active?: boolean
-    lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
-    verificationToken?: string | null
-    avatar?: string | null
-    activeProfileId?: string | null
-    vipInfoId?: string | null
-    gender?: $Enums.Gender | null
-    status?: $Enums.UserStatus | null
-    cashtag?: string | null
-    phpId?: number | null
-    accessToken?: string | null
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    members?: MemberCreateNestedManyWithoutUserInput
-    invitations?: InvitationCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
-    RainBet?: RainBetCreateNestedManyWithoutUserInput
-    RainHistory?: RainHistoryCreateNestedManyWithoutUserInput
-    RainTip?: RainTipCreateNestedManyWithoutUserInput
-    RainWinner?: RainWinnerCreateNestedManyWithoutUserInput
-    chatmessage?: chatmessageCreateNestedManyWithoutUserInput
-    friendship_friendship_friendIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_friendIdTouserInput
-    friendship_friendship_userIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_userIdTouserInput
-    notification?: notificationCreateNestedManyWithoutUserInput
-    operator?: OperatorCreateNestedManyWithoutOwnerInput
-    tournamententry?: tournamententryCreateNestedManyWithoutUserInput
-    userachievement?: userachievementCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutActiveProfileInput = {
-    id?: string
-    name?: string | null
-    email: string
-    emailVerified?: boolean | null
-    image?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string | null
-    twoFactorEnabled?: boolean | null
-    role?: string | null
-    banned?: boolean | null
-    banReason?: string | null
-    banExpires?: Date | string | null
-    username: string
-    passwordHash?: string | null
-    totalXp?: number
-    balance?: number
-    isVerified?: boolean
-    active?: boolean
-    lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
-    verificationToken?: string | null
-    avatar?: string | null
-    activeProfileId?: string | null
-    vipInfoId?: string | null
-    gender?: $Enums.Gender | null
-    status?: $Enums.UserStatus | null
-    cashtag?: string | null
-    phpId?: number | null
-    accessToken?: string | null
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    members?: MemberUncheckedCreateNestedManyWithoutUserInput
-    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
-    RainBet?: RainBetUncheckedCreateNestedManyWithoutUserInput
-    RainHistory?: RainHistoryUncheckedCreateNestedManyWithoutUserInput
-    RainTip?: RainTipUncheckedCreateNestedManyWithoutUserInput
-    RainWinner?: RainWinnerUncheckedCreateNestedManyWithoutUserInput
-    chatmessage?: chatmessageUncheckedCreateNestedManyWithoutUserInput
-    friendship_friendship_friendIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_friendIdTouserInput
-    friendship_friendship_userIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_userIdTouserInput
-    notification?: notificationUncheckedCreateNestedManyWithoutUserInput
-    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
-    tournamententry?: tournamententryUncheckedCreateNestedManyWithoutUserInput
-    userachievement?: userachievementUncheckedCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutActiveProfileInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutActiveProfileInput, UserUncheckedCreateWithoutActiveProfileInput>
-  }
-
   export type tournamententryCreateWithoutProfileInput = {
     id?: string
     score?: number
@@ -54409,7 +56037,14 @@ export namespace Prisma {
   export type TransactionCreateWithoutProfileInput = {
     id?: string
     type: $Enums.TransactionType
-    amount: number
+    amount?: number
+    amountCredits?: number
+    buyerCashtag?: string | null
+    buyerUserId?: string | null
+    username?: string | null
+    cashiername?: string | null
+    cashierAvatar?: string | null
+    cashierId?: string | null
     reference?: string | null
     status?: $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -54418,14 +56053,22 @@ export namespace Prisma {
     paymentDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     processedAt?: Date | string | null
+    cashtag?: string | null
     gamesession?: gamesessionCreateNestedOneWithoutTransactionInput
-    Product?: ProductCreateNestedManyWithoutTransactionsInput
+    product?: ProductCreateNestedOneWithoutTransactionsInput
   }
 
   export type TransactionUncheckedCreateWithoutProfileInput = {
     id?: string
     type: $Enums.TransactionType
-    amount: number
+    amount?: number
+    amountCredits?: number
+    buyerCashtag?: string | null
+    buyerUserId?: string | null
+    username?: string | null
+    cashiername?: string | null
+    cashierAvatar?: string | null
+    cashierId?: string | null
     reference?: string | null
     status?: $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -54435,7 +56078,8 @@ export namespace Prisma {
     createdAt?: Date | string
     processedAt?: Date | string | null
     gameSessionId?: string | null
-    Product?: ProductUncheckedCreateNestedManyWithoutTransactionsInput
+    cashtag?: string | null
+    productid?: string | null
   }
 
   export type TransactionCreateOrConnectWithoutProfileInput = {
@@ -54446,39 +56090,6 @@ export namespace Prisma {
   export type TransactionCreateManyProfileInputEnvelope = {
     data: TransactionCreateManyProfileInput | TransactionCreateManyProfileInput[]
     skipDuplicates?: boolean
-  }
-
-  export type gamesessionUpsertWithWhereUniqueWithoutProfileInput = {
-    where: gamesessionWhereUniqueInput
-    update: XOR<gamesessionUpdateWithoutProfileInput, gamesessionUncheckedUpdateWithoutProfileInput>
-    create: XOR<gamesessionCreateWithoutProfileInput, gamesessionUncheckedCreateWithoutProfileInput>
-  }
-
-  export type gamesessionUpdateWithWhereUniqueWithoutProfileInput = {
-    where: gamesessionWhereUniqueInput
-    data: XOR<gamesessionUpdateWithoutProfileInput, gamesessionUncheckedUpdateWithoutProfileInput>
-  }
-
-  export type gamesessionUpdateManyWithWhereWithoutProfileInput = {
-    where: gamesessionScalarWhereInput
-    data: XOR<gamesessionUpdateManyMutationInput, gamesessionUncheckedUpdateManyWithoutProfileInput>
-  }
-
-  export type gamesessionScalarWhereInput = {
-    AND?: gamesessionScalarWhereInput | gamesessionScalarWhereInput[]
-    OR?: gamesessionScalarWhereInput[]
-    NOT?: gamesessionScalarWhereInput | gamesessionScalarWhereInput[]
-    id?: StringFilter<"gamesession"> | string
-    startTime?: DateTimeFilter<"gamesession"> | Date | string
-    endTime?: DateTimeNullableFilter<"gamesession"> | Date | string | null
-    betAmount?: IntNullableFilter<"gamesession"> | number | null
-    winAmount?: IntNullableFilter<"gamesession"> | number | null
-    xpEarned?: IntFilter<"gamesession"> | number
-    metadata?: JsonNullableFilter<"gamesession">
-    gameId?: StringFilter<"gamesession"> | string
-    tournamentId?: StringNullableFilter<"gamesession"> | string | null
-    active?: BoolFilter<"gamesession"> | boolean
-    profileId?: StringFilter<"gamesession"> | string
   }
 
   export type OperatorUpsertWithoutProfilesInput = {
@@ -54501,11 +56112,12 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    acceptedPayments?: OperatorUpdateacceptedPaymentsInput | string[]
     balance?: IntFieldUpdateOperationsInput | number
     owner?: UserUpdateOneRequiredWithoutOperatorNestedInput
     games?: GameUpdateManyWithoutOperatorNestedInput
+    products?: ProductUpdateManyWithoutOperatorNestedInput
     tournaments?: tournamentUpdateManyWithoutOperatorNestedInput
-    Product?: ProductUpdateManyWithoutOperatorNestedInput
   }
 
   export type OperatorUncheckedUpdateWithoutProfilesInput = {
@@ -54517,11 +56129,12 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    acceptedPayments?: OperatorUpdateacceptedPaymentsInput | string[]
     ownerId?: StringFieldUpdateOperationsInput | string
     balance?: IntFieldUpdateOperationsInput | number
     games?: GameUncheckedUpdateManyWithoutOperatorNestedInput
+    products?: ProductUncheckedUpdateManyWithoutOperatorNestedInput
     tournaments?: tournamentUncheckedUpdateManyWithoutOperatorNestedInput
-    Product?: ProductUncheckedUpdateManyWithoutOperatorNestedInput
   }
 
   export type UserUpsertWithoutActiveProfileInput = {
@@ -54555,33 +56168,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    members?: MemberUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUpdateManyWithoutOwnerNestedInput
     RainBet?: RainBetUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUpdateManyWithoutUserNestedInput
+    members?: MemberUpdateManyWithoutUserNestedInput
     notification?: notificationUpdateManyWithoutUserNestedInput
-    operator?: OperatorUpdateManyWithoutOwnerNestedInput
     tournamententry?: tournamententryUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutActiveProfileInput = {
@@ -54604,33 +56217,66 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
     RainBet?: RainBetUncheckedUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUncheckedUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUncheckedUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
+    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
     notification?: notificationUncheckedUpdateManyWithoutUserNestedInput
-    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
     tournamententry?: tournamententryUncheckedUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUncheckedUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUncheckedUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type gamesessionUpsertWithWhereUniqueWithoutProfileInput = {
+    where: gamesessionWhereUniqueInput
+    update: XOR<gamesessionUpdateWithoutProfileInput, gamesessionUncheckedUpdateWithoutProfileInput>
+    create: XOR<gamesessionCreateWithoutProfileInput, gamesessionUncheckedCreateWithoutProfileInput>
+  }
+
+  export type gamesessionUpdateWithWhereUniqueWithoutProfileInput = {
+    where: gamesessionWhereUniqueInput
+    data: XOR<gamesessionUpdateWithoutProfileInput, gamesessionUncheckedUpdateWithoutProfileInput>
+  }
+
+  export type gamesessionUpdateManyWithWhereWithoutProfileInput = {
+    where: gamesessionScalarWhereInput
+    data: XOR<gamesessionUpdateManyMutationInput, gamesessionUncheckedUpdateManyWithoutProfileInput>
+  }
+
+  export type gamesessionScalarWhereInput = {
+    AND?: gamesessionScalarWhereInput | gamesessionScalarWhereInput[]
+    OR?: gamesessionScalarWhereInput[]
+    NOT?: gamesessionScalarWhereInput | gamesessionScalarWhereInput[]
+    id?: StringFilter<"gamesession"> | string
+    startTime?: DateTimeFilter<"gamesession"> | Date | string
+    endTime?: DateTimeNullableFilter<"gamesession"> | Date | string | null
+    betAmount?: IntNullableFilter<"gamesession"> | number | null
+    winAmount?: IntNullableFilter<"gamesession"> | number | null
+    xpEarned?: IntFilter<"gamesession"> | number
+    metadata?: JsonNullableFilter<"gamesession">
+    gameId?: StringFilter<"gamesession"> | string
+    tournamentId?: StringNullableFilter<"gamesession"> | string | null
+    active?: BoolFilter<"gamesession"> | boolean
+    profileId?: StringFilter<"gamesession"> | string
   }
 
   export type tournamententryUpsertWithWhereUniqueWithoutProfileInput = {
@@ -54672,6 +56318,13 @@ export namespace Prisma {
     id?: StringFilter<"Transaction"> | string
     type?: EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
     amount?: IntFilter<"Transaction"> | number
+    amountCredits?: IntFilter<"Transaction"> | number
+    buyerCashtag?: StringNullableFilter<"Transaction"> | string | null
+    buyerUserId?: StringNullableFilter<"Transaction"> | string | null
+    username?: StringNullableFilter<"Transaction"> | string | null
+    cashiername?: StringNullableFilter<"Transaction"> | string | null
+    cashierAvatar?: StringNullableFilter<"Transaction"> | string | null
+    cashierId?: StringNullableFilter<"Transaction"> | string | null
     reference?: StringNullableFilter<"Transaction"> | string | null
     status?: EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
     metadata?: JsonNullableFilter<"Transaction">
@@ -54682,6 +56335,8 @@ export namespace Prisma {
     processedAt?: DateTimeNullableFilter<"Transaction"> | Date | string | null
     gameSessionId?: StringNullableFilter<"Transaction"> | string | null
     profileId?: StringFilter<"Transaction"> | string
+    cashtag?: StringNullableFilter<"Transaction"> | string | null
+    productid?: StringNullableFilter<"Transaction"> | string | null
   }
 
   export type OperatorCreateWithoutGamesInput = {
@@ -54693,11 +56348,12 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string | null
+    acceptedPayments?: OperatorCreateacceptedPaymentsInput | string[]
     balance?: number
     owner: UserCreateNestedOneWithoutOperatorInput
     profiles?: ProfileCreateNestedManyWithoutOperatorInput
+    products?: ProductCreateNestedManyWithoutOperatorInput
     tournaments?: tournamentCreateNestedManyWithoutOperatorInput
-    Product?: ProductCreateNestedManyWithoutOperatorInput
   }
 
   export type OperatorUncheckedCreateWithoutGamesInput = {
@@ -54709,11 +56365,12 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string | null
+    acceptedPayments?: OperatorCreateacceptedPaymentsInput | string[]
     ownerId: string
     balance?: number
     profiles?: ProfileUncheckedCreateNestedManyWithoutOperatorInput
+    products?: ProductUncheckedCreateNestedManyWithoutOperatorInput
     tournaments?: tournamentUncheckedCreateNestedManyWithoutOperatorInput
-    Product?: ProductUncheckedCreateNestedManyWithoutOperatorInput
   }
 
   export type OperatorCreateOrConnectWithoutGamesInput = {
@@ -54803,11 +56460,12 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    acceptedPayments?: OperatorUpdateacceptedPaymentsInput | string[]
     balance?: IntFieldUpdateOperationsInput | number
     owner?: UserUpdateOneRequiredWithoutOperatorNestedInput
     profiles?: ProfileUpdateManyWithoutOperatorNestedInput
+    products?: ProductUpdateManyWithoutOperatorNestedInput
     tournaments?: tournamentUpdateManyWithoutOperatorNestedInput
-    Product?: ProductUpdateManyWithoutOperatorNestedInput
   }
 
   export type OperatorUncheckedUpdateWithoutGamesInput = {
@@ -54819,11 +56477,12 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    acceptedPayments?: OperatorUpdateacceptedPaymentsInput | string[]
     ownerId?: StringFieldUpdateOperationsInput | string
     balance?: IntFieldUpdateOperationsInput | number
     profiles?: ProfileUncheckedUpdateManyWithoutOperatorNestedInput
+    products?: ProductUncheckedUpdateManyWithoutOperatorNestedInput
     tournaments?: tournamentUncheckedUpdateManyWithoutOperatorNestedInput
-    Product?: ProductUncheckedUpdateManyWithoutOperatorNestedInput
   }
 
   export type gamesessionUpsertWithWhereUniqueWithoutGameInput = {
@@ -54888,33 +56547,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    members?: MemberCreateNestedManyWithoutUserInput
-    invitations?: InvitationCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryCreateNestedManyWithoutUserInput
     RainTip?: RainTipCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationCreateNestedManyWithoutUserInput
+    members?: MemberCreateNestedManyWithoutUserInput
     notification?: notificationCreateNestedManyWithoutUserInput
-    operator?: OperatorCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
     userachievement?: userachievementCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -54937,33 +56596,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    members?: MemberUncheckedCreateNestedManyWithoutUserInput
-    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetUncheckedCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryUncheckedCreateNestedManyWithoutUserInput
     RainTip?: RainTipUncheckedCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
+    members?: MemberUncheckedCreateNestedManyWithoutUserInput
     notification?: notificationUncheckedCreateNestedManyWithoutUserInput
-    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryUncheckedCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
     userachievement?: userachievementUncheckedCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoUncheckedCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -55002,33 +56661,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    members?: MemberUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUpdateManyWithoutUserNestedInput
+    members?: MemberUpdateManyWithoutUserNestedInput
     notification?: notificationUpdateManyWithoutUserNestedInput
-    operator?: OperatorUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -55051,57 +56710,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUncheckedUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUncheckedUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUncheckedUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
+    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
     notification?: notificationUncheckedUpdateManyWithoutUserNestedInput
-    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUncheckedUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUncheckedUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type MemberCreateWithoutOrganizationInput = {
-    id?: string
-    role: string
-    createdAt: Date | string
-    user: UserCreateNestedOneWithoutMembersInput
-  }
-
-  export type MemberUncheckedCreateWithoutOrganizationInput = {
-    id?: string
-    userId: string
-    role: string
-    createdAt: Date | string
-  }
-
-  export type MemberCreateOrConnectWithoutOrganizationInput = {
-    where: MemberWhereUniqueInput
-    create: XOR<MemberCreateWithoutOrganizationInput, MemberUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type MemberCreateManyOrganizationInputEnvelope = {
-    data: MemberCreateManyOrganizationInput | MemberCreateManyOrganizationInput[]
-    skipDuplicates?: boolean
+    vipInfo?: VipInfoUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type InvitationCreateWithoutOrganizationInput = {
@@ -55132,20 +56767,28 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type MemberUpsertWithWhereUniqueWithoutOrganizationInput = {
+  export type MemberCreateWithoutOrganizationInput = {
+    id?: string
+    role: string
+    createdAt: Date | string
+    user: UserCreateNestedOneWithoutMembersInput
+  }
+
+  export type MemberUncheckedCreateWithoutOrganizationInput = {
+    id?: string
+    userId: string
+    role: string
+    createdAt: Date | string
+  }
+
+  export type MemberCreateOrConnectWithoutOrganizationInput = {
     where: MemberWhereUniqueInput
-    update: XOR<MemberUpdateWithoutOrganizationInput, MemberUncheckedUpdateWithoutOrganizationInput>
     create: XOR<MemberCreateWithoutOrganizationInput, MemberUncheckedCreateWithoutOrganizationInput>
   }
 
-  export type MemberUpdateWithWhereUniqueWithoutOrganizationInput = {
-    where: MemberWhereUniqueInput
-    data: XOR<MemberUpdateWithoutOrganizationInput, MemberUncheckedUpdateWithoutOrganizationInput>
-  }
-
-  export type MemberUpdateManyWithWhereWithoutOrganizationInput = {
-    where: MemberScalarWhereInput
-    data: XOR<MemberUpdateManyMutationInput, MemberUncheckedUpdateManyWithoutOrganizationInput>
+  export type MemberCreateManyOrganizationInputEnvelope = {
+    data: MemberCreateManyOrganizationInput | MemberCreateManyOrganizationInput[]
+    skipDuplicates?: boolean
   }
 
   export type InvitationUpsertWithWhereUniqueWithoutOrganizationInput = {
@@ -55162,6 +56805,22 @@ export namespace Prisma {
   export type InvitationUpdateManyWithWhereWithoutOrganizationInput = {
     where: InvitationScalarWhereInput
     data: XOR<InvitationUpdateManyMutationInput, InvitationUncheckedUpdateManyWithoutOrganizationInput>
+  }
+
+  export type MemberUpsertWithWhereUniqueWithoutOrganizationInput = {
+    where: MemberWhereUniqueInput
+    update: XOR<MemberUpdateWithoutOrganizationInput, MemberUncheckedUpdateWithoutOrganizationInput>
+    create: XOR<MemberCreateWithoutOrganizationInput, MemberUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type MemberUpdateWithWhereUniqueWithoutOrganizationInput = {
+    where: MemberWhereUniqueInput
+    data: XOR<MemberUpdateWithoutOrganizationInput, MemberUncheckedUpdateWithoutOrganizationInput>
+  }
+
+  export type MemberUpdateManyWithWhereWithoutOrganizationInput = {
+    where: MemberScalarWhereInput
+    data: XOR<MemberUpdateManyMutationInput, MemberUncheckedUpdateManyWithoutOrganizationInput>
   }
 
   export type OrganizationCreateWithoutMembersInput = {
@@ -55209,33 +56868,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    invitations?: InvitationCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryCreateNestedManyWithoutUserInput
     RainTip?: RainTipCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationCreateNestedManyWithoutUserInput
     notification?: notificationCreateNestedManyWithoutUserInput
-    operator?: OperatorCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
     userachievement?: userachievementCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMembersInput = {
@@ -55258,33 +56917,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetUncheckedCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryUncheckedCreateNestedManyWithoutUserInput
     RainTip?: RainTipUncheckedCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
     notification?: notificationUncheckedCreateNestedManyWithoutUserInput
-    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryUncheckedCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
     userachievement?: userachievementUncheckedCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoUncheckedCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMembersInput = {
@@ -55354,33 +57013,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUpdateManyWithoutUserNestedInput
     notification?: notificationUpdateManyWithoutUserNestedInput
-    operator?: OperatorUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMembersInput = {
@@ -55403,33 +57062,136 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUncheckedUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUncheckedUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUncheckedUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
     notification?: notificationUncheckedUpdateManyWithoutUserNestedInput
-    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUncheckedUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUncheckedUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUncheckedUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutInvitationsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    emailVerified?: boolean | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    twoFactorEnabled?: boolean | null
+    role?: string | null
+    banned?: boolean | null
+    banReason?: string | null
+    banExpires?: Date | string | null
+    username: string
+    passwordHash?: string | null
+    totalXp?: number
+    balance?: number
+    isVerified?: boolean
+    active?: boolean
+    lastLogin?: Date | string | null
+    verificationToken?: string | null
+    avatar?: string | null
+    activeProfileId?: string | null
+    gender?: $Enums.Gender | null
+    status?: $Enums.UserStatus | null
+    cashtag?: string | null
+    phpId?: number | null
+    accessToken?: string | null
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
+    RainBet?: RainBetCreateNestedManyWithoutUserInput
+    RainHistory?: RainHistoryCreateNestedManyWithoutUserInput
+    RainTip?: RainTipCreateNestedManyWithoutUserInput
+    RainWinner?: RainWinnerCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    chatmessage?: chatmessageCreateNestedManyWithoutUserInput
+    friendship_friendship_friendIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_friendIdTouserInput
+    friendship_friendship_userIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    members?: MemberCreateNestedManyWithoutUserInput
+    notification?: notificationCreateNestedManyWithoutUserInput
+    tournamententry?: tournamententryCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
+    userachievement?: userachievementCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutInvitationsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    emailVerified?: boolean | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    twoFactorEnabled?: boolean | null
+    role?: string | null
+    banned?: boolean | null
+    banReason?: string | null
+    banExpires?: Date | string | null
+    username: string
+    passwordHash?: string | null
+    totalXp?: number
+    balance?: number
+    isVerified?: boolean
+    active?: boolean
+    lastLogin?: Date | string | null
+    verificationToken?: string | null
+    avatar?: string | null
+    activeProfileId?: string | null
+    gender?: $Enums.Gender | null
+    status?: $Enums.UserStatus | null
+    cashtag?: string | null
+    phpId?: number | null
+    accessToken?: string | null
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
+    RainBet?: RainBetUncheckedCreateNestedManyWithoutUserInput
+    RainHistory?: RainHistoryUncheckedCreateNestedManyWithoutUserInput
+    RainTip?: RainTipUncheckedCreateNestedManyWithoutUserInput
+    RainWinner?: RainWinnerUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    chatmessage?: chatmessageUncheckedCreateNestedManyWithoutUserInput
+    friendship_friendship_friendIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_friendIdTouserInput
+    friendship_friendship_userIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    members?: MemberUncheckedCreateNestedManyWithoutUserInput
+    notification?: notificationUncheckedCreateNestedManyWithoutUserInput
+    tournamententry?: tournamententryUncheckedCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
+    userachievement?: userachievementUncheckedCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutInvitationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutInvitationsInput, UserUncheckedCreateWithoutInvitationsInput>
   }
 
   export type OrganizationCreateWithoutInvitationsInput = {
@@ -55455,140 +57217,6 @@ export namespace Prisma {
   export type OrganizationCreateOrConnectWithoutInvitationsInput = {
     where: OrganizationWhereUniqueInput
     create: XOR<OrganizationCreateWithoutInvitationsInput, OrganizationUncheckedCreateWithoutInvitationsInput>
-  }
-
-  export type UserCreateWithoutInvitationsInput = {
-    id?: string
-    name?: string | null
-    email: string
-    emailVerified?: boolean | null
-    image?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string | null
-    twoFactorEnabled?: boolean | null
-    role?: string | null
-    banned?: boolean | null
-    banReason?: string | null
-    banExpires?: Date | string | null
-    username: string
-    passwordHash?: string | null
-    totalXp?: number
-    balance?: number
-    isVerified?: boolean
-    active?: boolean
-    lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
-    verificationToken?: string | null
-    avatar?: string | null
-    activeProfileId?: string | null
-    vipInfoId?: string | null
-    gender?: $Enums.Gender | null
-    status?: $Enums.UserStatus | null
-    cashtag?: string | null
-    phpId?: number | null
-    accessToken?: string | null
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    members?: MemberCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
-    RainBet?: RainBetCreateNestedManyWithoutUserInput
-    RainHistory?: RainHistoryCreateNestedManyWithoutUserInput
-    RainTip?: RainTipCreateNestedManyWithoutUserInput
-    RainWinner?: RainWinnerCreateNestedManyWithoutUserInput
-    chatmessage?: chatmessageCreateNestedManyWithoutUserInput
-    friendship_friendship_friendIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_friendIdTouserInput
-    friendship_friendship_userIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_userIdTouserInput
-    notification?: notificationCreateNestedManyWithoutUserInput
-    operator?: OperatorCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
-    tournamententry?: tournamententryCreateNestedManyWithoutUserInput
-    userachievement?: userachievementCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutInvitationsInput = {
-    id?: string
-    name?: string | null
-    email: string
-    emailVerified?: boolean | null
-    image?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string | null
-    twoFactorEnabled?: boolean | null
-    role?: string | null
-    banned?: boolean | null
-    banReason?: string | null
-    banExpires?: Date | string | null
-    username: string
-    passwordHash?: string | null
-    totalXp?: number
-    balance?: number
-    isVerified?: boolean
-    active?: boolean
-    lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
-    verificationToken?: string | null
-    avatar?: string | null
-    activeProfileId?: string | null
-    vipInfoId?: string | null
-    gender?: $Enums.Gender | null
-    status?: $Enums.UserStatus | null
-    cashtag?: string | null
-    phpId?: number | null
-    accessToken?: string | null
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    members?: MemberUncheckedCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
-    RainBet?: RainBetUncheckedCreateNestedManyWithoutUserInput
-    RainHistory?: RainHistoryUncheckedCreateNestedManyWithoutUserInput
-    RainTip?: RainTipUncheckedCreateNestedManyWithoutUserInput
-    RainWinner?: RainWinnerUncheckedCreateNestedManyWithoutUserInput
-    chatmessage?: chatmessageUncheckedCreateNestedManyWithoutUserInput
-    friendship_friendship_friendIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_friendIdTouserInput
-    friendship_friendship_userIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_userIdTouserInput
-    notification?: notificationUncheckedCreateNestedManyWithoutUserInput
-    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
-    tournamententry?: tournamententryUncheckedCreateNestedManyWithoutUserInput
-    userachievement?: userachievementUncheckedCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutInvitationsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutInvitationsInput, UserUncheckedCreateWithoutInvitationsInput>
-  }
-
-  export type OrganizationUpsertWithoutInvitationsInput = {
-    update: XOR<OrganizationUpdateWithoutInvitationsInput, OrganizationUncheckedUpdateWithoutInvitationsInput>
-    create: XOR<OrganizationCreateWithoutInvitationsInput, OrganizationUncheckedCreateWithoutInvitationsInput>
-    where?: OrganizationWhereInput
-  }
-
-  export type OrganizationUpdateToOneWithWhereWithoutInvitationsInput = {
-    where?: OrganizationWhereInput
-    data: XOR<OrganizationUpdateWithoutInvitationsInput, OrganizationUncheckedUpdateWithoutInvitationsInput>
-  }
-
-  export type OrganizationUpdateWithoutInvitationsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: NullableStringFieldUpdateOperationsInput | string | null
-    logo?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    metadata?: NullableStringFieldUpdateOperationsInput | string | null
-    members?: MemberUpdateManyWithoutOrganizationNestedInput
-  }
-
-  export type OrganizationUncheckedUpdateWithoutInvitationsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: NullableStringFieldUpdateOperationsInput | string | null
-    logo?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    metadata?: NullableStringFieldUpdateOperationsInput | string | null
-    members?: MemberUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
   export type UserUpsertWithoutInvitationsInput = {
@@ -55622,33 +57250,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    members?: MemberUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    members?: MemberUpdateManyWithoutUserNestedInput
     notification?: notificationUpdateManyWithoutUserNestedInput
-    operator?: OperatorUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInvitationsInput = {
@@ -55671,33 +57299,64 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUncheckedUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUncheckedUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUncheckedUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
     notification?: notificationUncheckedUpdateManyWithoutUserNestedInput
-    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUncheckedUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUncheckedUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUncheckedUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type OrganizationUpsertWithoutInvitationsInput = {
+    update: XOR<OrganizationUpdateWithoutInvitationsInput, OrganizationUncheckedUpdateWithoutInvitationsInput>
+    create: XOR<OrganizationCreateWithoutInvitationsInput, OrganizationUncheckedCreateWithoutInvitationsInput>
+    where?: OrganizationWhereInput
+  }
+
+  export type OrganizationUpdateToOneWithWhereWithoutInvitationsInput = {
+    where?: OrganizationWhereInput
+    data: XOR<OrganizationUpdateWithoutInvitationsInput, OrganizationUncheckedUpdateWithoutInvitationsInput>
+  }
+
+  export type OrganizationUpdateWithoutInvitationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    members?: MemberUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type OrganizationUncheckedUpdateWithoutInvitationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    members?: MemberUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
   export type UserCreateWithoutTwofactorsInput = {
@@ -55720,33 +57379,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    members?: MemberCreateNestedManyWithoutUserInput
-    invitations?: InvitationCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryCreateNestedManyWithoutUserInput
     RainTip?: RainTipCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationCreateNestedManyWithoutUserInput
+    members?: MemberCreateNestedManyWithoutUserInput
     notification?: notificationCreateNestedManyWithoutUserInput
-    operator?: OperatorCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryCreateNestedManyWithoutUserInput
     userachievement?: userachievementCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTwofactorsInput = {
@@ -55769,33 +57428,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    members?: MemberUncheckedCreateNestedManyWithoutUserInput
-    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetUncheckedCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryUncheckedCreateNestedManyWithoutUserInput
     RainTip?: RainTipUncheckedCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
+    members?: MemberUncheckedCreateNestedManyWithoutUserInput
     notification?: notificationUncheckedCreateNestedManyWithoutUserInput
-    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryUncheckedCreateNestedManyWithoutUserInput
     userachievement?: userachievementUncheckedCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoUncheckedCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTwofactorsInput = {
@@ -55834,33 +57493,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    members?: MemberUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUpdateManyWithoutUserNestedInput
+    members?: MemberUpdateManyWithoutUserNestedInput
     notification?: notificationUpdateManyWithoutUserNestedInput
-    operator?: OperatorUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTwofactorsInput = {
@@ -55883,33 +57542,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUncheckedUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUncheckedUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUncheckedUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
+    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
     notification?: notificationUncheckedUpdateManyWithoutUserNestedInput
-    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUncheckedUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUncheckedUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUncheckedUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type chatroomCreateWithoutChatmessageInput = {
@@ -55953,33 +57612,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    members?: MemberCreateNestedManyWithoutUserInput
-    invitations?: InvitationCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryCreateNestedManyWithoutUserInput
     RainTip?: RainTipCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationCreateNestedManyWithoutUserInput
+    members?: MemberCreateNestedManyWithoutUserInput
     notification?: notificationCreateNestedManyWithoutUserInput
-    operator?: OperatorCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
     userachievement?: userachievementCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutChatmessageInput = {
@@ -56002,33 +57661,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    members?: MemberUncheckedCreateNestedManyWithoutUserInput
-    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetUncheckedCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryUncheckedCreateNestedManyWithoutUserInput
     RainTip?: RainTipUncheckedCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
+    members?: MemberUncheckedCreateNestedManyWithoutUserInput
     notification?: notificationUncheckedCreateNestedManyWithoutUserInput
-    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryUncheckedCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
     userachievement?: userachievementUncheckedCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoUncheckedCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutChatmessageInput = {
@@ -56094,33 +57753,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    members?: MemberUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUpdateManyWithoutUserNestedInput
+    members?: MemberUpdateManyWithoutUserNestedInput
     notification?: notificationUpdateManyWithoutUserNestedInput
-    operator?: OperatorUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutChatmessageInput = {
@@ -56143,33 +57802,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUncheckedUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUncheckedUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUncheckedUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
+    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
     notification?: notificationUncheckedUpdateManyWithoutUserNestedInput
-    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUncheckedUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUncheckedUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUncheckedUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type chatmessageCreateWithoutChatroomInput = {
@@ -56312,33 +57971,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    members?: MemberCreateNestedManyWithoutUserInput
-    invitations?: InvitationCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryCreateNestedManyWithoutUserInput
     RainTip?: RainTipCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageCreateNestedManyWithoutUserInput
     friendship_friendship_userIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationCreateNestedManyWithoutUserInput
+    members?: MemberCreateNestedManyWithoutUserInput
     notification?: notificationCreateNestedManyWithoutUserInput
-    operator?: OperatorCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
     userachievement?: userachievementCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFriendship_friendship_friendIdTouserInput = {
@@ -56361,33 +58020,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    members?: MemberUncheckedCreateNestedManyWithoutUserInput
-    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetUncheckedCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryUncheckedCreateNestedManyWithoutUserInput
     RainTip?: RainTipUncheckedCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_userIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
+    members?: MemberUncheckedCreateNestedManyWithoutUserInput
     notification?: notificationUncheckedCreateNestedManyWithoutUserInput
-    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryUncheckedCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
     userachievement?: userachievementUncheckedCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoUncheckedCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFriendship_friendship_friendIdTouserInput = {
@@ -56415,33 +58074,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    members?: MemberCreateNestedManyWithoutUserInput
-    invitations?: InvitationCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryCreateNestedManyWithoutUserInput
     RainTip?: RainTipCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_friendIdTouserInput
+    invitations?: InvitationCreateNestedManyWithoutUserInput
+    members?: MemberCreateNestedManyWithoutUserInput
     notification?: notificationCreateNestedManyWithoutUserInput
-    operator?: OperatorCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
     userachievement?: userachievementCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFriendship_friendship_userIdTouserInput = {
@@ -56464,33 +58123,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    members?: MemberUncheckedCreateNestedManyWithoutUserInput
-    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetUncheckedCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryUncheckedCreateNestedManyWithoutUserInput
     RainTip?: RainTipUncheckedCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_friendIdTouserInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
+    members?: MemberUncheckedCreateNestedManyWithoutUserInput
     notification?: notificationUncheckedCreateNestedManyWithoutUserInput
-    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryUncheckedCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
     userachievement?: userachievementUncheckedCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoUncheckedCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFriendship_friendship_userIdTouserInput = {
@@ -56529,33 +58188,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    members?: MemberUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUpdateManyWithoutUserNestedInput
     friendship_friendship_userIdTouser?: friendshipUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUpdateManyWithoutUserNestedInput
+    members?: MemberUpdateManyWithoutUserNestedInput
     notification?: notificationUpdateManyWithoutUserNestedInput
-    operator?: OperatorUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFriendship_friendship_friendIdTouserInput = {
@@ -56578,33 +58237,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUncheckedUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUncheckedUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUncheckedUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_userIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
+    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
     notification?: notificationUncheckedUpdateManyWithoutUserNestedInput
-    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUncheckedUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUncheckedUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUncheckedUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutFriendship_friendship_userIdTouserInput = {
@@ -56638,33 +58297,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    members?: MemberUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
+    invitations?: InvitationUpdateManyWithoutUserNestedInput
+    members?: MemberUpdateManyWithoutUserNestedInput
     notification?: notificationUpdateManyWithoutUserNestedInput
-    operator?: OperatorUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFriendship_friendship_userIdTouserInput = {
@@ -56687,33 +58346,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUncheckedUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUncheckedUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUncheckedUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
+    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
     notification?: notificationUncheckedUpdateManyWithoutUserNestedInput
-    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUncheckedUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUncheckedUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUncheckedUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type chatroomCreateWithoutGamesessionInput = {
@@ -56785,10 +58444,10 @@ export namespace Prisma {
     providerId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    category?: $Enums.GameCategory
     jackpotGroupId?: string | null
     active?: boolean
     password?: string | null
+    category?: $Enums.GameCategory
     operator?: OperatorCreateNestedOneWithoutGamesInput
     tournamentgame?: tournamentgameCreateNestedManyWithoutGameInput
   }
@@ -56837,10 +58496,10 @@ export namespace Prisma {
     providerId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    category?: $Enums.GameCategory
     jackpotGroupId?: string | null
     active?: boolean
     password?: string | null
+    category?: $Enums.GameCategory
     tournamentgame?: tournamentgameUncheckedCreateNestedManyWithoutGameInput
   }
 
@@ -56928,7 +58587,14 @@ export namespace Prisma {
   export type TransactionCreateWithoutGamesessionInput = {
     id?: string
     type: $Enums.TransactionType
-    amount: number
+    amount?: number
+    amountCredits?: number
+    buyerCashtag?: string | null
+    buyerUserId?: string | null
+    username?: string | null
+    cashiername?: string | null
+    cashierAvatar?: string | null
+    cashierId?: string | null
     reference?: string | null
     status?: $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -56937,14 +58603,22 @@ export namespace Prisma {
     paymentDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     processedAt?: Date | string | null
+    cashtag?: string | null
     profile: ProfileCreateNestedOneWithoutTransactionsInput
-    Product?: ProductCreateNestedManyWithoutTransactionsInput
+    product?: ProductCreateNestedOneWithoutTransactionsInput
   }
 
   export type TransactionUncheckedCreateWithoutGamesessionInput = {
     id?: string
     type: $Enums.TransactionType
-    amount: number
+    amount?: number
+    amountCredits?: number
+    buyerCashtag?: string | null
+    buyerUserId?: string | null
+    username?: string | null
+    cashiername?: string | null
+    cashierAvatar?: string | null
+    cashierId?: string | null
     reference?: string | null
     status?: $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -56954,7 +58628,8 @@ export namespace Prisma {
     createdAt?: Date | string
     processedAt?: Date | string | null
     profileId: string
-    Product?: ProductUncheckedCreateNestedManyWithoutTransactionsInput
+    cashtag?: string | null
+    productid?: string | null
   }
 
   export type TransactionCreateOrConnectWithoutGamesessionInput = {
@@ -57048,10 +58723,10 @@ export namespace Prisma {
     providerId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     jackpotGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     operator?: OperatorUpdateOneWithoutGamesNestedInput
     tournamentgame?: tournamentgameUpdateManyWithoutGameNestedInput
   }
@@ -57100,10 +58775,10 @@ export namespace Prisma {
     providerId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     jackpotGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     tournamentgame?: tournamentgameUncheckedUpdateManyWithoutGameNestedInput
   }
 
@@ -57211,7 +58886,7 @@ export namespace Prisma {
     data: XOR<TransactionUpdateManyMutationInput, TransactionUncheckedUpdateManyWithoutGamesessionInput>
   }
 
-  export type OperatorCreateWithoutProductInput = {
+  export type OperatorCreateWithoutProductsInput = {
     id?: string
     name: string
     slug: string
@@ -57220,14 +58895,15 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string | null
+    acceptedPayments?: OperatorCreateacceptedPaymentsInput | string[]
     balance?: number
     owner: UserCreateNestedOneWithoutOperatorInput
-    games?: GameCreateNestedManyWithoutOperatorInput
     profiles?: ProfileCreateNestedManyWithoutOperatorInput
+    games?: GameCreateNestedManyWithoutOperatorInput
     tournaments?: tournamentCreateNestedManyWithoutOperatorInput
   }
 
-  export type OperatorUncheckedCreateWithoutProductInput = {
+  export type OperatorUncheckedCreateWithoutProductsInput = {
     id?: string
     name: string
     slug: string
@@ -57236,22 +58912,30 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string | null
+    acceptedPayments?: OperatorCreateacceptedPaymentsInput | string[]
     ownerId: string
     balance?: number
-    games?: GameUncheckedCreateNestedManyWithoutOperatorInput
     profiles?: ProfileUncheckedCreateNestedManyWithoutOperatorInput
+    games?: GameUncheckedCreateNestedManyWithoutOperatorInput
     tournaments?: tournamentUncheckedCreateNestedManyWithoutOperatorInput
   }
 
-  export type OperatorCreateOrConnectWithoutProductInput = {
+  export type OperatorCreateOrConnectWithoutProductsInput = {
     where: OperatorWhereUniqueInput
-    create: XOR<OperatorCreateWithoutProductInput, OperatorUncheckedCreateWithoutProductInput>
+    create: XOR<OperatorCreateWithoutProductsInput, OperatorUncheckedCreateWithoutProductsInput>
   }
 
   export type TransactionCreateWithoutProductInput = {
     id?: string
     type: $Enums.TransactionType
-    amount: number
+    amount?: number
+    amountCredits?: number
+    buyerCashtag?: string | null
+    buyerUserId?: string | null
+    username?: string | null
+    cashiername?: string | null
+    cashierAvatar?: string | null
+    cashierId?: string | null
     reference?: string | null
     status?: $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -57260,6 +58944,7 @@ export namespace Prisma {
     paymentDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     processedAt?: Date | string | null
+    cashtag?: string | null
     gamesession?: gamesessionCreateNestedOneWithoutTransactionInput
     profile: ProfileCreateNestedOneWithoutTransactionsInput
   }
@@ -57267,7 +58952,14 @@ export namespace Prisma {
   export type TransactionUncheckedCreateWithoutProductInput = {
     id?: string
     type: $Enums.TransactionType
-    amount: number
+    amount?: number
+    amountCredits?: number
+    buyerCashtag?: string | null
+    buyerUserId?: string | null
+    username?: string | null
+    cashiername?: string | null
+    cashierAvatar?: string | null
+    cashierId?: string | null
     reference?: string | null
     status?: $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -57278,6 +58970,7 @@ export namespace Prisma {
     processedAt?: Date | string | null
     gameSessionId?: string | null
     profileId: string
+    cashtag?: string | null
   }
 
   export type TransactionCreateOrConnectWithoutProductInput = {
@@ -57285,18 +58978,23 @@ export namespace Prisma {
     create: XOR<TransactionCreateWithoutProductInput, TransactionUncheckedCreateWithoutProductInput>
   }
 
-  export type OperatorUpsertWithoutProductInput = {
-    update: XOR<OperatorUpdateWithoutProductInput, OperatorUncheckedUpdateWithoutProductInput>
-    create: XOR<OperatorCreateWithoutProductInput, OperatorUncheckedCreateWithoutProductInput>
+  export type TransactionCreateManyProductInputEnvelope = {
+    data: TransactionCreateManyProductInput | TransactionCreateManyProductInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type OperatorUpsertWithoutProductsInput = {
+    update: XOR<OperatorUpdateWithoutProductsInput, OperatorUncheckedUpdateWithoutProductsInput>
+    create: XOR<OperatorCreateWithoutProductsInput, OperatorUncheckedCreateWithoutProductsInput>
     where?: OperatorWhereInput
   }
 
-  export type OperatorUpdateToOneWithWhereWithoutProductInput = {
+  export type OperatorUpdateToOneWithWhereWithoutProductsInput = {
     where?: OperatorWhereInput
-    data: XOR<OperatorUpdateWithoutProductInput, OperatorUncheckedUpdateWithoutProductInput>
+    data: XOR<OperatorUpdateWithoutProductsInput, OperatorUncheckedUpdateWithoutProductsInput>
   }
 
-  export type OperatorUpdateWithoutProductInput = {
+  export type OperatorUpdateWithoutProductsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
@@ -57305,14 +59003,15 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    acceptedPayments?: OperatorUpdateacceptedPaymentsInput | string[]
     balance?: IntFieldUpdateOperationsInput | number
     owner?: UserUpdateOneRequiredWithoutOperatorNestedInput
-    games?: GameUpdateManyWithoutOperatorNestedInput
     profiles?: ProfileUpdateManyWithoutOperatorNestedInput
+    games?: GameUpdateManyWithoutOperatorNestedInput
     tournaments?: tournamentUpdateManyWithoutOperatorNestedInput
   }
 
-  export type OperatorUncheckedUpdateWithoutProductInput = {
+  export type OperatorUncheckedUpdateWithoutProductsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
@@ -57321,10 +59020,11 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    acceptedPayments?: OperatorUpdateacceptedPaymentsInput | string[]
     ownerId?: StringFieldUpdateOperationsInput | string
     balance?: IntFieldUpdateOperationsInput | number
-    games?: GameUncheckedUpdateManyWithoutOperatorNestedInput
     profiles?: ProfileUncheckedUpdateManyWithoutOperatorNestedInput
+    games?: GameUncheckedUpdateManyWithoutOperatorNestedInput
     tournaments?: tournamentUncheckedUpdateManyWithoutOperatorNestedInput
   }
 
@@ -57364,33 +59064,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    members?: MemberCreateNestedManyWithoutUserInput
-    invitations?: InvitationCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryCreateNestedManyWithoutUserInput
     RainTip?: RainTipCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_userIdTouserInput
-    operator?: OperatorCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
+    invitations?: InvitationCreateNestedManyWithoutUserInput
+    members?: MemberCreateNestedManyWithoutUserInput
     tournamententry?: tournamententryCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
     userachievement?: userachievementCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationInput = {
@@ -57413,33 +59113,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    members?: MemberUncheckedCreateNestedManyWithoutUserInput
-    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetUncheckedCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryUncheckedCreateNestedManyWithoutUserInput
     RainTip?: RainTipUncheckedCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_userIdTouserInput
-    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
+    members?: MemberUncheckedCreateNestedManyWithoutUserInput
     tournamententry?: tournamententryUncheckedCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
     userachievement?: userachievementUncheckedCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoUncheckedCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationInput = {
@@ -57478,33 +59178,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    members?: MemberUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUpdateManyWithoutUser_friendship_userIdTouserNestedInput
-    operator?: OperatorUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
+    invitations?: InvitationUpdateManyWithoutUserNestedInput
+    members?: MemberUpdateManyWithoutUserNestedInput
     tournamententry?: tournamententryUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationInput = {
@@ -57527,33 +59227,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUncheckedUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUncheckedUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUncheckedUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_userIdTouserNestedInput
-    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
+    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
     tournamententry?: tournamententryUncheckedUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUncheckedUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUncheckedUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type gamesessionCreateWithoutTournamentInput = {
@@ -57605,11 +59305,12 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string | null
+    acceptedPayments?: OperatorCreateacceptedPaymentsInput | string[]
     balance?: number
     owner: UserCreateNestedOneWithoutOperatorInput
-    games?: GameCreateNestedManyWithoutOperatorInput
     profiles?: ProfileCreateNestedManyWithoutOperatorInput
-    Product?: ProductCreateNestedManyWithoutOperatorInput
+    games?: GameCreateNestedManyWithoutOperatorInput
+    products?: ProductCreateNestedManyWithoutOperatorInput
   }
 
   export type OperatorUncheckedCreateWithoutTournamentsInput = {
@@ -57621,11 +59322,12 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string | null
+    acceptedPayments?: OperatorCreateacceptedPaymentsInput | string[]
     ownerId: string
     balance?: number
-    games?: GameUncheckedCreateNestedManyWithoutOperatorInput
     profiles?: ProfileUncheckedCreateNestedManyWithoutOperatorInput
-    Product?: ProductUncheckedCreateNestedManyWithoutOperatorInput
+    games?: GameUncheckedCreateNestedManyWithoutOperatorInput
+    products?: ProductUncheckedCreateNestedManyWithoutOperatorInput
   }
 
   export type OperatorCreateOrConnectWithoutTournamentsInput = {
@@ -57721,11 +59423,12 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    acceptedPayments?: OperatorUpdateacceptedPaymentsInput | string[]
     balance?: IntFieldUpdateOperationsInput | number
     owner?: UserUpdateOneRequiredWithoutOperatorNestedInput
-    games?: GameUpdateManyWithoutOperatorNestedInput
     profiles?: ProfileUpdateManyWithoutOperatorNestedInput
-    Product?: ProductUpdateManyWithoutOperatorNestedInput
+    games?: GameUpdateManyWithoutOperatorNestedInput
+    products?: ProductUpdateManyWithoutOperatorNestedInput
   }
 
   export type OperatorUncheckedUpdateWithoutTournamentsInput = {
@@ -57737,11 +59440,12 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    acceptedPayments?: OperatorUpdateacceptedPaymentsInput | string[]
     ownerId?: StringFieldUpdateOperationsInput | string
     balance?: IntFieldUpdateOperationsInput | number
-    games?: GameUncheckedUpdateManyWithoutOperatorNestedInput
     profiles?: ProfileUncheckedUpdateManyWithoutOperatorNestedInput
-    Product?: ProductUncheckedUpdateManyWithoutOperatorNestedInput
+    games?: GameUncheckedUpdateManyWithoutOperatorNestedInput
+    products?: ProductUncheckedUpdateManyWithoutOperatorNestedInput
   }
 
   export type tournamententryUpsertWithWhereUniqueWithoutTournamentInput = {
@@ -57786,9 +59490,9 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     phpId?: number | null
     currency?: string
-    gamesession?: gamesessionCreateNestedManyWithoutProfileInput
     operator: OperatorCreateNestedOneWithoutProfilesInput
     user_profile_userIdTouser: UserCreateNestedOneWithoutActiveProfileInput
+    gamesession?: gamesessionCreateNestedManyWithoutProfileInput
     transactions?: TransactionCreateNestedManyWithoutProfileInput
   }
 
@@ -57872,33 +59576,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    members?: MemberCreateNestedManyWithoutUserInput
-    invitations?: InvitationCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryCreateNestedManyWithoutUserInput
     RainTip?: RainTipCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationCreateNestedManyWithoutUserInput
+    members?: MemberCreateNestedManyWithoutUserInput
     notification?: notificationCreateNestedManyWithoutUserInput
-    operator?: OperatorCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
+    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
     userachievement?: userachievementCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTournamententryInput = {
@@ -57921,33 +59625,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    members?: MemberUncheckedCreateNestedManyWithoutUserInput
-    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetUncheckedCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryUncheckedCreateNestedManyWithoutUserInput
     RainTip?: RainTipUncheckedCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
+    members?: MemberUncheckedCreateNestedManyWithoutUserInput
     notification?: notificationUncheckedCreateNestedManyWithoutUserInput
-    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
+    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
     userachievement?: userachievementUncheckedCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoUncheckedCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTournamententryInput = {
@@ -57976,9 +59680,9 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     currency?: StringFieldUpdateOperationsInput | string
-    gamesession?: gamesessionUpdateManyWithoutProfileNestedInput
     operator?: OperatorUpdateOneRequiredWithoutProfilesNestedInput
     user_profile_userIdTouser?: UserUpdateOneRequiredWithoutActiveProfileNestedInput
+    gamesession?: gamesessionUpdateManyWithoutProfileNestedInput
     transactions?: TransactionUpdateManyWithoutProfileNestedInput
   }
 
@@ -58074,33 +59778,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    members?: MemberUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUpdateManyWithoutUserNestedInput
+    members?: MemberUpdateManyWithoutUserNestedInput
     notification?: notificationUpdateManyWithoutUserNestedInput
-    operator?: OperatorUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
+    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamententryInput = {
@@ -58123,33 +59827,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUncheckedUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUncheckedUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUncheckedUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
+    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
     notification?: notificationUncheckedUpdateManyWithoutUserNestedInput
-    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
+    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUncheckedUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUncheckedUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type GameCreateWithoutTournamentgameInput = {
@@ -58195,10 +59899,10 @@ export namespace Prisma {
     providerId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    category?: $Enums.GameCategory
     jackpotGroupId?: string | null
     active?: boolean
     password?: string | null
+    category?: $Enums.GameCategory
     operator?: OperatorCreateNestedOneWithoutGamesInput
     gamesession?: gamesessionCreateNestedManyWithoutGameInput
   }
@@ -58247,10 +59951,10 @@ export namespace Prisma {
     providerId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    category?: $Enums.GameCategory
     jackpotGroupId?: string | null
     active?: boolean
     password?: string | null
+    category?: $Enums.GameCategory
     gamesession?: gamesessionUncheckedCreateNestedManyWithoutGameInput
   }
 
@@ -58352,10 +60056,10 @@ export namespace Prisma {
     providerId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     jackpotGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     operator?: OperatorUpdateOneWithoutGamesNestedInput
     gamesession?: gamesessionUpdateManyWithoutGameNestedInput
   }
@@ -58404,10 +60108,10 @@ export namespace Prisma {
     providerId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     jackpotGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     gamesession?: gamesessionUncheckedUpdateManyWithoutGameNestedInput
   }
 
@@ -58501,9 +60205,9 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     phpId?: number | null
     currency?: string
-    gamesession?: gamesessionCreateNestedManyWithoutProfileInput
     operator: OperatorCreateNestedOneWithoutProfilesInput
     user_profile_userIdTouser: UserCreateNestedOneWithoutActiveProfileInput
+    gamesession?: gamesessionCreateNestedManyWithoutProfileInput
     tournamententry?: tournamententryCreateNestedManyWithoutProfileInput
   }
 
@@ -58544,8 +60248,8 @@ export namespace Prisma {
     isPromo?: boolean | null
     totalDiscountInCents: number
     createdAt?: Date | string
-    updatedAt?: Date | string
-    operator?: OperatorCreateNestedOneWithoutProductInput
+    updatedAt?: Date | string | null
+    operator?: OperatorCreateNestedOneWithoutProductsInput
   }
 
   export type ProductUncheckedCreateWithoutTransactionsInput = {
@@ -58565,7 +60269,7 @@ export namespace Prisma {
     totalDiscountInCents: number
     shopId?: string | null
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt?: Date | string | null
   }
 
   export type ProductCreateOrConnectWithoutTransactionsInput = {
@@ -58635,9 +60339,9 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     currency?: StringFieldUpdateOperationsInput | string
-    gamesession?: gamesessionUpdateManyWithoutProfileNestedInput
     operator?: OperatorUpdateOneRequiredWithoutProfilesNestedInput
     user_profile_userIdTouser?: UserUpdateOneRequiredWithoutActiveProfileNestedInput
+    gamesession?: gamesessionUpdateManyWithoutProfileNestedInput
     tournamententry?: tournamententryUpdateManyWithoutProfileNestedInput
   }
 
@@ -58657,20 +60361,55 @@ export namespace Prisma {
     tournamententry?: tournamententryUncheckedUpdateManyWithoutProfileNestedInput
   }
 
-  export type ProductUpsertWithWhereUniqueWithoutTransactionsInput = {
-    where: ProductWhereUniqueInput
+  export type ProductUpsertWithoutTransactionsInput = {
     update: XOR<ProductUpdateWithoutTransactionsInput, ProductUncheckedUpdateWithoutTransactionsInput>
     create: XOR<ProductCreateWithoutTransactionsInput, ProductUncheckedCreateWithoutTransactionsInput>
+    where?: ProductWhereInput
   }
 
-  export type ProductUpdateWithWhereUniqueWithoutTransactionsInput = {
-    where: ProductWhereUniqueInput
+  export type ProductUpdateToOneWithWhereWithoutTransactionsInput = {
+    where?: ProductWhereInput
     data: XOR<ProductUpdateWithoutTransactionsInput, ProductUncheckedUpdateWithoutTransactionsInput>
   }
 
-  export type ProductUpdateManyWithWhereWithoutTransactionsInput = {
-    where: ProductScalarWhereInput
-    data: XOR<ProductUpdateManyMutationInput, ProductUncheckedUpdateManyWithoutTransactionsInput>
+  export type ProductUpdateWithoutTransactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    bonusCode?: NullableStringFieldUpdateOperationsInput | string | null
+    bonusTotalInCredits?: NullableIntFieldUpdateOperationsInput | number | null
+    priceInCents?: IntFieldUpdateOperationsInput | number
+    amountToReceiveInCredits?: IntFieldUpdateOperationsInput | number
+    bestValue?: IntFieldUpdateOperationsInput | number
+    discountInCents?: IntFieldUpdateOperationsInput | number
+    bonusSpins?: NullableIntFieldUpdateOperationsInput | number | null
+    isPromo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    totalDiscountInCents?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUpdateOneWithoutProductsNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutTransactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    bonusCode?: NullableStringFieldUpdateOperationsInput | string | null
+    bonusTotalInCredits?: NullableIntFieldUpdateOperationsInput | number | null
+    priceInCents?: IntFieldUpdateOperationsInput | number
+    amountToReceiveInCredits?: IntFieldUpdateOperationsInput | number
+    bestValue?: IntFieldUpdateOperationsInput | number
+    discountInCents?: IntFieldUpdateOperationsInput | number
+    bonusSpins?: NullableIntFieldUpdateOperationsInput | number | null
+    isPromo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    totalDiscountInCents?: IntFieldUpdateOperationsInput | number
+    shopId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type achievementCreateWithoutUserachievementInput = {
@@ -58720,33 +60459,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    members?: MemberCreateNestedManyWithoutUserInput
-    invitations?: InvitationCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryCreateNestedManyWithoutUserInput
     RainTip?: RainTipCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationCreateNestedManyWithoutUserInput
+    members?: MemberCreateNestedManyWithoutUserInput
     notification?: notificationCreateNestedManyWithoutUserInput
-    operator?: OperatorCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserachievementInput = {
@@ -58769,33 +60508,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    members?: MemberUncheckedCreateNestedManyWithoutUserInput
-    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetUncheckedCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryUncheckedCreateNestedManyWithoutUserInput
     RainTip?: RainTipUncheckedCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
+    members?: MemberUncheckedCreateNestedManyWithoutUserInput
     notification?: notificationUncheckedCreateNestedManyWithoutUserInput
-    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryUncheckedCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoUncheckedCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserachievementInput = {
@@ -58867,33 +60606,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    members?: MemberUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUpdateManyWithoutUserNestedInput
+    members?: MemberUpdateManyWithoutUserNestedInput
     notification?: notificationUpdateManyWithoutUserNestedInput
-    operator?: OperatorUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserachievementInput = {
@@ -58916,33 +60655,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUncheckedUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUncheckedUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUncheckedUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
+    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
     notification?: notificationUncheckedUpdateManyWithoutUserNestedInput
-    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUncheckedUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUncheckedUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type RainHistoryCreateWithoutRainBetInput = {
@@ -58990,33 +60729,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    members?: MemberCreateNestedManyWithoutUserInput
-    invitations?: InvitationCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainHistory?: RainHistoryCreateNestedManyWithoutUserInput
     RainTip?: RainTipCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationCreateNestedManyWithoutUserInput
+    members?: MemberCreateNestedManyWithoutUserInput
     notification?: notificationCreateNestedManyWithoutUserInput
-    operator?: OperatorCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
     userachievement?: userachievementCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRainBetInput = {
@@ -59039,33 +60778,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    members?: MemberUncheckedCreateNestedManyWithoutUserInput
-    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainHistory?: RainHistoryUncheckedCreateNestedManyWithoutUserInput
     RainTip?: RainTipUncheckedCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
+    members?: MemberUncheckedCreateNestedManyWithoutUserInput
     notification?: notificationUncheckedCreateNestedManyWithoutUserInput
-    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryUncheckedCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
     userachievement?: userachievementUncheckedCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoUncheckedCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRainBetInput = {
@@ -59135,33 +60874,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    members?: MemberUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainHistory?: RainHistoryUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUpdateManyWithoutUserNestedInput
+    members?: MemberUpdateManyWithoutUserNestedInput
     notification?: notificationUpdateManyWithoutUserNestedInput
-    operator?: OperatorUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRainBetInput = {
@@ -59184,33 +60923,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainHistory?: RainHistoryUncheckedUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUncheckedUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
+    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
     notification?: notificationUncheckedUpdateManyWithoutUserNestedInput
-    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUncheckedUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUncheckedUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUncheckedUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type RainBetCreateWithoutRainHistoryInput = {
@@ -59261,33 +61000,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    members?: MemberCreateNestedManyWithoutUserInput
-    invitations?: InvitationCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetCreateNestedManyWithoutUserInput
     RainTip?: RainTipCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationCreateNestedManyWithoutUserInput
+    members?: MemberCreateNestedManyWithoutUserInput
     notification?: notificationCreateNestedManyWithoutUserInput
-    operator?: OperatorCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
     userachievement?: userachievementCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRainHistoryInput = {
@@ -59310,33 +61049,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    members?: MemberUncheckedCreateNestedManyWithoutUserInput
-    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetUncheckedCreateNestedManyWithoutUserInput
     RainTip?: RainTipUncheckedCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
+    members?: MemberUncheckedCreateNestedManyWithoutUserInput
     notification?: notificationUncheckedCreateNestedManyWithoutUserInput
-    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryUncheckedCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
     userachievement?: userachievementUncheckedCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoUncheckedCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRainHistoryInput = {
@@ -59439,33 +61178,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    members?: MemberUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUpdateManyWithoutUserNestedInput
+    members?: MemberUpdateManyWithoutUserNestedInput
     notification?: notificationUpdateManyWithoutUserNestedInput
-    operator?: OperatorUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRainHistoryInput = {
@@ -59488,33 +61227,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUncheckedUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUncheckedUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
+    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
     notification?: notificationUncheckedUpdateManyWithoutUserNestedInput
-    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUncheckedUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUncheckedUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUncheckedUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type RainTipUpsertWithWhereUniqueWithoutRainHistoryInput = {
@@ -59594,33 +61333,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    members?: MemberCreateNestedManyWithoutUserInput
-    invitations?: InvitationCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationCreateNestedManyWithoutUserInput
+    members?: MemberCreateNestedManyWithoutUserInput
     notification?: notificationCreateNestedManyWithoutUserInput
-    operator?: OperatorCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
     userachievement?: userachievementCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRainTipInput = {
@@ -59643,33 +61382,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    members?: MemberUncheckedCreateNestedManyWithoutUserInput
-    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetUncheckedCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryUncheckedCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
+    members?: MemberUncheckedCreateNestedManyWithoutUserInput
     notification?: notificationUncheckedCreateNestedManyWithoutUserInput
-    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryUncheckedCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
     userachievement?: userachievementUncheckedCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoUncheckedCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRainTipInput = {
@@ -59739,33 +61478,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    members?: MemberUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUpdateManyWithoutUserNestedInput
+    members?: MemberUpdateManyWithoutUserNestedInput
     notification?: notificationUpdateManyWithoutUserNestedInput
-    operator?: OperatorUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRainTipInput = {
@@ -59788,33 +61527,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUncheckedUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUncheckedUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
+    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
     notification?: notificationUncheckedUpdateManyWithoutUserNestedInput
-    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUncheckedUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUncheckedUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUncheckedUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type RainHistoryCreateWithoutRainWinnerInput = {
@@ -59862,33 +61601,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    members?: MemberCreateNestedManyWithoutUserInput
-    invitations?: InvitationCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryCreateNestedManyWithoutUserInput
     RainTip?: RainTipCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationCreateNestedManyWithoutUserInput
+    members?: MemberCreateNestedManyWithoutUserInput
     notification?: notificationCreateNestedManyWithoutUserInput
-    operator?: OperatorCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
     userachievement?: userachievementCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRainWinnerInput = {
@@ -59911,33 +61650,33 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    members?: MemberUncheckedCreateNestedManyWithoutUserInput
-    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetUncheckedCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryUncheckedCreateNestedManyWithoutUserInput
     RainTip?: RainTipUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
+    members?: MemberUncheckedCreateNestedManyWithoutUserInput
     notification?: notificationUncheckedCreateNestedManyWithoutUserInput
-    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryUncheckedCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
     userachievement?: userachievementUncheckedCreateNestedManyWithoutUserInput
-    vipInfo?: VipInfoUncheckedCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRainWinnerInput = {
@@ -60007,33 +61746,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    members?: MemberUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUpdateManyWithoutUserNestedInput
+    members?: MemberUpdateManyWithoutUserNestedInput
     notification?: notificationUpdateManyWithoutUserNestedInput
-    operator?: OperatorUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRainWinnerInput = {
@@ -60056,33 +61795,33 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUncheckedUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUncheckedUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
+    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
     notification?: notificationUncheckedUpdateManyWithoutUserNestedInput
-    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUncheckedUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUncheckedUpdateManyWithoutUserNestedInput
-    vipInfo?: VipInfoUncheckedUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutVipInfoInput = {
@@ -60105,32 +61844,32 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    members?: MemberCreateNestedManyWithoutUserInput
-    invitations?: InvitationCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryCreateNestedManyWithoutUserInput
     RainTip?: RainTipCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationCreateNestedManyWithoutUserInput
+    members?: MemberCreateNestedManyWithoutUserInput
     notification?: notificationCreateNestedManyWithoutUserInput
-    operator?: OperatorCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorCreateNestedManyWithoutUserInput
     userachievement?: userachievementCreateNestedManyWithoutUserInput
   }
 
@@ -60154,32 +61893,32 @@ export namespace Prisma {
     isVerified?: boolean
     active?: boolean
     lastLogin?: Date | string | null
-    lastDailySpin?: Date | string | null
     verificationToken?: string | null
     avatar?: string | null
     activeProfileId?: string | null
-    vipInfoId?: string | null
     gender?: $Enums.Gender | null
     status?: $Enums.UserStatus | null
     cashtag?: string | null
     phpId?: number | null
     accessToken?: string | null
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    members?: MemberUncheckedCreateNestedManyWithoutUserInput
-    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
-    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
+    vipInfoId?: string | null
+    lastDailySpin?: Date | string | null
+    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
+    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     RainBet?: RainBetUncheckedCreateNestedManyWithoutUserInput
     RainHistory?: RainHistoryUncheckedCreateNestedManyWithoutUserInput
     RainTip?: RainTipUncheckedCreateNestedManyWithoutUserInput
     RainWinner?: RainWinnerUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     chatmessage?: chatmessageUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_friendIdTouserInput
     friendship_friendship_userIdTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_userIdTouserInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutUserInput
+    members?: MemberUncheckedCreateNestedManyWithoutUserInput
     notification?: notificationUncheckedCreateNestedManyWithoutUserInput
-    operator?: OperatorUncheckedCreateNestedManyWithoutOwnerInput
-    activeProfile?: ProfileUncheckedCreateNestedManyWithoutUser_profile_userIdTouserInput
     tournamententry?: tournamententryUncheckedCreateNestedManyWithoutUserInput
+    twofactors?: TwoFactorUncheckedCreateNestedManyWithoutUserInput
     userachievement?: userachievementUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -60219,32 +61958,32 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    members?: MemberUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUpdateManyWithoutUserNestedInput
+    members?: MemberUpdateManyWithoutUserNestedInput
     notification?: notificationUpdateManyWithoutUserNestedInput
-    operator?: OperatorUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUpdateManyWithoutUserNestedInput
   }
 
@@ -60268,32 +62007,32 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     activeProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     status?: NullableEnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus | null
     cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     phpId?: NullableIntFieldUpdateOperationsInput | number | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
-    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
-    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
+    vipInfoId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastDailySpin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
+    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     RainBet?: RainBetUncheckedUpdateManyWithoutUserNestedInput
     RainHistory?: RainHistoryUncheckedUpdateManyWithoutUserNestedInput
     RainTip?: RainTipUncheckedUpdateManyWithoutUserNestedInput
     RainWinner?: RainWinnerUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chatmessage?: chatmessageUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_friendIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_friendIdTouserNestedInput
     friendship_friendship_userIdTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_userIdTouserNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutUserNestedInput
+    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
     notification?: notificationUncheckedUpdateManyWithoutUserNestedInput
-    operator?: OperatorUncheckedUpdateManyWithoutOwnerNestedInput
-    activeProfile?: ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserNestedInput
     tournamententry?: tournamententryUncheckedUpdateManyWithoutUserNestedInput
+    twofactors?: TwoFactorUncheckedUpdateManyWithoutUserNestedInput
     userachievement?: userachievementUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -60337,54 +62076,30 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type SessionCreateManyUserInput = {
+  export type OperatorCreateManyOwnerInput = {
     id?: string
-    activeGameId?: string | null
-    ipAddress?: string | null
-    userAgent?: string | null
-    expiresAt: Date | string
+    name: string
+    slug: string
+    logo?: string | null
+    description?: string | null
+    isActive?: boolean
     createdAt?: Date | string
-    refreshToken?: string | null
-    active?: boolean
-    token: string
     updatedAt?: Date | string | null
+    acceptedPayments?: OperatorCreateacceptedPaymentsInput | string[]
+    balance?: number
   }
 
-  export type AccountCreateManyUserInput = {
+  export type ProfileCreateManyUser_profile_userIdTouserInput = {
     id?: string
-    accountId: string
-    providerId: string
-    accessToken?: string | null
-    refreshToken?: string | null
-    idToken?: string | null
-    accessTokenExpiresAt?: Date | string | null
-    refreshTokenExpiresAt?: Date | string | null
-    scope?: string | null
-    password?: string | null
-    createdAt: Date | string
+    balance?: number
+    xpEarned?: number
+    isActive?: boolean
+    lastPlayed?: Date | string | null
+    createdAt?: Date | string
     updatedAt?: Date | string | null
-  }
-
-  export type MemberCreateManyUserInput = {
-    id?: string
-    organizationId: string
-    role: string
-    createdAt: Date | string
-  }
-
-  export type InvitationCreateManyUserInput = {
-    id?: string
-    organizationId: string
-    email: string
-    role?: string | null
-    status: string
-    expiresAt: Date | string
-  }
-
-  export type TwoFactorCreateManyUserInput = {
-    id?: string
-    secret: string
-    backupCodes: string
+    phpId?: number | null
+    currency?: string
+    shopId: string
   }
 
   export type RainBetCreateManyUserInput = {
@@ -60417,6 +62132,34 @@ export namespace Prisma {
     wonAt?: Date | string
   }
 
+  export type SessionCreateManyUserInput = {
+    id?: string
+    activeGameId?: string | null
+    ipAddress?: string | null
+    userAgent?: string | null
+    expiresAt: Date | string
+    createdAt?: Date | string
+    refreshToken?: string | null
+    active?: boolean
+    token: string
+    updatedAt?: Date | string | null
+  }
+
+  export type AccountCreateManyUserInput = {
+    id?: string
+    accountId: string
+    providerId: string
+    accessToken?: string | null
+    refreshToken?: string | null
+    idToken?: string | null
+    accessTokenExpiresAt?: Date | string | null
+    refreshTokenExpiresAt?: Date | string | null
+    scope?: string | null
+    password?: string | null
+    createdAt: Date | string
+    updatedAt?: Date | string | null
+  }
+
   export type chatmessageCreateManyUserInput = {
     id?: string
     content: string
@@ -60442,6 +62185,22 @@ export namespace Prisma {
     friendId: string
   }
 
+  export type InvitationCreateManyUserInput = {
+    id?: string
+    organizationId: string
+    email: string
+    role?: string | null
+    status: string
+    expiresAt: Date | string
+  }
+
+  export type MemberCreateManyUserInput = {
+    id?: string
+    organizationId: string
+    role: string
+    createdAt: Date | string
+  }
+
   export type notificationCreateManyUserInput = {
     id?: string
     type: $Enums.NotificationType
@@ -60451,31 +62210,6 @@ export namespace Prisma {
     readAt?: Date | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
-  }
-
-  export type OperatorCreateManyOwnerInput = {
-    id?: string
-    name: string
-    slug: string
-    logo?: string | null
-    description?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string | null
-    balance?: number
-  }
-
-  export type ProfileCreateManyUser_profile_userIdTouserInput = {
-    id?: string
-    balance?: number
-    xpEarned?: number
-    isActive?: boolean
-    lastPlayed?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string | null
-    phpId?: number | null
-    currency?: string
-    shopId: string
   }
 
   export type tournamententryCreateManyUserInput = {
@@ -60488,6 +62222,12 @@ export namespace Prisma {
     profileId: string
   }
 
+  export type TwoFactorCreateManyUserInput = {
+    id?: string
+    secret: string
+    backupCodes: string
+  }
+
   export type userachievementCreateManyUserInput = {
     id?: string
     progress?: number
@@ -60498,198 +62238,96 @@ export namespace Prisma {
     achievementId: string
   }
 
-  export type VipInfoCreateManyUserInput = {
-    id?: number
-    level: number
-    deposit_exp: number
-    bet_exp: number
-    rank_bet_exp: number
-    rank_deposit_exp: number
-    rank_name: string
-    icon: string
-    exp_switch_type: number
-    now_deposit_exp: string
-    level_deposit_exp: string
-    now_bet_exp: string
-    level_bet_exp: string
-    telegram: string
-    is_protection?: boolean
-    protection_deposit_exp: string
-    protection_deposit_amount: string
-    protection_bet_exp: string
-    protection_bet_amount: string
-    protection_days: number
-    protection_switch: number
-    cycle_award_switch?: boolean
-    level_award_switch?: boolean
-    signin_award_switch?: boolean
-    bet_award_switch?: boolean
-    withdrawal_award_switch?: boolean
-    unprotection_deposit_exp: string
-    unprotection_deposit_amount: string
-    unprotection_bet_exp: string
-    unprotection_bet_amount: string
-    unprotection_days: number
-    unprotection_switch: number
-    main_currency: string
-    can_receive_level_award?: boolean
-    can_receive_rank_award?: boolean
-    can_receive_day_award?: boolean
-    can_receive_week_award?: boolean
-    can_receive_month_award?: boolean
-    can_receive_signin_award?: boolean
-    can_receive_bet_award?: boolean
-    can_receive_withdrawal_award?: boolean
-  }
-
-  export type SessionUpdateWithoutUserInput = {
+  export type OperatorUpdateWithoutOwnerInput = {
     id?: StringFieldUpdateOperationsInput | string
-    activeGameId?: NullableStringFieldUpdateOperationsInput | string | null
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    active?: BoolFieldUpdateOperationsInput | boolean
-    token?: StringFieldUpdateOperationsInput | string
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type SessionUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    activeGameId?: NullableStringFieldUpdateOperationsInput | string | null
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    active?: BoolFieldUpdateOperationsInput | boolean
-    token?: StringFieldUpdateOperationsInput | string
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type SessionUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    activeGameId?: NullableStringFieldUpdateOperationsInput | string | null
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    active?: BoolFieldUpdateOperationsInput | boolean
-    token?: StringFieldUpdateOperationsInput | string
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type AccountUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    accountId?: StringFieldUpdateOperationsInput | string
-    providerId?: StringFieldUpdateOperationsInput | string
-    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    idToken?: NullableStringFieldUpdateOperationsInput | string | null
-    accessTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    refreshTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    scope?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    acceptedPayments?: OperatorUpdateacceptedPaymentsInput | string[]
+    balance?: IntFieldUpdateOperationsInput | number
+    profiles?: ProfileUpdateManyWithoutOperatorNestedInput
+    games?: GameUpdateManyWithoutOperatorNestedInput
+    products?: ProductUpdateManyWithoutOperatorNestedInput
+    tournaments?: tournamentUpdateManyWithoutOperatorNestedInput
   }
 
-  export type AccountUncheckedUpdateWithoutUserInput = {
+  export type OperatorUncheckedUpdateWithoutOwnerInput = {
     id?: StringFieldUpdateOperationsInput | string
-    accountId?: StringFieldUpdateOperationsInput | string
-    providerId?: StringFieldUpdateOperationsInput | string
-    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    idToken?: NullableStringFieldUpdateOperationsInput | string | null
-    accessTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    refreshTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    scope?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    acceptedPayments?: OperatorUpdateacceptedPaymentsInput | string[]
+    balance?: IntFieldUpdateOperationsInput | number
+    profiles?: ProfileUncheckedUpdateManyWithoutOperatorNestedInput
+    games?: GameUncheckedUpdateManyWithoutOperatorNestedInput
+    products?: ProductUncheckedUpdateManyWithoutOperatorNestedInput
+    tournaments?: tournamentUncheckedUpdateManyWithoutOperatorNestedInput
   }
 
-  export type AccountUncheckedUpdateManyWithoutUserInput = {
+  export type OperatorUncheckedUpdateManyWithoutOwnerInput = {
     id?: StringFieldUpdateOperationsInput | string
-    accountId?: StringFieldUpdateOperationsInput | string
-    providerId?: StringFieldUpdateOperationsInput | string
-    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    idToken?: NullableStringFieldUpdateOperationsInput | string | null
-    accessTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    refreshTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    scope?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    acceptedPayments?: OperatorUpdateacceptedPaymentsInput | string[]
+    balance?: IntFieldUpdateOperationsInput | number
   }
 
-  export type MemberUpdateWithoutUserInput = {
+  export type ProfileUpdateWithoutUser_profile_userIdTouserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    balance?: IntFieldUpdateOperationsInput | number
+    xpEarned?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastPlayed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutMembersNestedInput
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phpId?: NullableIntFieldUpdateOperationsInput | number | null
+    currency?: StringFieldUpdateOperationsInput | string
+    operator?: OperatorUpdateOneRequiredWithoutProfilesNestedInput
+    gamesession?: gamesessionUpdateManyWithoutProfileNestedInput
+    tournamententry?: tournamententryUpdateManyWithoutProfileNestedInput
+    transactions?: TransactionUpdateManyWithoutProfileNestedInput
   }
 
-  export type MemberUncheckedUpdateWithoutUserInput = {
+  export type ProfileUncheckedUpdateWithoutUser_profile_userIdTouserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    organizationId?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    balance?: IntFieldUpdateOperationsInput | number
+    xpEarned?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastPlayed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phpId?: NullableIntFieldUpdateOperationsInput | number | null
+    currency?: StringFieldUpdateOperationsInput | string
+    shopId?: StringFieldUpdateOperationsInput | string
+    gamesession?: gamesessionUncheckedUpdateManyWithoutProfileNestedInput
+    tournamententry?: tournamententryUncheckedUpdateManyWithoutProfileNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutProfileNestedInput
   }
 
-  export type MemberUncheckedUpdateManyWithoutUserInput = {
+  export type ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    organizationId?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    balance?: IntFieldUpdateOperationsInput | number
+    xpEarned?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastPlayed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type InvitationUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    role?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutInvitationsNestedInput
-  }
-
-  export type InvitationUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    organizationId?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    role?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type InvitationUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    organizationId?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    role?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type TwoFactorUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    secret?: StringFieldUpdateOperationsInput | string
-    backupCodes?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type TwoFactorUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    secret?: StringFieldUpdateOperationsInput | string
-    backupCodes?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type TwoFactorUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    secret?: StringFieldUpdateOperationsInput | string
-    backupCodes?: StringFieldUpdateOperationsInput | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phpId?: NullableIntFieldUpdateOperationsInput | number | null
+    currency?: StringFieldUpdateOperationsInput | string
+    shopId?: StringFieldUpdateOperationsInput | string
   }
 
   export type RainBetUpdateWithoutUserInput = {
@@ -60788,6 +62426,90 @@ export namespace Prisma {
     wonAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SessionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    activeGameId?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
+    token?: StringFieldUpdateOperationsInput | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SessionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    activeGameId?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
+    token?: StringFieldUpdateOperationsInput | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SessionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    activeGameId?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
+    token?: StringFieldUpdateOperationsInput | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type AccountUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    accountId?: StringFieldUpdateOperationsInput | string
+    providerId?: StringFieldUpdateOperationsInput | string
+    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    idToken?: NullableStringFieldUpdateOperationsInput | string | null
+    accessTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type AccountUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    accountId?: StringFieldUpdateOperationsInput | string
+    providerId?: StringFieldUpdateOperationsInput | string
+    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    idToken?: NullableStringFieldUpdateOperationsInput | string | null
+    accessTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type AccountUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    accountId?: StringFieldUpdateOperationsInput | string
+    providerId?: StringFieldUpdateOperationsInput | string
+    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    idToken?: NullableStringFieldUpdateOperationsInput | string | null
+    accessTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type chatmessageUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
@@ -60863,6 +62585,54 @@ export namespace Prisma {
     friendId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type InvitationUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneRequiredWithoutInvitationsNestedInput
+  }
+
+  export type InvitationUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InvitationUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MemberUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneRequiredWithoutMembersNestedInput
+  }
+
+  export type MemberUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MemberUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type notificationUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
@@ -60896,95 +62666,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type OperatorUpdateWithoutOwnerInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    logo?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    balance?: IntFieldUpdateOperationsInput | number
-    games?: GameUpdateManyWithoutOperatorNestedInput
-    profiles?: ProfileUpdateManyWithoutOperatorNestedInput
-    tournaments?: tournamentUpdateManyWithoutOperatorNestedInput
-    Product?: ProductUpdateManyWithoutOperatorNestedInput
-  }
-
-  export type OperatorUncheckedUpdateWithoutOwnerInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    logo?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    balance?: IntFieldUpdateOperationsInput | number
-    games?: GameUncheckedUpdateManyWithoutOperatorNestedInput
-    profiles?: ProfileUncheckedUpdateManyWithoutOperatorNestedInput
-    tournaments?: tournamentUncheckedUpdateManyWithoutOperatorNestedInput
-    Product?: ProductUncheckedUpdateManyWithoutOperatorNestedInput
-  }
-
-  export type OperatorUncheckedUpdateManyWithoutOwnerInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    logo?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    balance?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type ProfileUpdateWithoutUser_profile_userIdTouserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    balance?: IntFieldUpdateOperationsInput | number
-    xpEarned?: IntFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastPlayed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    phpId?: NullableIntFieldUpdateOperationsInput | number | null
-    currency?: StringFieldUpdateOperationsInput | string
-    gamesession?: gamesessionUpdateManyWithoutProfileNestedInput
-    operator?: OperatorUpdateOneRequiredWithoutProfilesNestedInput
-    tournamententry?: tournamententryUpdateManyWithoutProfileNestedInput
-    transactions?: TransactionUpdateManyWithoutProfileNestedInput
-  }
-
-  export type ProfileUncheckedUpdateWithoutUser_profile_userIdTouserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    balance?: IntFieldUpdateOperationsInput | number
-    xpEarned?: IntFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastPlayed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    phpId?: NullableIntFieldUpdateOperationsInput | number | null
-    currency?: StringFieldUpdateOperationsInput | string
-    shopId?: StringFieldUpdateOperationsInput | string
-    gamesession?: gamesessionUncheckedUpdateManyWithoutProfileNestedInput
-    tournamententry?: tournamententryUncheckedUpdateManyWithoutProfileNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutProfileNestedInput
-  }
-
-  export type ProfileUncheckedUpdateManyWithoutUser_profile_userIdTouserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    balance?: IntFieldUpdateOperationsInput | number
-    xpEarned?: IntFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastPlayed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    phpId?: NullableIntFieldUpdateOperationsInput | number | null
-    currency?: StringFieldUpdateOperationsInput | string
-    shopId?: StringFieldUpdateOperationsInput | string
-  }
-
   export type tournamententryUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     score?: IntFieldUpdateOperationsInput | number
@@ -61013,6 +62694,24 @@ export namespace Prisma {
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tournamentId?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type TwoFactorUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    secret?: StringFieldUpdateOperationsInput | string
+    backupCodes?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type TwoFactorUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    secret?: StringFieldUpdateOperationsInput | string
+    backupCodes?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type TwoFactorUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    secret?: StringFieldUpdateOperationsInput | string
+    backupCodes?: StringFieldUpdateOperationsInput | string
   }
 
   export type userachievementUpdateWithoutUserInput = {
@@ -61045,135 +62744,17 @@ export namespace Prisma {
     achievementId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type VipInfoUpdateWithoutUserInput = {
-    level?: IntFieldUpdateOperationsInput | number
-    deposit_exp?: IntFieldUpdateOperationsInput | number
-    bet_exp?: IntFieldUpdateOperationsInput | number
-    rank_bet_exp?: IntFieldUpdateOperationsInput | number
-    rank_deposit_exp?: IntFieldUpdateOperationsInput | number
-    rank_name?: StringFieldUpdateOperationsInput | string
-    icon?: StringFieldUpdateOperationsInput | string
-    exp_switch_type?: IntFieldUpdateOperationsInput | number
-    now_deposit_exp?: StringFieldUpdateOperationsInput | string
-    level_deposit_exp?: StringFieldUpdateOperationsInput | string
-    now_bet_exp?: StringFieldUpdateOperationsInput | string
-    level_bet_exp?: StringFieldUpdateOperationsInput | string
-    telegram?: StringFieldUpdateOperationsInput | string
-    is_protection?: BoolFieldUpdateOperationsInput | boolean
-    protection_deposit_exp?: StringFieldUpdateOperationsInput | string
-    protection_deposit_amount?: StringFieldUpdateOperationsInput | string
-    protection_bet_exp?: StringFieldUpdateOperationsInput | string
-    protection_bet_amount?: StringFieldUpdateOperationsInput | string
-    protection_days?: IntFieldUpdateOperationsInput | number
-    protection_switch?: IntFieldUpdateOperationsInput | number
-    cycle_award_switch?: BoolFieldUpdateOperationsInput | boolean
-    level_award_switch?: BoolFieldUpdateOperationsInput | boolean
-    signin_award_switch?: BoolFieldUpdateOperationsInput | boolean
-    bet_award_switch?: BoolFieldUpdateOperationsInput | boolean
-    withdrawal_award_switch?: BoolFieldUpdateOperationsInput | boolean
-    unprotection_deposit_exp?: StringFieldUpdateOperationsInput | string
-    unprotection_deposit_amount?: StringFieldUpdateOperationsInput | string
-    unprotection_bet_exp?: StringFieldUpdateOperationsInput | string
-    unprotection_bet_amount?: StringFieldUpdateOperationsInput | string
-    unprotection_days?: IntFieldUpdateOperationsInput | number
-    unprotection_switch?: IntFieldUpdateOperationsInput | number
-    main_currency?: StringFieldUpdateOperationsInput | string
-    can_receive_level_award?: BoolFieldUpdateOperationsInput | boolean
-    can_receive_rank_award?: BoolFieldUpdateOperationsInput | boolean
-    can_receive_day_award?: BoolFieldUpdateOperationsInput | boolean
-    can_receive_week_award?: BoolFieldUpdateOperationsInput | boolean
-    can_receive_month_award?: BoolFieldUpdateOperationsInput | boolean
-    can_receive_signin_award?: BoolFieldUpdateOperationsInput | boolean
-    can_receive_bet_award?: BoolFieldUpdateOperationsInput | boolean
-    can_receive_withdrawal_award?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type VipInfoUncheckedUpdateWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    level?: IntFieldUpdateOperationsInput | number
-    deposit_exp?: IntFieldUpdateOperationsInput | number
-    bet_exp?: IntFieldUpdateOperationsInput | number
-    rank_bet_exp?: IntFieldUpdateOperationsInput | number
-    rank_deposit_exp?: IntFieldUpdateOperationsInput | number
-    rank_name?: StringFieldUpdateOperationsInput | string
-    icon?: StringFieldUpdateOperationsInput | string
-    exp_switch_type?: IntFieldUpdateOperationsInput | number
-    now_deposit_exp?: StringFieldUpdateOperationsInput | string
-    level_deposit_exp?: StringFieldUpdateOperationsInput | string
-    now_bet_exp?: StringFieldUpdateOperationsInput | string
-    level_bet_exp?: StringFieldUpdateOperationsInput | string
-    telegram?: StringFieldUpdateOperationsInput | string
-    is_protection?: BoolFieldUpdateOperationsInput | boolean
-    protection_deposit_exp?: StringFieldUpdateOperationsInput | string
-    protection_deposit_amount?: StringFieldUpdateOperationsInput | string
-    protection_bet_exp?: StringFieldUpdateOperationsInput | string
-    protection_bet_amount?: StringFieldUpdateOperationsInput | string
-    protection_days?: IntFieldUpdateOperationsInput | number
-    protection_switch?: IntFieldUpdateOperationsInput | number
-    cycle_award_switch?: BoolFieldUpdateOperationsInput | boolean
-    level_award_switch?: BoolFieldUpdateOperationsInput | boolean
-    signin_award_switch?: BoolFieldUpdateOperationsInput | boolean
-    bet_award_switch?: BoolFieldUpdateOperationsInput | boolean
-    withdrawal_award_switch?: BoolFieldUpdateOperationsInput | boolean
-    unprotection_deposit_exp?: StringFieldUpdateOperationsInput | string
-    unprotection_deposit_amount?: StringFieldUpdateOperationsInput | string
-    unprotection_bet_exp?: StringFieldUpdateOperationsInput | string
-    unprotection_bet_amount?: StringFieldUpdateOperationsInput | string
-    unprotection_days?: IntFieldUpdateOperationsInput | number
-    unprotection_switch?: IntFieldUpdateOperationsInput | number
-    main_currency?: StringFieldUpdateOperationsInput | string
-    can_receive_level_award?: BoolFieldUpdateOperationsInput | boolean
-    can_receive_rank_award?: BoolFieldUpdateOperationsInput | boolean
-    can_receive_day_award?: BoolFieldUpdateOperationsInput | boolean
-    can_receive_week_award?: BoolFieldUpdateOperationsInput | boolean
-    can_receive_month_award?: BoolFieldUpdateOperationsInput | boolean
-    can_receive_signin_award?: BoolFieldUpdateOperationsInput | boolean
-    can_receive_bet_award?: BoolFieldUpdateOperationsInput | boolean
-    can_receive_withdrawal_award?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type VipInfoUncheckedUpdateManyWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    level?: IntFieldUpdateOperationsInput | number
-    deposit_exp?: IntFieldUpdateOperationsInput | number
-    bet_exp?: IntFieldUpdateOperationsInput | number
-    rank_bet_exp?: IntFieldUpdateOperationsInput | number
-    rank_deposit_exp?: IntFieldUpdateOperationsInput | number
-    rank_name?: StringFieldUpdateOperationsInput | string
-    icon?: StringFieldUpdateOperationsInput | string
-    exp_switch_type?: IntFieldUpdateOperationsInput | number
-    now_deposit_exp?: StringFieldUpdateOperationsInput | string
-    level_deposit_exp?: StringFieldUpdateOperationsInput | string
-    now_bet_exp?: StringFieldUpdateOperationsInput | string
-    level_bet_exp?: StringFieldUpdateOperationsInput | string
-    telegram?: StringFieldUpdateOperationsInput | string
-    is_protection?: BoolFieldUpdateOperationsInput | boolean
-    protection_deposit_exp?: StringFieldUpdateOperationsInput | string
-    protection_deposit_amount?: StringFieldUpdateOperationsInput | string
-    protection_bet_exp?: StringFieldUpdateOperationsInput | string
-    protection_bet_amount?: StringFieldUpdateOperationsInput | string
-    protection_days?: IntFieldUpdateOperationsInput | number
-    protection_switch?: IntFieldUpdateOperationsInput | number
-    cycle_award_switch?: BoolFieldUpdateOperationsInput | boolean
-    level_award_switch?: BoolFieldUpdateOperationsInput | boolean
-    signin_award_switch?: BoolFieldUpdateOperationsInput | boolean
-    bet_award_switch?: BoolFieldUpdateOperationsInput | boolean
-    withdrawal_award_switch?: BoolFieldUpdateOperationsInput | boolean
-    unprotection_deposit_exp?: StringFieldUpdateOperationsInput | string
-    unprotection_deposit_amount?: StringFieldUpdateOperationsInput | string
-    unprotection_bet_exp?: StringFieldUpdateOperationsInput | string
-    unprotection_bet_amount?: StringFieldUpdateOperationsInput | string
-    unprotection_days?: IntFieldUpdateOperationsInput | number
-    unprotection_switch?: IntFieldUpdateOperationsInput | number
-    main_currency?: StringFieldUpdateOperationsInput | string
-    can_receive_level_award?: BoolFieldUpdateOperationsInput | boolean
-    can_receive_rank_award?: BoolFieldUpdateOperationsInput | boolean
-    can_receive_day_award?: BoolFieldUpdateOperationsInput | boolean
-    can_receive_week_award?: BoolFieldUpdateOperationsInput | boolean
-    can_receive_month_award?: BoolFieldUpdateOperationsInput | boolean
-    can_receive_signin_award?: BoolFieldUpdateOperationsInput | boolean
-    can_receive_bet_award?: BoolFieldUpdateOperationsInput | boolean
-    can_receive_withdrawal_award?: BoolFieldUpdateOperationsInput | boolean
+  export type ProfileCreateManyOperatorInput = {
+    id?: string
+    balance?: number
+    xpEarned?: number
+    isActive?: boolean
+    lastPlayed?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    phpId?: number | null
+    userId: string
+    currency?: string
   }
 
   export type GameCreateManyOperatorInput = {
@@ -61219,37 +62800,10 @@ export namespace Prisma {
     providerId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    category?: $Enums.GameCategory
     jackpotGroupId?: string | null
     active?: boolean
     password?: string | null
-  }
-
-  export type ProfileCreateManyOperatorInput = {
-    id?: string
-    balance?: number
-    xpEarned?: number
-    isActive?: boolean
-    lastPlayed?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string | null
-    phpId?: number | null
-    userId: string
-    currency?: string
-  }
-
-  export type tournamentCreateManyOperatorInput = {
-    id?: string
-    name: string
-    description?: string | null
-    startTime: Date | string
-    endTime: Date | string
-    entryFee?: number | null
-    prizePool?: number
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string | null
-    leaderboard?: NullableJsonNullValueInput | InputJsonValue
+    category?: $Enums.GameCategory
   }
 
   export type ProductCreateManyOperatorInput = {
@@ -61268,7 +62822,66 @@ export namespace Prisma {
     isPromo?: boolean | null
     totalDiscountInCents: number
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt?: Date | string | null
+  }
+
+  export type tournamentCreateManyOperatorInput = {
+    id?: string
+    name: string
+    description?: string | null
+    startTime: Date | string
+    endTime: Date | string
+    entryFee?: number | null
+    prizePool?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    leaderboard?: NullableJsonNullValueInput | InputJsonValue
+  }
+
+  export type ProfileUpdateWithoutOperatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    balance?: IntFieldUpdateOperationsInput | number
+    xpEarned?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastPlayed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phpId?: NullableIntFieldUpdateOperationsInput | number | null
+    currency?: StringFieldUpdateOperationsInput | string
+    user_profile_userIdTouser?: UserUpdateOneRequiredWithoutActiveProfileNestedInput
+    gamesession?: gamesessionUpdateManyWithoutProfileNestedInput
+    tournamententry?: tournamententryUpdateManyWithoutProfileNestedInput
+    transactions?: TransactionUpdateManyWithoutProfileNestedInput
+  }
+
+  export type ProfileUncheckedUpdateWithoutOperatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    balance?: IntFieldUpdateOperationsInput | number
+    xpEarned?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastPlayed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phpId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: StringFieldUpdateOperationsInput | string
+    currency?: StringFieldUpdateOperationsInput | string
+    gamesession?: gamesessionUncheckedUpdateManyWithoutProfileNestedInput
+    tournamententry?: tournamententryUncheckedUpdateManyWithoutProfileNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutProfileNestedInput
+  }
+
+  export type ProfileUncheckedUpdateManyWithoutOperatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    balance?: IntFieldUpdateOperationsInput | number
+    xpEarned?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastPlayed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phpId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: StringFieldUpdateOperationsInput | string
+    currency?: StringFieldUpdateOperationsInput | string
   }
 
   export type GameUpdateWithoutOperatorInput = {
@@ -61314,10 +62927,10 @@ export namespace Prisma {
     providerId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     jackpotGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     gamesession?: gamesessionUpdateManyWithoutGameNestedInput
     tournamentgame?: tournamentgameUpdateManyWithoutGameNestedInput
   }
@@ -61365,10 +62978,10 @@ export namespace Prisma {
     providerId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     jackpotGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     gamesession?: gamesessionUncheckedUpdateManyWithoutGameNestedInput
     tournamentgame?: tournamentgameUncheckedUpdateManyWithoutGameNestedInput
   }
@@ -61416,55 +63029,69 @@ export namespace Prisma {
     providerId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     jackpotGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
   }
 
-  export type ProfileUpdateWithoutOperatorInput = {
+  export type ProductUpdateWithoutOperatorInput = {
     id?: StringFieldUpdateOperationsInput | string
-    balance?: IntFieldUpdateOperationsInput | number
-    xpEarned?: IntFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastPlayed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    bonusCode?: NullableStringFieldUpdateOperationsInput | string | null
+    bonusTotalInCredits?: NullableIntFieldUpdateOperationsInput | number | null
+    priceInCents?: IntFieldUpdateOperationsInput | number
+    amountToReceiveInCredits?: IntFieldUpdateOperationsInput | number
+    bestValue?: IntFieldUpdateOperationsInput | number
+    discountInCents?: IntFieldUpdateOperationsInput | number
+    bonusSpins?: NullableIntFieldUpdateOperationsInput | number | null
+    isPromo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    totalDiscountInCents?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    phpId?: NullableIntFieldUpdateOperationsInput | number | null
-    currency?: StringFieldUpdateOperationsInput | string
-    gamesession?: gamesessionUpdateManyWithoutProfileNestedInput
-    user_profile_userIdTouser?: UserUpdateOneRequiredWithoutActiveProfileNestedInput
-    tournamententry?: tournamententryUpdateManyWithoutProfileNestedInput
-    transactions?: TransactionUpdateManyWithoutProfileNestedInput
+    transactions?: TransactionUpdateManyWithoutProductNestedInput
   }
 
-  export type ProfileUncheckedUpdateWithoutOperatorInput = {
+  export type ProductUncheckedUpdateWithoutOperatorInput = {
     id?: StringFieldUpdateOperationsInput | string
-    balance?: IntFieldUpdateOperationsInput | number
-    xpEarned?: IntFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastPlayed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    bonusCode?: NullableStringFieldUpdateOperationsInput | string | null
+    bonusTotalInCredits?: NullableIntFieldUpdateOperationsInput | number | null
+    priceInCents?: IntFieldUpdateOperationsInput | number
+    amountToReceiveInCredits?: IntFieldUpdateOperationsInput | number
+    bestValue?: IntFieldUpdateOperationsInput | number
+    discountInCents?: IntFieldUpdateOperationsInput | number
+    bonusSpins?: NullableIntFieldUpdateOperationsInput | number | null
+    isPromo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    totalDiscountInCents?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    phpId?: NullableIntFieldUpdateOperationsInput | number | null
-    userId?: StringFieldUpdateOperationsInput | string
-    currency?: StringFieldUpdateOperationsInput | string
-    gamesession?: gamesessionUncheckedUpdateManyWithoutProfileNestedInput
-    tournamententry?: tournamententryUncheckedUpdateManyWithoutProfileNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutProfileNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutProductNestedInput
   }
 
-  export type ProfileUncheckedUpdateManyWithoutOperatorInput = {
+  export type ProductUncheckedUpdateManyWithoutOperatorInput = {
     id?: StringFieldUpdateOperationsInput | string
-    balance?: IntFieldUpdateOperationsInput | number
-    xpEarned?: IntFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastPlayed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    bonusCode?: NullableStringFieldUpdateOperationsInput | string | null
+    bonusTotalInCredits?: NullableIntFieldUpdateOperationsInput | number | null
+    priceInCents?: IntFieldUpdateOperationsInput | number
+    amountToReceiveInCredits?: IntFieldUpdateOperationsInput | number
+    bestValue?: IntFieldUpdateOperationsInput | number
+    discountInCents?: IntFieldUpdateOperationsInput | number
+    bonusSpins?: NullableIntFieldUpdateOperationsInput | number | null
+    isPromo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    totalDiscountInCents?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    phpId?: NullableIntFieldUpdateOperationsInput | number | null
-    userId?: StringFieldUpdateOperationsInput | string
-    currency?: StringFieldUpdateOperationsInput | string
   }
 
   export type tournamentUpdateWithoutOperatorInput = {
@@ -61515,65 +63142,6 @@ export namespace Prisma {
     leaderboard?: NullableJsonNullValueInput | InputJsonValue
   }
 
-  export type ProductUpdateWithoutOperatorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    url?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    bonusCode?: NullableStringFieldUpdateOperationsInput | string | null
-    bonusTotalInCredits?: NullableIntFieldUpdateOperationsInput | number | null
-    priceInCents?: IntFieldUpdateOperationsInput | number
-    amountToReceiveInCredits?: IntFieldUpdateOperationsInput | number
-    bestValue?: IntFieldUpdateOperationsInput | number
-    discountInCents?: IntFieldUpdateOperationsInput | number
-    bonusSpins?: NullableIntFieldUpdateOperationsInput | number | null
-    isPromo?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    totalDiscountInCents?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    transactions?: TransactionUpdateManyWithoutProductNestedInput
-  }
-
-  export type ProductUncheckedUpdateWithoutOperatorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    url?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    bonusCode?: NullableStringFieldUpdateOperationsInput | string | null
-    bonusTotalInCredits?: NullableIntFieldUpdateOperationsInput | number | null
-    priceInCents?: IntFieldUpdateOperationsInput | number
-    amountToReceiveInCredits?: IntFieldUpdateOperationsInput | number
-    bestValue?: IntFieldUpdateOperationsInput | number
-    discountInCents?: IntFieldUpdateOperationsInput | number
-    bonusSpins?: NullableIntFieldUpdateOperationsInput | number | null
-    isPromo?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    totalDiscountInCents?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    transactions?: TransactionUncheckedUpdateManyWithoutProductNestedInput
-  }
-
-  export type ProductUncheckedUpdateManyWithoutOperatorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    url?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    bonusCode?: NullableStringFieldUpdateOperationsInput | string | null
-    bonusTotalInCredits?: NullableIntFieldUpdateOperationsInput | number | null
-    priceInCents?: IntFieldUpdateOperationsInput | number
-    amountToReceiveInCredits?: IntFieldUpdateOperationsInput | number
-    bestValue?: IntFieldUpdateOperationsInput | number
-    discountInCents?: IntFieldUpdateOperationsInput | number
-    bonusSpins?: NullableIntFieldUpdateOperationsInput | number | null
-    isPromo?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    totalDiscountInCents?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type gamesessionCreateManyProfileInput = {
     id?: string
     startTime?: Date | string
@@ -61600,7 +63168,14 @@ export namespace Prisma {
   export type TransactionCreateManyProfileInput = {
     id?: string
     type: $Enums.TransactionType
-    amount: number
+    amount?: number
+    amountCredits?: number
+    buyerCashtag?: string | null
+    buyerUserId?: string | null
+    username?: string | null
+    cashiername?: string | null
+    cashierAvatar?: string | null
+    cashierId?: string | null
     reference?: string | null
     status?: $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -61610,6 +63185,8 @@ export namespace Prisma {
     createdAt?: Date | string
     processedAt?: Date | string | null
     gameSessionId?: string | null
+    cashtag?: string | null
+    productid?: string | null
   }
 
   export type gamesessionUpdateWithoutProfileInput = {
@@ -61689,6 +63266,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     amount?: IntFieldUpdateOperationsInput | number
+    amountCredits?: IntFieldUpdateOperationsInput | number
+    buyerCashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    cashiername?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierId?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -61697,14 +63281,22 @@ export namespace Prisma {
     paymentDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     gamesession?: gamesessionUpdateOneWithoutTransactionNestedInput
-    Product?: ProductUpdateManyWithoutTransactionsNestedInput
+    product?: ProductUpdateOneWithoutTransactionsNestedInput
   }
 
   export type TransactionUncheckedUpdateWithoutProfileInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     amount?: IntFieldUpdateOperationsInput | number
+    amountCredits?: IntFieldUpdateOperationsInput | number
+    buyerCashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    cashiername?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierId?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -61714,13 +63306,21 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gameSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    Product?: ProductUncheckedUpdateManyWithoutTransactionsNestedInput
+    cashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    productid?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TransactionUncheckedUpdateManyWithoutProfileInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     amount?: IntFieldUpdateOperationsInput | number
+    amountCredits?: IntFieldUpdateOperationsInput | number
+    buyerCashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    cashiername?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierId?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -61730,6 +63330,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gameSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    cashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    productid?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type gamesessionCreateManyGameInput = {
@@ -61812,13 +63414,6 @@ export namespace Prisma {
     tournamentId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type MemberCreateManyOrganizationInput = {
-    id?: string
-    userId: string
-    role: string
-    createdAt: Date | string
-  }
-
   export type InvitationCreateManyOrganizationInput = {
     id?: string
     email: string
@@ -61828,25 +63423,11 @@ export namespace Prisma {
     inviterId: string
   }
 
-  export type MemberUpdateWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutMembersNestedInput
-  }
-
-  export type MemberUncheckedUpdateWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type MemberUncheckedUpdateManyWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type MemberCreateManyOrganizationInput = {
+    id?: string
+    userId: string
+    role: string
+    createdAt: Date | string
   }
 
   export type InvitationUpdateWithoutOrganizationInput = {
@@ -61874,6 +63455,27 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     inviterId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type MemberUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutMembersNestedInput
+  }
+
+  export type MemberUncheckedUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MemberUncheckedUpdateManyWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type chatmessageCreateManyChatroomInput = {
@@ -61922,7 +63524,14 @@ export namespace Prisma {
   export type TransactionCreateManyGamesessionInput = {
     id?: string
     type: $Enums.TransactionType
-    amount: number
+    amount?: number
+    amountCredits?: number
+    buyerCashtag?: string | null
+    buyerUserId?: string | null
+    username?: string | null
+    cashiername?: string | null
+    cashierAvatar?: string | null
+    cashierId?: string | null
     reference?: string | null
     status?: $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -61932,6 +63541,8 @@ export namespace Prisma {
     createdAt?: Date | string
     processedAt?: Date | string | null
     profileId: string
+    cashtag?: string | null
+    productid?: string | null
   }
 
   export type chatroomUpdateWithoutGamesessionInput = {
@@ -61961,6 +63572,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     amount?: IntFieldUpdateOperationsInput | number
+    amountCredits?: IntFieldUpdateOperationsInput | number
+    buyerCashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    cashiername?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierId?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -61969,14 +63587,22 @@ export namespace Prisma {
     paymentDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     profile?: ProfileUpdateOneRequiredWithoutTransactionsNestedInput
-    Product?: ProductUpdateManyWithoutTransactionsNestedInput
+    product?: ProductUpdateOneWithoutTransactionsNestedInput
   }
 
   export type TransactionUncheckedUpdateWithoutGamesessionInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     amount?: IntFieldUpdateOperationsInput | number
+    amountCredits?: IntFieldUpdateOperationsInput | number
+    buyerCashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    cashiername?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierId?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -61986,13 +63612,21 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     profileId?: StringFieldUpdateOperationsInput | string
-    Product?: ProductUncheckedUpdateManyWithoutTransactionsNestedInput
+    cashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    productid?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TransactionUncheckedUpdateManyWithoutGamesessionInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     amount?: IntFieldUpdateOperationsInput | number
+    amountCredits?: IntFieldUpdateOperationsInput | number
+    buyerCashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    cashiername?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierId?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -62002,12 +63636,45 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     profileId?: StringFieldUpdateOperationsInput | string
+    cashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    productid?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TransactionCreateManyProductInput = {
+    id?: string
+    type: $Enums.TransactionType
+    amount?: number
+    amountCredits?: number
+    buyerCashtag?: string | null
+    buyerUserId?: string | null
+    username?: string | null
+    cashiername?: string | null
+    cashierAvatar?: string | null
+    cashierId?: string | null
+    reference?: string | null
+    status?: $Enums.TransactionStatus
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    isRealMoney?: boolean
+    paymentMethod?: string | null
+    paymentDetails?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    processedAt?: Date | string | null
+    gameSessionId?: string | null
+    profileId: string
+    cashtag?: string | null
   }
 
   export type TransactionUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     amount?: IntFieldUpdateOperationsInput | number
+    amountCredits?: IntFieldUpdateOperationsInput | number
+    buyerCashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    cashiername?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierId?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -62016,6 +63683,7 @@ export namespace Prisma {
     paymentDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cashtag?: NullableStringFieldUpdateOperationsInput | string | null
     gamesession?: gamesessionUpdateOneWithoutTransactionNestedInput
     profile?: ProfileUpdateOneRequiredWithoutTransactionsNestedInput
   }
@@ -62024,6 +63692,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     amount?: IntFieldUpdateOperationsInput | number
+    amountCredits?: IntFieldUpdateOperationsInput | number
+    buyerCashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    cashiername?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierId?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -62034,12 +63709,20 @@ export namespace Prisma {
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gameSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     profileId?: StringFieldUpdateOperationsInput | string
+    cashtag?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TransactionUncheckedUpdateManyWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     amount?: IntFieldUpdateOperationsInput | number
+    amountCredits?: IntFieldUpdateOperationsInput | number
+    buyerCashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    cashiername?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    cashierId?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -62050,6 +63733,7 @@ export namespace Prisma {
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gameSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     profileId?: StringFieldUpdateOperationsInput | string
+    cashtag?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type gamesessionCreateManyTournamentInput = {
@@ -62170,66 +63854,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     multiplier?: FloatFieldUpdateOperationsInput | number
     gameId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type ProductUpdateWithoutTransactionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    url?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    bonusCode?: NullableStringFieldUpdateOperationsInput | string | null
-    bonusTotalInCredits?: NullableIntFieldUpdateOperationsInput | number | null
-    priceInCents?: IntFieldUpdateOperationsInput | number
-    amountToReceiveInCredits?: IntFieldUpdateOperationsInput | number
-    bestValue?: IntFieldUpdateOperationsInput | number
-    discountInCents?: IntFieldUpdateOperationsInput | number
-    bonusSpins?: NullableIntFieldUpdateOperationsInput | number | null
-    isPromo?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    totalDiscountInCents?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    operator?: OperatorUpdateOneWithoutProductNestedInput
-  }
-
-  export type ProductUncheckedUpdateWithoutTransactionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    url?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    bonusCode?: NullableStringFieldUpdateOperationsInput | string | null
-    bonusTotalInCredits?: NullableIntFieldUpdateOperationsInput | number | null
-    priceInCents?: IntFieldUpdateOperationsInput | number
-    amountToReceiveInCredits?: IntFieldUpdateOperationsInput | number
-    bestValue?: IntFieldUpdateOperationsInput | number
-    discountInCents?: IntFieldUpdateOperationsInput | number
-    bonusSpins?: NullableIntFieldUpdateOperationsInput | number | null
-    isPromo?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    totalDiscountInCents?: IntFieldUpdateOperationsInput | number
-    shopId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ProductUncheckedUpdateManyWithoutTransactionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    url?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    bonusCode?: NullableStringFieldUpdateOperationsInput | string | null
-    bonusTotalInCredits?: NullableIntFieldUpdateOperationsInput | number | null
-    priceInCents?: IntFieldUpdateOperationsInput | number
-    amountToReceiveInCredits?: IntFieldUpdateOperationsInput | number
-    bestValue?: IntFieldUpdateOperationsInput | number
-    discountInCents?: IntFieldUpdateOperationsInput | number
-    bonusSpins?: NullableIntFieldUpdateOperationsInput | number | null
-    isPromo?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    totalDiscountInCents?: IntFieldUpdateOperationsInput | number
-    shopId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type RainBetCreateManyRainHistoryInput = {

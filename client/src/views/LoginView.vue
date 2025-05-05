@@ -270,48 +270,55 @@ onMounted(() => {
             <div class="flip-card__front">
               <div class="title">Log inx</div>
               <div class="flip-card__form">
-                <input
-                  v-model="formData.username"
-                  type="required"
-                  placeholder="Username"
-                  name="username"
-                  class="flip-card__input"
-                />
-                <input
-                  v-model="formData.password"
-                  type="password"
-                  placeholder="Password"
-                  name="password"
-                  class="flip-card__input"
-                />
+                <form>
+                  <input
+                    v-model="formData.username"
+                    type="required"
+                    placeholder="Username"
+                    name="username"
+                    class="flip-card__input"
+                  />
+                  <input
+                    v-model="formData.password"
+                    type="password"
+                    autocomplete="new-password"
+                    placeholder="Password"
+                    name="password"
+                    class="flip-card__input"
+                  />
 
-                <button class="flip-card__btn" @click="handleLoginFormSubmit">Lets go!</button>
+                  <button class="flip-card__btn" @click="handleLoginFormSubmit">Lets go!</button>
+                </form>
               </div>
             </div>
             <div class="flip-card__back">
               <div class="title">Sign up</div>
               <div action="" class="flip-card__form">
-                <input
-                  v-model="formData.username"
-                  type="name"
-                  placeholder="Name"
-                  class="flip-card__input"
-                />
-                <input
-                  v-model="formData.password"
-                  type="password"
-                  placeholder="Password"
-                  name="password"
-                  class="flip-card__input"
-                />
-                <input
-                  v-model="formData.confirm"
-                  type="password"
-                  placeholder="Confirm"
-                  name="confirm"
-                  class="flip-card__input"
-                />
-                <button class="flip-card__btn" @click="handleSignupFormSubmit">Confirm!</button>
+                <form>
+                  <input
+                    v-model="formData.username"
+                    type="name"
+                    placeholder="Name"
+                    class="flip-card__input"
+                  />
+                  <input
+                    v-model="formData.password"
+                    type="password"
+                    placeholder="Password"
+                    autocomplete="new-password"
+                    name="password"
+                    class="flip-card__input"
+                  />
+                  <input
+                    v-model="formData.confirm"
+                    type="password"
+                    placeholder="Confirm"
+                    autocomplete="new-password"
+                    name="confirm"
+                    class="flip-card__input"
+                  />
+                  <button class="flip-card__btn" @click="handleSignupFormSubmit">Confirm!</button>
+                </form>
               </div>
             </div>
           </div>

@@ -23,18 +23,12 @@ export interface GetRouletteHistory {
 }
 
 export interface VipInfo {
+  id: number;
   level: number;
   deposit_exp: number;
   bet_exp: number;
   rank_bet_exp: number;
   rank_deposit_exp: number;
-  free_spin_times: number;
-  week_gift: number;
-  month_gift: number;
-  upgrade_gift: number;
-  now_cash_back: number;
-  yesterday_cash_back: number;
-  history_cash_back: number;
   rank_name: string;
   icon: string;
   exp_switch_type: number;
@@ -43,7 +37,7 @@ export interface VipInfo {
   now_bet_exp: string;
   level_bet_exp: string;
   telegram: string;
-  is_protection: false;
+  is_protection: boolean;
   protection_deposit_exp: string;
   protection_deposit_amount: string;
   protection_bet_exp: string;
@@ -70,6 +64,19 @@ export interface VipInfo {
   can_receive_signin_award: boolean;
   can_receive_bet_award: boolean;
   can_receive_withdrawal_award: boolean;
+  userid: string;
+  free_spin_times: number;
+  week_gift: number;
+  month_gift: number;
+  upgrade_gift: number;
+  now_cash_back: number;
+  yesterday_cash_back: number;
+  history_cash_back: number;
+  gamesession?: any[];
+  operator?: any;
+  user_profile_userIdTouser?: any;
+  tournamententry?: any[];
+  transactions?: any[];
 }
 
 export interface VipLevel {

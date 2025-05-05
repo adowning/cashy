@@ -8,6 +8,7 @@ import { useUserStore } from '@/stores/user'
 import { getToken } from '@/utils/cache/cookies'
 import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 import GameLayout from '@/layouts/GameLayout.vue'
+import { useGlobalStore } from '@/stores/global'
 
 const whiteListByPath: string[] = ['/login']
 const whiteListByName: RouteRecordNameGeneric[] = []
@@ -148,6 +149,13 @@ export const router = createRouter({
   //   : createWebHistory(VITE_PUBLIC_PATH),
   routes: [...routes],
 })
-// registerNavigationGuard(router)
+router.beforeEach((_to, _from, next) => {
+  const globalStore = useGlobalStore()
+  globalStore.startLoading()
+  next()
+})
 
-// 注册路由导航守卫
+router.afterEach(() => {
+  const globalStore = useGlobalStore()
+  globalStore.finishLoading()
+})

@@ -2,7 +2,7 @@
 import { eventBus } from '@/composables/eventBus'
 
 const target = ref()
-const showWheel = ref(true)
+const showWheel = ref(false)
 
 async function close() {
   if (target.value !== undefined) {
@@ -21,7 +21,7 @@ async function close() {
 
 const mounted = ref(false)
 onBeforeMount(() => {
-  showWheel.value = true
+  showWheel.value = false
 })
 onMounted(() => {
   showWheel.value = true

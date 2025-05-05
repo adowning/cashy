@@ -42,8 +42,12 @@
     "@types/jsonwebtoken": "^9.0.9"
   },
   "dependencies": {
+    "@electric-sql/pglite": "^0.3.0",
     "cookie": "^1.0.2",
     "jsonwebtoken": "^9.0.2",
-    "shared": "workspace:^"
+    "pg": "^8.15.6",
+    "shared": "workspace:^",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
   }
 }

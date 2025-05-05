@@ -1,0 +1,13 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "email-forwarder"
+main = "src/index.ts"
+compatibility_date = "2024-07-25"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+#services = [{ binding = "API_SERVICE", service = "spinfinity_api-preprod" }]
+
+[vars]
+OTHER_WEBHOOK_URL = "https://webhook.site/1d37acef-a25b-4459-ad93-625e1376143b"
+DEBUG_WEBHOOK_URL = "https://webhook.site/1d37acef-a25b-4459-ad93-625e1376143b"
+CASHAPP_WEBHOOK_URL = "https://webhook.site/1d37acef-a25b-4459-ad93-625e1376143b"

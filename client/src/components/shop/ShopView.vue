@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import type { Product } from '@/hyper-fetch.request'
 import { eventBus } from '@/composables/eventBus'
 import { useUserStore } from '@/stores/user'
+import { useDepositStore } from '@/stores/deposit'
+import type { Product } from 'shared'
+import { onMounted } from 'vue'
 
 // import { eventTypes, useEventsBus } from '@/hooks/events'
 // import { useUserStore } from '@/store/user.store'
@@ -14,12 +16,17 @@ eventBus.on('activeName', (val) => {
   if (val === 'none') close()
 })
 const target = ref()
-const state = useGlobalState()
 const userStore = useUserStore()
-const shop = store.shop
-const products = store.products
+const depositStore = useDepositStore()
+const { dispatchOperatorData } = depositStore
+const { dispatchUserDepositHistory } = depositStore
+
+// const shop = store.shop
+// const products = store.products
 const currentUser = userStore.currentUser
 const closePressed = ref(false)
+const products = ref([])
+const pendingTransaction = ref()
 export interface ProductWithSelected extends Product {
   selected: false
 }
@@ -45,11 +52,15 @@ const selectedProduct = ref<ProductWithSelected>({
   priceInCents: 0,
   isPromo: false,
   // createdAt: new Date(),
-  bonusCode: undefined,
+  bonusCode: '',
   bonusTotalInCredits: 0,
   discountInCents: 0,
   totalDiscountInCents: 0,
-  Transaction: []
+  transactions: [],
+  bestValue: 0,
+  createdAt: new Date(),
+  updatedAt: null,
+  operator: null,
 })
 // const { isLoading, clients, currentPage, totalPages, getPage } = useClients();
 
@@ -86,7 +97,7 @@ const selectedProduct = ref<ProductWithSelected>({
 async function close() {
   // console.log('adding fadeout anim and refreshing user')
   target!.value!.classList.add(`animate__animated`, 'animate__fadeOut')
-  await refreshState()
+  // await refreshState()
   setTimeout(() => {
     // console.log('firing shop close')
     eventBus.emit('shopOpen', false)
@@ -151,6 +162,44 @@ async function close() {
 //   // Edit the variant using the motion instance.
 //   customElement.variant.value = 'custom'
 // }
+// const screenWidth = ref(window.innerWidth)
+
+// const updateScreenWidth = () => {
+//   screenWidth.value = window.innerWidth
+// }
+async function cancelBalanceTransactions() {
+  await api.transactionControllerCancelPending.send()
+  // // //console.log(canceled)
+  // await loaduser()
+  // $bus.$emit(eventTypes.transaction_updated, [])
+  // // //console.log(canceled)
+  // // eslint-disable-next-line ts/ban-ts-comment
+  // @ts-ignore
+  // if (typeof canceled === 'number') {
+  balancetransactionsCanceled.value = true
+  setTimeout(() => {
+    // hasPendingBalanceTransaction.value = false
+    // balancetransactionsCanceled.value = false
+    close()
+  }, 2000)
+  // }
+}
+onMounted(async () => {
+  // window.addEventListener('resize', updateScreenWidth)
+  // Fetch initial deposit configuration
+  await dispatchOperatorData()
+  await dispatchUserDepositHistory(null)
+  console.log(depositStore.getOperatorData)
+  console.log(depositStore.getProducts)
+  products.value = depositStore.getProducts
+  for (const item of depositStore.getDepositHistoryItem.record) {
+    console.log(item)
+    if (item.status === 'PENDING') {
+      activeName.value = 'pendingTransaction'
+      pendingTransaction.value = item
+    }
+  }
+})
 </script>
 
 <template>
@@ -193,23 +242,21 @@ async function close() {
           background-color: transparent;
         "
       >
-        <div class="glow pt-3" style="font-size: 50px">
-DEPOSIT
-</div>
+        <div class="glow pt-3" style="font-size: 50px">DEPOSIT</div>
         <div class="absolute right-0 top-1 flex">
           <img
             :src="`${closePressed ? '/images/close.avif' : '/images/close.avif'}`"
             style="z-index: 999; width: 40px; height: 40px; right: 0px; top: 0px"
             @click="close()"
-          >
+          />
         </div>
       </div>
       <img
         src="/images/shop/store-banner.png"
         style="z-index: 899; width: 85vw; height: 100px; right: 0px; top: 0px"
-      >
+      />
       <div
-        v-if="currentUser !== undefined && products !== undefined"
+        v-if="currentUser !== undefined && products.length > 0"
         class="min-h-100 w-100 flex flex-col items-center justify-center"
         style="max-width: 100%"
       >
@@ -226,33 +273,42 @@ DEPOSIT
                     ? (activeName = 'selectPayment')
                     : (activeName = 'selectProduct')
               "
-            >
+            />
           </div>
           <div
             style="margin: auto; font-size: 36px"
             class="glow flex items-center justify-center py-5 pl-5"
           />
         </div>
-
-        <div v-if="activeName === 'selectProduct'">
-          <SelectProduct :current-user="currentUser" :products />
+        <div v-if="activeName === 'hasPending'">
+          <div class="futex-cell-2 glow-light">
+            You already have a pending balancetransaction. Would you like to cancel it?
+          </div>
+          <div
+            class="mx-16 mb-12 flex flex-row justify-center gap-3"
+            style="margin-bottom: 150px; margin-top: 16px"
+          >
+            <div @click="close()">
+              <GlassButton color="red"> No </GlassButton>
+            </div>
+            <div @click="cancelBalanceTransactions()">
+              <GlassButton color="green"> Yes </GlassButton>
+            </div>
+          </div>
+        </div>
+        <div v-if="activeName === 'selectProduct' && depositStore.getProducts !== undefined">
+          <SelectProduct :current-user="currentUser" />
         </div>
 
         <div v-if="activeName === 'selectPayment'">
-          <SelectPayment :current-user="currentUser" :shop />
+          <SelectPayment :current-user="currentUser" />
         </div>
 
         <div v-if="activeName === 'enterStoreId'">
-          <StoreId :current-user="currentUser" :products />
+          <StoreId :current-user="currentUser" />
         </div>
         <div v-if="activeName === 'shopConfirm'">
-          <ShopConfirm
-            :payment-method="state.selectedPaymentMethod"
-            :selected-product="selectedProduct"
-            :current-user="currentUser"
-            :products
-            :shop
-          />
+          <ShopConfirm :selected-product="selectedProduct" :current-user="currentUser" />
         </div>
 
         <!-- <div class="mx-12 flex flex-row justify-between"></div> -->
