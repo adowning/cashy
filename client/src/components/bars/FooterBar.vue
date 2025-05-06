@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import LeaderJson from '@/assets/anim/leadernew.json'
+import Part3Json from '@/assets/anim/part3.json'
 import { useUserStore } from '@/stores/user'
 import { useAppBarStore } from '@/stores/appBar'
 import { useDepositStore } from '@/stores/deposit'
@@ -129,7 +130,7 @@ function changeWheelPageOpen() {
   >
     <!-- <BaseLevel> -->
     <div
-      class="animate__animated animate__slideInUp animate__delay-1s flex flex-row justify-center gap-12 px-8"
+      class="animate__animated animate__slideInUp animate__delay-1s flex flex-row justify-start gap-12 px-6"
       style="
         width: 100%;
         z-index: 888;
@@ -138,7 +139,7 @@ function changeWheelPageOpen() {
       "
     >
       <div
-        class="items-end justify-center"
+        class="items-end justify-start"
         style="display: flex; flex-wrap: nowrap; grid-gap: 0px; padding: 2px"
       >
         <div class="wn-btn-item" @click="changeWheelPageOpen">
@@ -148,43 +149,25 @@ function changeWheelPageOpen() {
             style="z-index: 999; margin-bottom: 35px; margin-left: -32px"
           />
         </div>
-        <div class="flex w-5" />
+        <div class="flex w-9" />
 
-        <div class="wn-btn-item mx-3" @click="changeLeaderBoardOpen()">
+        <div class="wn-btn-item" @click="changeLeaderBoardOpen()">
           <VGSprite
             id="leader"
             class="flex"
             image-src="/images/bottom/leadernew.png"
             :sprite-sheet-data="LeaderJson"
-            style="background-repeat: no-repeat; z-index: 10; margin-top: -63px; margin-right: -1px"
+            style="background-repeat: no-repeat; z-index: 10; margin-top: -58px; margin-right: 5px"
             :speed="30"
             :delay="3500"
             :offset="12000"
             :autoplay="true"
           />
-          <span class="glow rounded-lg bg-black px-1" style="font-size: 16px; line-height: 1.3"
+          <span class="glow rounded-lg px-1" style="font-size: 16px; line-height: 1.3"
             >Battles</span
           >
         </div>
         <div class="flex w-5" />
-
-        <!-- <div class="wn-btn-item mr-3" @click="changeShopOpen">
-          <img
-            src="/images/deposit.avif"
-            style="
-              background-repeat: no-repeat;
-              z-index: 10;
-              height: 70px;
-              padding-top: 1px;
-              margin-bottom: 2px;
-            "
-          />
-          <span
-            class="glow align-center justify-center rounded-lg bg-black px-1"
-            style="font-size: 16px; line-height: 1.3"
-            >Deposit</span
-          >
-        </div> -->
         <div class="wn-btn-item mr-3 pt-22" style="margin-top: 19px" @click="_toggleShopOpen">
           <VGSprite
             id="vaultIcon"
@@ -194,9 +177,9 @@ function changeWheelPageOpen() {
             style="
               background-repeat: no-repeat;
               z-index: 10;
-              margin-top: -160px;
+              margin-top: -200px;
               padding-top: 30px;
-              margin-right: -30px;
+              margin-right: -27px;
               transform: scale(0.6) translateY(55px);
             "
             :speed="60"
@@ -205,36 +188,63 @@ function changeWheelPageOpen() {
             :autoplay="true"
           />
           <span
-            class="glow align-center justify-center rounded-lg bg-black px-1"
+            class="glow align-center justify-center rounded-lg px-1"
             style="font-size: 16px; line-height: 1.3"
             >Deposit</span
           >
         </div>
       </div>
 
-      <div
+      <!-- <div
         v-if="showFab"
-        class="chatbutton w-full items-end justify-end"
+        class="w-full relative items-end justify-end"
+        style="
+          width: 80px;
+          height: 80px;
+          max-width: 80px;
+          max-height: 80px;
+          background-color: green;
+        "
         @click="toggleBonusDrawer()"
-      >
-        <div
-          style="
-            position: absolute;
-            right: 4px;
-            bottom: 10px;
-            background-repeat: no-repeat;
-            padding: 0px;
-            margin-top: -55px;
-            background-size: cover;
-            min-height: 90px;
-            height: 90px;
-            z-index: 99999;
-            width: 90px;
-            /* margin-left: 50px; */
-            background-image: url('/images/bottom/bottombarback-center2.avif');
-          "
-        />
-      </div>
+      > -->
+      <div
+        style="
+          position: absolute;
+          right: 0px;
+          bottom: 11px;
+          background-repeat: no-repeat;
+          padding: 0px;
+          background-size: cover;
+          min-height: 90px;
+          height: 90px;
+          z-index: 99999;
+          width: 90px;
+          /* margin-left: 50px; */
+          background-image: url('/images/bottom/bottombarback-center3.avif');
+        "
+      />
+      <VGSprite
+        id="part3Icon"
+        class="flex"
+        image-src="/images/part3_blue.png"
+        :sprite-sheet-data="Part3Json"
+        style="
+          position: absolute;
+          background-repeat: no-repeat;
+          z-index: 10;
+          /* margin-top: -100px; */
+          right: 0px;
+          bottom: 17px;
+          margin-top: -6px;
+          margin-right: 3.5px;
+          /* transform: translateY(55px); */
+        "
+        :speed="30"
+        :delay="0"
+        :offset="0"
+        :autoplay="true"
+      />
+      <!-- </div> -->
     </div>
     <!-- </BaseLevel> -->
   </div>

@@ -1,32 +1,13 @@
-import { hydrateStores, store } from '@/stores'
+import { store } from '@/stores'
 import { setToken as _setToken, getToken, removeToken } from '@/utils/cache/cookies'
-import Cookies from 'js-cookie'
-// import { useLoading } from '@/composables/useLoading'
-// import type * as SignIn from 'shared/interface/signin'
-// import type * as SignUp from 'shared/interface/signup'
-// import type * as User from "shared/interface/user";
-import { authController } from '../sdk/authModule'
-// import { useNotificationStore } from './notifications'
 import { handleException } from './exception'
-
-// import { useSocketStore } from './socket'
-// import type { IUser } from '@/sdk/_types/src/prisma/types'
-// import { useCashflowStore } from './cashflow.store'
-// import { User } from '@/types/user'
-// import { Network } from '@/libs/cashflowClient'
-// import { NETWORK } from '@/utils/socket/NetworkCfg'
-// import { CashflowRequestName } from '@/libs/cashflowClient/client/types'
-// import { SENDTYPE } from '@/libs/cashflowClient/NetCfg'
 import { NETWORK_CONFIG } from 'shared/types/NetworkCfg'
 import { Network } from '@/net/Network'
 import type { User } from 'shared/'
-import type {
-  GetUserBalance,
-  GetUserBalanceResponseData,
-  ProfileStatsUpdateData,
-  UserStatsUpdateData,
-} from 'shared/interface/user'
+import type { GetUserBalance, GetUserBalanceResponseData } from 'shared/interface/user'
+
 const expScale = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000]
+
 export const useUserStore = defineStore(
   'user',
   () => {
@@ -39,26 +20,26 @@ export const useUserStore = defineStore(
     const userBalance = ref<GetUserBalance>()
 
     const percentOfVipLevel = computed(() => {
-      if (currentUser.value === undefined) return 0
-      const nextXpLevel = expScale[currentUser.value.vipRankLevel as number]
-      console.log(nextXpLevel)
-      console.log(currentUser.value.vipPoints / nextXpLevel)
-      return (15 / nextXpLevel) * 100
+      // if (currentUser.value === undefined) return 0
+      // const nextXpLevel = expScale[currentUser.value.vipRankLevel as number]
+      // console.log(nextXpLevel)
+      // console.log(currentUser.value.vipPoints / nextXpLevel)
+      // return (15 / nextXpLevel) * 100
     })
     const setUserBalance = (_userBalance: GetUserBalance) => {
       console.log('setUserBalance', _userBalance)
       userBalance.value = _userBalance
     }
-    const updateCurrentUserProfile = (_profileUpdate: ProfileStatsUpdateData) => {
-      console.log('updateCurrentUserProfile', _profileUpdate)
-      currentUser.value.activeProfile.balance = _profileUpdate.balance
-      currentUser.value.activeProfile.xpEarned = _profileUpdate.xpEarned
-    }
-    const updateCurrentUser = (_userUpdate: UserStatsUpdateData) => {
-      console.log('updateCurrentUser', _userUpdate)
-      currentUser.value.balance = _userUpdate.balance
-      currentUser.value.totalXp = _userUpdate.totalXp
-    }
+    // const updateCurrentUserProfile = (_profileUpdate: ProfileStatsUpdateData) => {
+    //   console.log('updateCurrentUserProfile', _profileUpdate)
+    //   currentUser.value.activeProfile.balance = _profileUpdate.balance
+    //   currentUser.value.activeProfile.xpEarned = _profileUpdate.xpEarned
+    // }
+    // const updateCurrentUser = (_userUpdate: UserStatsUpdateData) => {
+    //   console.log('updateCurrentUser', _userUpdate)
+    //   currentUser.value.balance = _userUpdate.balance
+    //   currentUser.value.totalXp = _userUpdate.totalXp
+    // }
     const getCurrentUser = computed(() => {
       return currentUser.value
     })
@@ -78,15 +59,15 @@ export const useUserStore = defineStore(
     const setErrorMessage = (value: string) => {
       errMessage.value = value
     }
-    const updateInfo = async () => {
-      const result = await api.userControllerFindCurerentUser.send()
-      const data = result.data
-      if (data === null) return false
-      console.log(data)
-      currentUser.value = data
-      // roles.value = data.activeProfile.roles
-      return data
-    }
+    // const updateInfo = async () => {
+    //   const result = await api.userControllerFindCurerentUser.send()
+    //   const data = result.data
+    //   if (data === null) return false
+    //   console.log(data)
+    //   currentUser.value = data
+    //   // roles.value = data.activeProfile.roles
+    //   return data
+    // }
     const updateCurrentUserBalance = (balanceUpdate: any | number) => {
       console.log(balanceUpdate)
       if (currentUser.value == undefined) return
@@ -123,34 +104,34 @@ export const useUserStore = defineStore(
       token.value = ''
       roles.value = []
     }
-    const register = async (username: string, password: string): Promise<boolean> => {
-      console.log(username)
-      const avatar = '11'
-      const shopId = 'house'
-      const result = await authController.register(
-        {},
-        {
-          username,
-          password,
-          avatar,
-          shopId,
-        },
-      )
-      console.log(result)
-      console.log(result.token.token)
-      if (result.code !== 0) return false
-      if (result.data === null) return false
-      setToken(result.token.token)
-      Cookies.set('laravel_session', result.token.token)
-      localStorage.setItem('access_token', result.token.token)
-      const hydrated = await hydrateStores()
-      console.log(hydrated)
-      localStorage.setItem('isAuthenticated', 'true')
-      isAuthenticated.value = hydrated
-      const ablyToken = result.ablyToken
-      localStorage.set('ably-token', ablyToken)
-      return hydrated
-    }
+    // const register = async (username: string, password: string): Promise<boolean> => {
+    //   console.log(username)
+    //   const avatar = '11'
+    //   const shopId = 'house'
+    //   const result = await authController.register(
+    //     {},
+    //     {
+    //       username,
+    //       password,
+    //       avatar,
+    //       shopId,
+    //     },
+    //   )
+    //   console.log(result)
+    //   console.log(result.token.token)
+    //   if (result.code !== 0) return false
+    //   if (result.data === null) return false
+    //   setToken(result.token.token)
+    //   Cookies.set('laravel_session', result.token.token)
+    //   localStorage.setItem('access_token', result.token.token)
+    //   const hydrated = await hydrateStores()
+    //   console.log(hydrated)
+    //   localStorage.setItem('isAuthenticated', 'true')
+    //   isAuthenticated.value = hydrated
+    //   const ablyToken = result.ablyToken
+    //   localStorage.set('ably-token', ablyToken)
+    //   return hydrated
+    // }
 
     // const login = async (name: string, password: string): Promise<boolean> => {
     // const { stopLoading } = useLoading()
@@ -263,17 +244,17 @@ export const useUserStore = defineStore(
       updateCurrentUserBalance,
       roles,
       setUserInfo,
-      register,
+      // register,
       getUserBalance,
-      updateCurrentUserProfile,
+      // updateCurrentUserProfile,
       dispatchSetUserCurrency,
-      updateCurrentUser,
+      // updateCurrentUser,
       setCurrentUser,
       dispatchUserCashtag,
       // username,
       // login2,
       setToken,
-      updateInfo,
+      // updateInfo,
       percentOfVipLevel,
       changeRoles,
       resetToken,

@@ -1,4 +1,5 @@
 import { Prisma, PrismaClient } from "../../prisma/client";
+import jsonwebtoken, { JwtPayload } from "jsonwebtoken"; // <-- Import the library
 
 const userWithProfileAndOperatorInclude = {
   include: {
@@ -14,3 +15,13 @@ const userWithProfileAndOperatorInclude = {
 
 // Use Prisma.UserGetPayload with the include structure to get the type
 export type User = Prisma.UserGetPayload<typeof userWithProfileAndOperatorInclude>;
+
+export interface CashflowJWTProfile extends JwtPayload {
+  userId: string;
+  activeProfileId: string;
+  operatorId: string;
+  phpId: string;
+  role: string;
+  iss?: string;
+  sub?: string;
+}

@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch, onUnmounted } from 'vue'
-// Removed useI18n import
-// import { useI18n } from 'vue-i18n';
 import ValidationBox from '@/components/deposit/ValidationBox.vue' // Assuming this is a custom component
-// import SuccessIcon from '@/components/global/notification/SuccessIcon.vue'; // Assuming this is a custom component
-// import WarningIcon from '@/components/global/notification/WarningIcon.vue'; // Assuming this is a custom component
-import { type GetCurrencyItem, type GetPaymentItem } from '@/interface/deposit' // Assuming these interfaces are still needed
-// import { type GetUserInfo } from '@/interface/user' // Assuming this interface is still needed
+import { type GetCurrencyItem, type GetPaymentItem } from 'shared/interface/deposit' // Assuming these interfaces are still needed
 import { useAppBarStore } from '@/stores/appBar'
 import { useAuthStore } from '@/stores/auth'
 import { useDepositStore } from '@/stores/deposit'

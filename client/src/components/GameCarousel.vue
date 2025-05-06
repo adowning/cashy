@@ -2,7 +2,7 @@
 import { useOperatorStore } from '@/stores/operator'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import FlameEffectOverlay from './FlameEffectOverlay.vue'
+import FlameEffectOverlay from './animation/FlameEffectOverlay.vue'
 import { useGameStore } from '@/stores/game'
 // Import the effect components
 // import FireEffectOverlay from './FireEffectOverlay.vue' // Adjust the import path as needed

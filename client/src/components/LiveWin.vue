@@ -3,6 +3,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useGameStore } from '@/stores/game'
 import icon_public_91 from '@/assets/public/svg/icon_public_91.svg'
+import logo from '@/assets/logo.png'
 // import img_vipemblem_1_24 from '@/assets/vip/image/img_vipemblem_1-24.png'
 // import img_vipemblem_25_49 from '@/assets/vip/image/img_vipemblem_25-49.png'
 // import img_vipemblem_50_74 from '@/assets/vip/image/img_vipemblem_50-74.png'
@@ -13,7 +14,6 @@ import icon_public_91 from '@/assets/public/svg/icon_public_91.svg'
 import img_win_01 from '@/assets/home/image/img_win_01.png'
 import img_win_02 from '@/assets/home/image/img_win_02.png'
 import img_win_03 from '@/assets/home/image/img_win_03.png'
-// import { type LiveWinItem } from "@/interface/affiliate/home";
 import { Swiper, SwiperSlide } from 'swiper/vue'
 // Import Swiper styles
 import 'swiper/css'
@@ -23,7 +23,6 @@ import { Pagination, Autoplay, Navigation } from 'swiper/modules'
 import vipLevelGroups from '@/utils/VipLevelGroup'
 import { useMonitorSize } from '@/composables/useScreenSize'
 // import { storeToRefs } from 'pinia'
-// import {GameBigWinItem} from "@/interface/game"
 const { browserWidth: width } = useMonitorSize()
 const gameStore = useGameStore()
 // Removed useI18n import
@@ -65,8 +64,9 @@ const svgIconTransform = (el: any) => {
 
 /* live win game temp list */
 const onImageError = (event: Event) => {
+  console.log(event)
   const target = event.target as HTMLImageElement
-  target.src = '../assets/logo.png'
+  target.src = logo //'../assets/logo.png'
   target.style.objectFit = 'contain'
 }
 const gameBigWinItem = computed(() => {
@@ -132,12 +132,12 @@ const liveWinList = () => {
       class="flex"
       v-if="mobileWidth < 600"
       style="
-        background-image: url('/images/bigwin-right.png');
+        background-image: url('/images/bigwin-right-pink.png');
         background-size: 3% 100%;
         background-position-x: right;
       "
     >
-      <img src="/images/bigwin-left.png" style="height: 133px; margin-left: -20px" />
+      <img src="/images/bigwin-left-pink.png" style="height: 133px; margin-left: -20px" />
       <div class="flex w-[90vw]"></div>
       <!-- <div class="live-win-header">
       <inline-svg
@@ -275,7 +275,7 @@ const liveWinList = () => {
 .home-live-win {
   position: relative;
   margin: 28px 16px 0px 16px;
-  background-image: url('@/images/bigwin-left.png');
+  background-image: url('@/images/bigwin-left-pink.png');
   background-size: cover;
   border-color: pink;
   border-style: solid;

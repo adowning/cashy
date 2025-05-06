@@ -2,7 +2,6 @@
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 // Removed useI18n import
 // import { useI18n } from 'vue-i18n';
-// import { type GetGameOriginalData } from "@/interface/navBar"; // Assuming this interface is still needed
 // Removed setLang as it's related to vue-i18n
 // import { setLang } from "@/locale/index";
 // Removed useDisplay from vuetify

@@ -48,7 +48,7 @@ const isMobile = useIsMobile()
     </div>
 
     <FooterBar v-if="isMobile" class="animate__animated animate__slideInUp animate__delay-1s" />
-    <CoinExplosion />
+    <Chat />
     <MBonusDashboard />
     <WheelPage />
   </LayoutAuthenticated>

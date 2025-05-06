@@ -5,13 +5,13 @@ import { CashflowRequestName } from '@/libs/cashflowClient/client/types'
 /**
  * 发包类型枚举
  */
-// export enum SENDTYPE {
-//   NONE,
-//   HTTP,
-//   AUTH,
-//   SOCKET,
-//   UNSOLICITED, //主动回包
-// }
+export enum SENDTYPE {
+  NONE,
+  HTTP,
+  AUTH,
+  SOCKET,
+  UNSOLICITED, //主动回包
+}
 
 //退出类型 1-踢下线， 2-用户禁用, 3-平台维护, 4-同账号重复登陆
 export enum EXITTYPE {

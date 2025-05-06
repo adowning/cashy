@@ -2,23 +2,14 @@
 import * as AllJson from '@/assets/anim/part0.json'
 import AllImg from '@/assets/anim/part0.png'
 
-// const { setFilterBar } = useAppStore()
 
-// const filterBar = computed(() => {
-//   const { getFilterBar } = storeToRefs(useAppStore())
-//   return getFilterBar.value
-// })
 const backing = ref('standard')
-
-// currentUser.value = getCurrentUser()
 const sprite = ref()
 function doBattles() {
   // useAppStore().setFilterBar('standard')
   // $bus.$emit(eventTypes.sort_games, 'standard')
 }
-function changeBack(val) {
-  backing.value = val
-}
+
 // $bus.$on(eventTypes.sort_games, changeBack)
 </script>
 

@@ -2,8 +2,8 @@
 import { ref, toRefs } from 'vue'
 // Removed useI18n import
 // import { useI18n } from "vue-i18n";
-import { type GetPaymentItem } from '@/interface/deposit' // Assuming this interface is still needed
-import { type GetCurrencyItem } from '@/interface/deposit' // Assuming this interface is still needed
+import { type GetPaymentItem } from 'shared/interface/deposit' // Assuming this interface is still needed
+import { type GetCurrencyItem } from 'shared/interface/deposit' // Assuming this interface is still needed
 import QrcodeVue from 'qrcode.vue' // Assuming this is a custom component for QR code generation
 // Removed vue-toastification imports
 // import * as Toast from "vue-toastification/dist/index.mjs"

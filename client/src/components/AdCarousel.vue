@@ -88,7 +88,7 @@ onMounted(() => {
 
 <template>
   <div
-    style="width: 100%; max-width: 600px; height: 25vh"
+    style="width: 100vw; max-width: 600px; height: 25vh"
     class="justify-start items-start flex grow-0"
   >
     <div v-if="height > 700" id="AdCarousel" class="adcarousel max-w-[600px]">
@@ -138,8 +138,8 @@ onMounted(() => {
   /* margin-left: 1rem; */
   /* padding-bottom: 1rem; */
   margin: 0 auto;
-  padding-left: 20px;
-  padding-right: 20px;
+  /* padding-left: 20px;
+  padding-right: 20px; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -157,7 +157,7 @@ onMounted(() => {
   height: 100%;
   align-items: start;
   justify-content: center;
-  width: 90%;
+  width: 100%;
   margin: auto;
 }
 
@@ -172,6 +172,8 @@ onMounted(() => {
   flex: 0 0 100%;
   min-width: 0;
   padding-bottom: 39px;
+  padding-left: 26px;
+  padding-right: 26px;
   /* margin-left: 36px;
   margin-right: 36px; */
 }

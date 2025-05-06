@@ -19,7 +19,8 @@
     "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
     "format:fix": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "release": "rimraf ./*.tgz -g && npm run build && node tools/versionManager.js",
-    "dev": "concurrently --color -n \"SERVER,CLIENT,EMAIL\" -c \"green,magenta,cyan\" \"bun run --watch --filter server --elide-lines=1000 dev \" \"bun run --watch --filter client --elide-lines=1000  dev \" \"bun run --watch --filter cashapp-email --elide-lines=1000  dev \""
+    "deve": "concurrently --color -n \"SERVER,CLIENT,EMAIL\" -c \"green,magenta,cyan\" \"bun run --watch --filter server --elide-lines=1000 dev \" \"bun run --watch --filter client --elide-lines=1000  dev \" \"bun run --watch --filter cashapp-email --elide-lines=1000  dev \"",
+    "dev": "concurrently --color -n \"SERVER,CLIENT\" -c \"green,magenta\" \"bun run --watch --filter server --elide-lines=1000 dev \" \"bun run --watch --filter client --elide-lines=1000  dev \""
   },
   "keywords": [
     "websocket",
@@ -38,9 +39,6 @@
   "license": "MIT",
   "devDependencies": {
     "@types/bun": "^1.2.11",
-    "@types/cookie": "^0.6.0",
-    "@types/jest": "^29.5.12",
-    "@types/jsonwebtoken": "^9.0.9",
     "prisma": "^6.7.0",
     "prisma-class-generator": "^0.2.11",
     "prisma-generator-typescript-interfaces": "^2.1.0"
@@ -48,13 +46,11 @@
   "dependencies": {
     "@faker-js/faker": "^9.7.0",
     "@prisma/client": "^6.7.0",
-    "bcryptjs": "^3.0.2",
-    "cookie": "^1.0.2"
+    "bcryptjs": "^3.0.2"
   },
   "workspaces": [
     "client",
     "server",
-    "shared",
-    "cashapp-email"
+    "shared"
   ]
 }

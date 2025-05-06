@@ -69,7 +69,7 @@ async function setCashtag(val: string) {
   // router.push('/shop')
   eventBus.emit('activeName', 'confirmPayment')
   // }
-
+  //#27787-b
   method.value = 0
 }
 async function setStore(_val: any) {
