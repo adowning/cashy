@@ -150,10 +150,14 @@ export type GetGameBigWinResponse = {
   data: GameBigWinData;
   message: string;
 };
+export type Category = {
+  name: string;
+  games: Game[];
+};
 
 export type GetGameCategoriesResponse = {
   code: number;
-  data: Array<Category>;
+  data: Array<any>;
   messsage: string;
 };
 

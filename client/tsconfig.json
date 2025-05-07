@@ -14,10 +14,10 @@
     //  - `CommonJS` is too outdated
     //  - the ecosystem hasn't fully caught up with `Node16`/`NodeNext`
     // This recommendation includes environments like Vitest, Vite Config File, Vite SSR, etc.
-    "module": "ESNext",
+    "module": "NodeNext",
     // We expect users to use bundlers.
     // So here we enable some resolution features that are only available in bundlers.
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
     "resolveJsonModule": true,
     "allowImportingTsExtensions": true,
     // Even files without `import` or `export` are treated as modules.

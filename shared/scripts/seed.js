@@ -4,6 +4,12 @@ import bcrypt from "bcryptjs";
 import { loadGames } from "./loadgames.js";
 import { addVipInfo } from "./addVipInfo.js";
 import { seedProducts } from "./seedProducts.js";
+import { createClient } from "@supabase/supabase-js";
+// Create a single supabase client for interacting with your database
+const supabase = createClient(
+  "http://localhost:8000",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJzZXJ2aWNlX3JvbGUiLAogICAgImlzcyI6ICJzdXBhYmFzZS1kZW1vIiwKICAgICJpYXQiOiAxNjQxNzY5MjAwLAogICAgImV4cCI6IDE3OTk1MzU2MDAKfQ.DaYlNEoUrrEn2Ig7tqibS-PHK5vgusbcbo7X36XVt4Q"
+);
 
 const prisma = new PrismaClient();
 console.log(faker.uuid);
@@ -17,36 +23,36 @@ async function main() {
   console.log("Start seeding...");
 
   // --- Clear existing data (optional, uncomment if needed) ---
-  await prisma.rainWinner.deleteMany();
-  await prisma.vipInfo.deleteMany();
-  await prisma.rainTip.deleteMany();
-  await prisma.rainBet.deleteMany();
-  await prisma.rainHistory.deleteMany();
-  await prisma.userachievement.deleteMany();
-  await prisma.transaction.deleteMany();
-  await prisma.tournamentgame.deleteMany();
-  await prisma.tournamententry.deleteMany();
-  await prisma.tournament.deleteMany();
-  await prisma.notification.deleteMany();
-  await prisma.product.deleteMany();
-  await prisma.gamesession.deleteMany();
-  await prisma.friendship.deleteMany();
-  await prisma.chatmessage.deleteMany();
-  await prisma.chatroom.deleteMany();
-  await prisma.twoFactor.deleteMany();
-  await prisma.invitation.deleteMany();
-  await prisma.member.deleteMany();
-  await prisma.organization.deleteMany();
-  await prisma.verification.deleteMany();
-  await prisma.operatorgame.deleteMany();
-  await prisma.game.deleteMany();
-  await prisma.account.deleteMany();
-  await prisma.profile.deleteMany();
-  await prisma.operator.deleteMany();
-  await prisma.session.deleteMany();
-  await prisma.message.deleteMany(); // Assuming Message is not related to User directly based on schema
-  await prisma.achievement.deleteMany();
-  await prisma.user.deleteMany();
+  // await prisma.rainWinner.deleteMany();
+  // await prisma.vipInfo.deleteMany();
+  // await prisma.rainTip.deleteMany();
+  // await prisma.rainBet.deleteMany();
+  // await prisma.rainHistory.deleteMany();
+  // await prisma.userachievement.deleteMany();
+  // await prisma.transaction.deleteMany();
+  // await prisma.tournamentgame.deleteMany();
+  // await prisma.tournamententry.deleteMany();
+  // await prisma.tournament.deleteMany();
+  // await prisma.notification.deleteMany();
+  // await prisma.product.deleteMany();
+  // await prisma.gamesession.deleteMany();
+  // await prisma.friendship.deleteMany();
+  // await prisma.chatmessage.deleteMany();
+  // await prisma.chatroom.deleteMany();
+  // await prisma.twoFactor.deleteMany();
+  // await prisma.invitation.deleteMany();
+  // await prisma.member.deleteMany();
+  // await prisma.organization.deleteMany();
+  // await prisma.verification.deleteMany();
+  // await prisma.operatorgame.deleteMany();
+  // await prisma.game.deleteMany();
+  // await prisma.account.deleteMany();
+  // await prisma.profile.deleteMany();
+  // await prisma.operator.deleteMany();
+  // await prisma.session.deleteMany();
+  // await prisma.message.deleteMany(); // Assuming Message is not related to User directly based on schema
+  // await prisma.achievement.deleteMany();
+  // await prisma.user.deleteMany();
   console.log("Cleared existing data.");
 
   // --- Create the specific 'ash' user ---
@@ -86,6 +92,16 @@ async function main() {
   const passwordHash = await Bun.password.hash("asdfasdf");
 
   for (let i = 0; i < 10; i++) {
+    const email = faker.internet.email().toLowerCase();
+    async function signUpNewUser() {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password: passwordHash,
+        options: {
+          emailRedirectTo: "https://example.com/welcome",
+        },
+      });
+    }
     const isOperator = i === 0; // Make the first user the operator
     const user = await prisma.user.create({
       data: {
@@ -144,6 +160,13 @@ async function main() {
       userId: ashUser.id, // Link to the current user
       shopId: operator.id, // Link to the created operator
       currency: "USD",
+    },
+  });
+  await prisma.account.create({
+    data: {
+      accountId: ashUser.id,
+      providerId: "credential",
+      userId: ashUser.id,
     },
   });
   console.log(`Created operator with id: ${operator.id}`);
@@ -273,22 +296,12 @@ async function main() {
   // }
 
   // --- Create Accounts ---
-  const accountsCount = getRandomInt(10, 30);
-  for (let i = 0; i < accountsCount; i++) {
-    const randomUser = getRandomElement(users);
+  for (let user of users) {
     await prisma.account.create({
       data: {
-        accountId: faker.string.uuid(),
-        providerId: faker.internet.domainWord(),
-        userId: randomUser.id,
-        accessToken: faker.string.uuid(),
-        refreshToken: faker.string.uuid(),
-        idToken: faker.string.uuid(),
-        accessTokenExpiresAt: faker.date.future(),
-        refreshTokenExpiresAt: faker.date.future(),
-        scope: faker.lorem.word(),
-        password: faker.internet.password(),
-        createdAt: faker.date.past(),
+        accountId: user.id,
+        providerId: "credential",
+        userId: user.id,
       },
     });
     console.log(`Created account for user: ${randomUser.id}`);

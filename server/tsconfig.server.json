@@ -3,7 +3,10 @@
   "compilerOptions": {
     "outDir": "dist",
     "module": "ESNext",
-    "target": "ESNext"
+    "target": "ESNext",
+    "types": [
+      "bun-types"
+    ]
   },
   "include": [
     "src/**/*"
@@ -15,5 +18,9 @@
     "@shared/*": [
       "shared/*"
     ]
-  }
+  },
+  "exclude": [
+    "dist",
+    "**/*.test.ts"
+  ]
 }

@@ -61,7 +61,7 @@ export interface UpdateSuspendUser {
 }
 export type GetUserInfoResponseData = {
   code: number;
-  data: User;
+  data: Partial<User>;
   message: string;
 };
 export type GetUserBalanceResponseData = {

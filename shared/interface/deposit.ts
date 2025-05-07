@@ -61,7 +61,7 @@ export interface DepositHistoryItem {
   type: string;
   product: Partial<Product> | null;
   amount: string;
-  status: "PENDING" | "SUCCESS" | "FAILED" | "EXPIRED" | "REJECTED" | "CANCELLED";
+  status: "PENDING" | "SUCCESS" | "FAILED" | "EXPIRED" | "REJECTED" | "CANCELLED" | "COMPLETED" | "REFUNDED";
   note: string;
   currency: "USD";
 }

@@ -3,6 +3,7 @@
   "version": "0.2.1",
   "author": "warstekhun",
   "dependencies": {
+    "@supabase/supabase-js": "^2.49.4",
     "server": "workspace:^"
   },
   "$schema": "https://json.schemastore.org/package",

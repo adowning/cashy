@@ -3,8 +3,8 @@ export namespace NETWORK_CONFIG {
   //Login Related News
   export class LOGIN {
     static LOGIN: string = "/auth/login"; //Login
-    static ME: string = "/auth/me"; //Login
     static REGISTER: string = "/auth/register"; //Registration
+    static ME = "/auth/me";
   }
 
   //Business logic after entering the home page
@@ -17,12 +17,12 @@ export namespace NETWORK_CONFIG {
     static USER_BALANCE = "/user/balance"; // get user balance
     static USER_CHANGE = "/user/change"; // update user info
     static USER_EMAIL = "/user/email"; // update email
+    static USER_CASHTAG = "/user/cashtag";
     static USER_PASSWORD = "/user/password"; // update password
     static USER_SUSPEND = "/user/suspend"; // suspend user
     static USER_CHECK = "/user/check"; // user check
     static USER_EMAIL_VERIFY = "/user/verifyemail"; // user email verify
     static SET_USER_CURRENCY = "/user/currency";
-    static USER_CASHTAG = "/user/cashtag";
   }
 
   // deposit api
@@ -30,8 +30,6 @@ export namespace NETWORK_CONFIG {
     static DEPOSIT_CONFIG = "/user/depositcfg"; // get user deposit configuration
     static DEPOSIT_SUBMIT = "/user/depositsubmit"; // user deposit submit
     static DEPOSIT_HISTORY = "/user/deposithistory"; // user deposit history
-    static PRODUCTS = "/user/depositproducts"; // user deposit history
-    static OPERATOR_DATA = "/user/depositoperatordata";
   }
 
   // withdraw api
@@ -55,7 +53,6 @@ export namespace NETWORK_CONFIG {
   export class GAME_INFO {
     static GAME_CATEGORY = "/games/categories"; // get game category
     static GAME_SEARCH = "/games/search"; // game search
-    static GAME_LIST = "/games"; // game search
     static GAME_ENTER = "/user/enter/game"; // game enter
     static USER_GAME = "/user/games"; // user game
     static FAVORITE_GAME = "/user/setup/game"; // favorite game
@@ -69,14 +66,14 @@ export namespace NETWORK_CONFIG {
   // vip api
   export class VIP_INFO {
     static USER_VIP_INFO = "/user/vipinfo"; // vip info
-    static USER_VIP_LEVEL = "/user/viplevels"; // vip levels
-    static VIP_TASKS = "/user/viptasks"; // vip tasks
+    static USER_VIP_LEVEL = "/viplevels"; // vip levels
+    static VIP_TASKS = "user/viptasks"; // vip tasks
     static VIP_LEVEL_AWARD = "/user/viplevel/award"; // vip level award
   }
 
   // websocket api
   export class WEB_SOCKET {
-    static SOCKET_CONNECT = "/connect/websocket";
+    static SOCKET_CONNECT = "/user/connect/websocket";
   }
 
   // transaction api
@@ -93,12 +90,6 @@ export namespace NETWORK_CONFIG {
   export class UNSOLICITED {}
 
   export class CURRENCY {
-    static CURRENCY_LIST = "/user/balance/list"; // currency list
-  }
-  export class ACHIEVEMENT_PAGE {
-    static ACHIEVEMENT_LIST = "/api/user/invite/achievement/list";
-    static STAGE_AWARD = "/api/user/invite/stage/achievement/award";
-    static ACHIEVEMENT_AWARD = "/api/user/invite/achievement/award";
-    static ACHIEVEMENT_CONFIG = "/api/invite/achievement/config";
+    static CURRENCY_LIST = "/currency";
   }
 }

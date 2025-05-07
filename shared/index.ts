@@ -1,10 +1,10 @@
-import { Gender, Transaction, UserStatus, VipInfo } from "../server/src/prisma/client";
+import { Gender, Transaction, UserStatus, VipInfo } from "server/src/prisma/client";
 
 export * from "./interfaces";
 //@ts-ignore
 export * from "./prisma/interfaces";
 export * from "./types/NetworkCfg";
-export * from "./types/const";
+// export * from "./types/const";
 
 export interface Operator {
   id: string;

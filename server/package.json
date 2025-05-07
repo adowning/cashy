@@ -19,7 +19,7 @@
     "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
     "format:fix": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "release": "rimraf ./*.tgz -g && npm run build && node tools/versionManager.js",
-    "dev": "bun run --watch ./src/server --elide 1000 "
+    "dev": "bun run --watch ./src/index --elide 1000 "
   },
   "keywords": [
     "websocket",
@@ -46,10 +46,13 @@
     "@prisma/client": "^6.7.0",
     "bun": "^1.2.12",
     "cookie": "^1.0.2",
+    "hono": "^4.7.8",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.15.6",
+    "resend": "^4.5.1",
     "shared": "workspace:^",
     "sqlite": "^5.1.1",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.1.7",
+    "stoker": "^1.4.2"
   }
 }

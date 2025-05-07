@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma, UserStatus, profile, transaction } from "../prisma/client";
+import { PrismaClient, Prisma, UserStatus, Profile, Transaction } from "../prisma/client";
 
 let db: PrismaClient;
 db = new PrismaClient();
